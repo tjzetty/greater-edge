@@ -74,6 +74,7 @@ export function App() {
               <BoxCard
                 imgHref={rockWallImg}
                 title={"Multi-Layer Rockwall with Mulch Beds"}
+                subtitle={"Custom solutions with drainage"}
               />
               <BoxCard imgHref={dirtImg} title={"Laying Down Road"} />
             </div>
