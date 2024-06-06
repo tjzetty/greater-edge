@@ -1,5 +1,3 @@
-import "../app.css";
-
 export default function Header() {
   return (
     <div id="header-wrapper">
@@ -19,9 +17,6 @@ export default function Header() {
           <ul>
             <li className="current">
               <a href="index.html">Welcome</a>
-            </li>
-            <li>
-              <a href="left-sidebar.html">Left Sidebar</a>
             </li>
             <li>
               <a href="right-sidebar.html">Right Sidebar</a>
