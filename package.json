@@ -10,7 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "preact": "^10.19.6"
+    "preact": "^10.19.6",
+    "firebase": "latest"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.8.2",
