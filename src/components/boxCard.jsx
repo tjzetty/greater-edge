@@ -12,10 +12,7 @@ export default function BoxCard({ imgHref, title, subtitle, body }) {
             <h2>{title}</h2>
             <p>{subtitle && subtitle}</p>
           </header>
-          <p>
-            Phasellus quam turpis, feugiat sit amet in, hendrerit in lectus.
-            Praesent sed semper amet bibendum tristique fringilla.
-          </p>
+          <p>{body && body}</p>
         </div>
       </section>
     </div>

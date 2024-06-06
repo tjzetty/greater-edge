@@ -67,6 +67,9 @@ export function App() {
               <BoxCard
                 imgHref={fireplaceImg}
                 title={"Complete Fireplace and Rockwall"}
+                body={
+                  "Cleared dirt and completed the garden with flowers and fresh seeded grass all around."
+                }
               />
               <BoxCard
                 imgHref={rockWallImg}
