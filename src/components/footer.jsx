@@ -1,3 +1,5 @@
+const facebookUrl = "https://www.facebook.com/profile.php?id=61560416566294";
+
 export default function Footer() {
   return (
     <div id="footer-wrapper">
@@ -30,7 +32,11 @@ export default function Footer() {
               <h3>Contact Us</h3>
               <ul>
                 <li>
-                  <a href="#" className="icon brands fa-facebook-f">
+                  <a
+                    href={facebookUrl}
+                    className="icon brands fa-facebook-f"
+                    target="_blank"
+                  >
                     <span className="label">Facebook</span>
                   </a>
                 </li>
