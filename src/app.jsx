@@ -1,5 +1,4 @@
 import Router from "preact-router";
-import { render } from "preact";
 
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
@@ -31,7 +30,14 @@ export function App() {
     <div className="is-preload homepage">
       <div id="page-wrapper">
         <Header />
-        <Home />
+
+        <Router>
+          <Home path="/" />
+          {/* <Contact path="/contact" />
+          <Gallery path="/gallery" />
+          <Construction path="/construction" />
+          <Error type="404" default /> */}
+        </Router>
         <Footer />
       </div>
     </div>
