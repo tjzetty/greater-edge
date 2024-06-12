@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import { getPerformance } from "firebase/performance";
 import fireplaceImg from "/src/images/fireplace.jpg";
 import rockWallImg from "/src/images/rock-wall.png";
 import dirtImg from "/src/images/dirt.jpg";
@@ -23,6 +24,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+const perf = getPerformance(app);
 
 export function App() {
   return (
