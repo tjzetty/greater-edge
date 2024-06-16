@@ -1,3 +1,5 @@
+import { Link } from "preact-router/match";
+
 const facebookUrl = "https://www.facebook.com/profile.php?id=61560416566294";
 
 export default function Footer() {
@@ -7,22 +9,22 @@ export default function Footer() {
         <div className="row">
           <div className="col-3 col-6-medium col-12-small">
             <section className="widget links">
-              <h3>Random Stuff</h3>
+              <h3>Move around our site</h3>
               <ul className="style2">
                 <li>
-                  <a href="#">Etiam feugiat condimentum</a>
+                  <Link href="/">Homepage</Link>
                 </li>
                 <li>
-                  <a href="#">Aliquam imperdiet suscipit odio</a>
+                  <Link href="/gallery">Gallery</Link>
                 </li>
                 <li>
-                  <a href="#">Sed porttitor cras in erat nec</a>
+                  <Link href="/">Homepage</Link>
                 </li>
                 <li>
-                  <a href="#">Felis varius pellentesque potenti</a>
+                  <Link href="/">Homepage</Link>
                 </li>
                 <li>
-                  <a href="#">Nullam scelerisque blandit leo</a>
+                  <Link href="/">Homepage</Link>
                 </li>
               </ul>
             </section>

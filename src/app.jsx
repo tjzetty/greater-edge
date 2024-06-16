@@ -6,6 +6,7 @@ import { getPerformance } from "firebase/performance";
 
 import Header from "./components/header";
 import Home from "./components/home";
+import Gallery from "./components/gallery";
 import Footer from "./components/footer";
 
 import "./app.css";
@@ -33,8 +34,8 @@ export function App() {
 
         <Router>
           <Home path="/" />
-          {/* <Contact path="/contact" />
           <Gallery path="/gallery" />
+          {/* <Contact path="/contact" />
           <Construction path="/construction" />
           <Error type="404" default /> */}
         </Router>

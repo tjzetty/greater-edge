@@ -12,7 +12,8 @@
   "dependencies": {
     "preact": "^10.19.6",
     "preact-router": "4.1.2",
-    "firebase": "latest"
+    "firebase": "latest",
+    "lightbox2": "latest"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.8.2",

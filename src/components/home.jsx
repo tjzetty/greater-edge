@@ -1,8 +1,11 @@
+import { Link } from "preact-router/match";
+
 import BoxCard from "./boxCard";
 
 import fireplaceImg from "/src/images/fireplace.jpg";
 import rockWallImg from "/src/images/rock-wall.png";
 import dirtImg from "/src/images/dirt.jpg";
+import paversImg from "/src/images/pavers.jpg";
 
 export default function Home() {
   return (
@@ -75,24 +78,24 @@ export default function Home() {
                       </div>
                       <div className="col-6">
                         <a href="#" className="image fit">
-                          <img src={fireplaceImg} alt="" />
+                          <img src={rockWallImg} alt="" />
                         </a>
                       </div>
                       <div className="col-6">
                         <a href="#" className="image fit">
-                          <img src={fireplaceImg} alt="" />
+                          <img src={dirtImg} alt="" />
                         </a>
                       </div>
                       <div className="col-6">
                         <a href="#" className="image fit">
-                          <img src={fireplaceImg} alt="" />
+                          <img src={paversImg} alt="" />
                         </a>
                       </div>
                     </div>
                   </div>
-                  <a href="#" className="button icon fa-file-alt">
-                    More
-                  </a>
+                  <Link href="/gallery" className="button icon fa-file-alt">
+                    See More in the Gallery
+                  </Link>
                 </section>
               </div>
             </div>
