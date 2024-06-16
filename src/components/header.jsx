@@ -1,3 +1,6 @@
+import { Match } from "preact-router/match";
+import { Link } from "preact-router/match";
+
 export default function Header() {
   return (
     <div id="header-wrapper">
@@ -15,15 +18,20 @@ export default function Header() {
 
         <nav id="nav">
           <ul>
-            <li className="current">
-              <a href="index.html">Welcome</a>
-            </li>
-            <li>
-              <a href="right-sidebar.html">Right Sidebar</a>
-            </li>
-            <li>
-              <a href="no-sidebar.html">No Sidebar</a>
-            </li>
+            <Match path="/">
+              {({ matches }) => (
+                <li className={matches ? "current" : ""}>
+                  <Link href="/">Home</Link>
+                </li>
+              )}
+            </Match>
+            <Match path="/gallery">
+              {({ matches }) => (
+                <li className={matches ? "current" : ""}>
+                  <Link href="/gallery">Gallery</Link>
+                </li>
+              )}
+            </Match>
           </ul>
         </nav>
       </header>
