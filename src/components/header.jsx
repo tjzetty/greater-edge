@@ -32,6 +32,13 @@ export default function Header() {
                 </li>
               )}
             </Match>
+            <Match path="/contact">
+              {({ matches }) => (
+                <li className={matches ? "current" : ""}>
+                  <Link href="/contact">Contact Us</Link>
+                </li>
+              )}
+            </Match>
           </ul>
         </nav>
       </header>

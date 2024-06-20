@@ -1,3 +1,4 @@
+import { useRef } from "preact/hooks";
 import { Link } from "preact-router/match";
 
 import BoxCard from "./boxCard";
@@ -8,6 +9,12 @@ import dirtImg from "/src/images/dirt.jpg";
 import paversImg from "/src/images/pavers.jpg";
 
 export default function Home() {
+  const myRef = useRef(null);
+  const executeScroll = () =>
+    myRef.current.scrollIntoView({
+      behavior: "smooth",
+      inline: "nearest",
+    });
   return (
     <>
       <div id="banner-wrapper">
@@ -22,16 +29,16 @@ export default function Home() {
             <div className="col-5 col-12-medium">
               <ul>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    href="/contact"
                     className="button large icon solid fa-arrow-circle-right"
                   >
                     Contact Us
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <a
-                    href="#"
+                    onClick={executeScroll}
                     className="button alt large icon solid fa-question-circle"
                   >
                     More About Us
@@ -99,10 +106,10 @@ export default function Home() {
                 </section>
               </div>
             </div>
-            <div className="col-8 col-12-medium imp-medium">
-              <div id="content">
+            <div ref={myRef} className="col-8 col-12-medium imp-medium">
+              <div>
                 <section className="last">
-                  <h2>So what's this all about?</h2>
+                  <h2 id="aboutUsSection">So what's this all about?</h2>
                   <p>
                     This is the <strong>Greater Edge</strong> and we're more
                     than a landscaping company.

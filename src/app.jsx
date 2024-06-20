@@ -4,6 +4,7 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getPerformance } from "firebase/performance";
 
+import Contact from "./components/contact";
 import Header from "./components/header";
 import Home from "./components/home";
 import Gallery from "./components/gallery";
@@ -35,8 +36,8 @@ export function App() {
         <Router>
           <Home path="/" />
           <Gallery path="/gallery" />
-          {/* <Contact path="/contact" />
-          <Construction path="/construction" />
+          <Contact path="/contact" />
+          {/* <Construction path="/construction" />
           <Error type="404" default /> */}
         </Router>
         <Footer />

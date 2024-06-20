@@ -19,11 +19,11 @@ export default function Footer() {
                 </li>
                 {/* <li>
                   <Link href="/">Construction</Link>
-                </li>
+                </li> */}
                 <li>
-                  <Link href="/">Contact Us</Link>
+                  <Link href="/contact">Contact Us</Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link href="/">We're hiring!</Link>
                 </li> */}
               </ul>
@@ -43,10 +43,10 @@ export default function Footer() {
                   </a>
                 </li>
                 {/* <li>
-                            <a href="#" className="icon brands fa-instagram">
-                                <span className="label">Instagram</span>
-                            </a>
-                            </li> */}
+                      <a href="#" className="icon brands fa-instagram">
+                          <span className="label">Instagram</span>
+                      </a>
+                    </li> */}
               </ul>
               <p>
                 greateredgelandscapingllc@gmail.com
