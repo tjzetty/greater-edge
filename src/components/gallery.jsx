@@ -20,6 +20,7 @@ export default function Gallery() {
               <div className="row gtr-50">
                 <div className="col-6">
                   <a
+                    target="_blank"
                     className="image fit"
                     href={fireplaceImg}
                     data-lightbox="gallery"
@@ -31,6 +32,7 @@ export default function Gallery() {
                 </div>
                 <div className="col-6">
                   <a
+                    target="_blank"
                     className="image fit"
                     href={rockWallImg}
                     data-lightbox="gallery"
@@ -42,6 +44,7 @@ export default function Gallery() {
                 </div>
                 <div className="col-6">
                   <a
+                    target="_blank"
                     className="image fit"
                     href={dirtImg}
                     data-lightbox="gallery"
@@ -53,6 +56,7 @@ export default function Gallery() {
                 </div>
                 <div className="col-6">
                   <a
+                    target="_blank"
                     className="image fit"
                     href={paversImg}
                     data-lightbox="gallery"

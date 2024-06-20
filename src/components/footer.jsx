@@ -17,15 +17,15 @@ export default function Footer() {
                 <li>
                   <Link href="/gallery">Gallery</Link>
                 </li>
-                <li>
-                  <Link href="/">Homepage</Link>
+                {/* <li>
+                  <Link href="/">Construction</Link>
                 </li>
                 <li>
-                  <Link href="/">Homepage</Link>
+                  <Link href="/">Contact Us</Link>
                 </li>
                 <li>
-                  <Link href="/">Homepage</Link>
-                </li>
+                  <Link href="/">We're hiring!</Link>
+                </li> */}
               </ul>
             </section>
           </div>
