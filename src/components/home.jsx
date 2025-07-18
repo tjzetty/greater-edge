@@ -135,3 +135,10 @@ export default function Home() {
           <div style={{ textAlign: "center", marginTop: "30px" }}>
             <Link href="/gallery" className="button icon fa-file-alt">
               See More in the Gallery
+            </Link>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
