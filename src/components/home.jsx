@@ -47,12 +47,6 @@ export default function Home() {
             >
               Contact Us
             </Link>
-            <a
-              onClick={executeScroll}
-              className="button alt large icon solid fa-question-circle"
-            >
-              More About Us
-            </a>
           </div>
         </div>
       </div>
@@ -88,11 +82,12 @@ export default function Home() {
                   So what's this all about?
                 </h2>
                 <p style={{ fontSize: "1.1em" }}>
-                  This is the <strong>Greater Edge</strong> and we're more than a landscaping company.
+                  We are <strong>The Greater Edge</strong>, a young and passionate landscaping company dedicated to transforming outdoor spaces into beautiful, functional environments. 
+                  While we may be new, our team is committed to delivering top-quality results at a fair price.
                 </p>
                 <p style={{ fontSize: "1.1em" }}>
-                  Phasellus quam turpis, feugiat sit amet ornare in, hendrerit in lectus. 
-                  Praesent semper bibendum ipsum, et tristique augue fringilla eu.
+                  Whether it’s creating custom rock walls, stunning patios, or well-maintained gardens, we focus on attention to detail and exceeding our clients' expectations. 
+                  Our work speaks for itself, and we believe that every project we take on should enhance the beauty and functionality of your outdoor spaces.
                 </p>
                 <a
                   href="#"
@@ -140,10 +135,3 @@ export default function Home() {
           <div style={{ textAlign: "center", marginTop: "30px" }}>
             <Link href="/gallery" className="button icon fa-file-alt">
               See More in the Gallery
-            </Link>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-}
