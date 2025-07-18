@@ -31,6 +31,7 @@ export default function Home() {
             transform: "translate(-50%, -50%)",
             textAlign: "center",
             color: "white",
+            backgroundColor: "black", // Background color for hero section
           }}
         >
           <h1 style={{ fontSize: "3em", fontWeight: "bold" }}>
@@ -43,7 +44,7 @@ export default function Home() {
             <Link
               href="/contact"
               className="button large icon solid fa-arrow-circle-right"
-              style={{ marginRight: "10px" }}
+              style={{ marginRight: "10px", backgroundColor: "#2E8B57", color: "white" }}
             >
               Contact Us
             </Link>
@@ -52,14 +53,14 @@ export default function Home() {
       </div>
 
       {/* Features Section */}
-      <div id="features-wrapper" style={{ padding: "50px 0", backgroundColor: "#f8f8f8" }}>
+      <div id="features-wrapper" style={{ padding: "50px 0", backgroundColor: "#2E8B57" }}>
         <div className="container">
           <div className="row">
             <BoxCard
-              imgHref={fireplaceImg}
-              title={"Complete Fireplace and Rockwall"}
+              imgHref={rockWallImg}
+              title={"Brick Pavers & Rock Wall"}
               body={
-                "Cleared dirt and completed the garden with flowers and fresh seeded grass all around."
+                "We completed a custom brick paver patio and multi-layer rock wall with drainage solutions, transforming this backyard into an elegant outdoor living space."
               }
             />
             <BoxCard
@@ -73,26 +74,26 @@ export default function Home() {
       </div>
 
       {/* About Us Section */}
-      <div id="main-wrapper" style={{ padding: "50px 0" }}>
+      <div id="main-wrapper" style={{ padding: "50px 0", backgroundColor: "#f4f4f4" }}>
         <div className="container">
           <div className="row gtr-200">
             <div ref={myRef} className="col-8 col-12-medium imp-medium">
               <section className="last">
-                <h2 id="aboutUsSection" style={{ fontSize: "2em", fontWeight: "bold" }}>
+                <h2 id="aboutUsSection" style={{ fontSize: "2em", fontWeight: "bold", color: "black" }}>
                   So what's this all about?
                 </h2>
-                <p style={{ fontSize: "1.1em" }}>
+                <p style={{ fontSize: "1.1em", color: "#333" }}>
                   We are <strong>The Greater Edge</strong>, a young and passionate landscaping company dedicated to transforming outdoor spaces into beautiful, functional environments. 
                   While we may be new, our team is committed to delivering top-quality results at a fair price.
                 </p>
-                <p style={{ fontSize: "1.1em" }}>
+                <p style={{ fontSize: "1.1em", color: "#333" }}>
                   Whether it’s creating custom rock walls, stunning patios, or well-maintained gardens, we focus on attention to detail and exceeding our clients' expectations. 
                   Our work speaks for itself, and we believe that every project we take on should enhance the beauty and functionality of your outdoor spaces.
                 </p>
                 <a
                   href="#"
                   className="button icon solid fa-arrow-circle-right"
-                  style={{ marginTop: "20px" }}
+                  style={{ marginTop: "20px", backgroundColor: "#2E8B57", color: "white" }}
                 >
                   Continue Reading
                 </a>
@@ -105,7 +106,7 @@ export default function Home() {
       {/* Gallery Section */}
       <div id="gallery-wrapper" style={{ padding: "50px 0", backgroundColor: "#e7e7e7" }}>
         <div className="container">
-          <h2 style={{ textAlign: "center", marginBottom: "30px" }}>Our Recent Projects</h2>
+          <h2 style={{ textAlign: "center", marginBottom: "30px", color: "#333" }}>Our Recent Projects</h2>
           <div className="row">
             {/* Gallery Grid */}
             {[fireplaceImg, rockWallImg, dirtImg, paversImg].map((img, idx) => (
@@ -133,7 +134,7 @@ export default function Home() {
             ))}
           </div>
           <div style={{ textAlign: "center", marginTop: "30px" }}>
-            <Link href="/gallery" className="button icon fa-file-alt">
+            <Link href="/gallery" className="button icon fa-file-alt" style={{ backgroundColor: "#2E8B57", color: "white" }}>
               See More in the Gallery
             </Link>
           </div>
