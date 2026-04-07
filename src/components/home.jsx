@@ -17,6 +17,7 @@ export default function Home() {
     trimming: false,
     powerWashing: false,
     fallCleanups: false,
+    bedCleanup: false,
   });
 
   const [allImages, setAllImages] = useState({
@@ -26,21 +27,42 @@ export default function Home() {
     trimming: [],
     powerWashing: [],
     fallCleanups: [],
+    bedCleanup: [],
   });
 
   const [imagesLoaded, setImagesLoaded] = useState(false);
 
-  // Load images dynamically
+  // Load images dynamically - matches YOUR exact file names
   useEffect(() => {
     const loadImages = async () => {
-      // Try to find images for each category
+      // Your exact file names from the screenshot
       const categories = {
-        pavers: ["paver-1.jpg", "paver-2.jpg", "paver-3.jpg", "paver-4.jpg", "paver1.jpg", "paver2.jpg", "paver3.jpg", "pavers1.jpg", "pavers2.jpg", "brick-paver1.jpg"],
-        lawns: ["lawn-1.jpg", "lawn-2.jpg", "lawn-3.jpg", "lawn1.jpg", "lawn2.jpg", "lawn3.jpg", "lawn-before-after1.jpg", "grass1.jpg"],
-        mulch: ["mulch-1.jpg", "mulch-2.jpg", "mulch-3.jpg", "mulch1.jpg", "mulch2.jpg", "mulch3.jpg", "bed-cleanup1.jpg", "mulch-bed1.jpg"],
-        trimming: ["trim-1.jpg", "trim-2.jpg", "trim1.jpg", "trim2.jpg", "bush-trimming1.jpg", "hedge-trimming1.jpg", "trimming1.jpg"],
-        powerWashing: ["wash-1.jpg", "wash-2.jpg", "wash1.jpg", "wash2.jpg", "power-wash1.jpg", "power-washing1.jpg"],
-        fallCleanups: ["fall-1.jpg", "fall-2.jpg", "fall1.jpg", "fall2.jpg", "fall-cleanup1.jpg", "fall-cleanup2.jpg", "leaf-removal1.jpg"],
+        pavers: [
+          "Pavers/1.jpg", "Pavers/2.jpg", "Pavers/3.jpg", "Pavers/paver1.jpg", "Pavers/paver-1.jpg",
+          "paver1.jpg", "paver-1.jpg", "pavers1.jpg"
+        ],
+        lawns: [
+          "Lawn1.jpg", "lawn1.jpg", "Lawn-1.jpg", "lawn-1.jpg"
+        ],
+        mulch: [
+          "Mulching1.jpg", "mulching1.jpg", "Mulch1.jpg", "mulch1.jpg"
+        ],
+        trimming: [
+          "Buss trimming.jpg", "buss trimming.jpg", "Bush trimming.jpg", "bush trimming.jpg",
+          "trim1.jpg", "trim-1.jpg"
+        ],
+        powerWashing: [
+          "Power washing1.jpg", "power washing1.jpg", "Powerwashing1.jpg", "powerwashing1.jpg",
+          "wash1.jpg", "wash-1.jpg"
+        ],
+        fallCleanups: [
+          "Fall clean ups.jpg", "Fall clean ups2.jpg", "Fall cleanups (c).jpg",
+          "fall clean ups.jpg", "fall-cleanup1.jpg"
+        ],
+        bedCleanup: [
+          "Bed cleanup1.jpg", "Bed cleanup2.jpg", "Bed cleanup3.jpg",
+          "bed cleanup1.jpg", "bed-cleanup1.jpg"
+        ],
       };
 
       const loaded = {};
@@ -50,7 +72,7 @@ export default function Home() {
         for (const name of names) {
           try {
             const imgUrl = new URL(`/src/images/${name}`, import.meta.url).href;
-            // Test if image exists by creating an img element
+            // Test if image exists
             await new Promise((resolve) => {
               const img = new Image();
               img.onload = () => {
@@ -97,8 +119,14 @@ export default function Home() {
     },
     {
       id: "mulch",
-      title: "Mulch Beds & Clean Up",
-      description: "Fresh color, healthy soil, zero weeds",
+      title: "Mulching & Bed Maintenance",
+      description: "Fresh mulch, healthy beds, and professional care",
+      previewCount: 1,
+    },
+    {
+      id: "bedCleanup",
+      title: "Bed Clean Up",
+      description: "Remove weeds, refresh soil, and make your beds shine",
       previewCount: 1,
     },
     {
@@ -290,7 +318,7 @@ export default function Home() {
 
   return (
     <>
-      {/* Sticky Navigation with Text Logo (No image file needed) */}
+      {/* Sticky Navigation with Text Logo */}
       <nav
         style={{
           position: "sticky",
@@ -313,7 +341,7 @@ export default function Home() {
             gap: "16px",
           }}
         >
-          {/* Text Logo - Professional and Clean */}
+          {/* Text Logo */}
           <Link href="/" style={{ textDecoration: "none" }}>
             <span style={{
               fontSize: "1.5rem",
