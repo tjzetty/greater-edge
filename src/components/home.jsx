@@ -1,17 +1,8 @@
-import { useRef, useState } from "preact/hooks";
+import { useRef, useState, useEffect } from "preact/hooks";
 import { Link } from "preact-router/match";
 
-// Logo import
-import logoImg from "/src/images/logo.png";
-
-// Helper function to get images - just looks in /src/images/
-const getImage = (name) => {
-  try {
-    return new URL(`/src/images/${name}`, import.meta.url).href;
-  } catch (e) {
-    return null;
-  }
-};
+// Logo import - now looking for /src/images/logo/Logo.png
+import logoImg from "/src/images/logo/Logo.png";
 
 export default function Home() {
   const aboutRef = useRef(null);
@@ -21,7 +12,7 @@ export default function Home() {
     workSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-  // State for expanded sections
+  // State for expanded sections and images
   const [expandedSections, setExpandedSections] = useState({
     pavers: false,
     lawns: false,
@@ -31,6 +22,61 @@ export default function Home() {
     fallCleanups: false,
   });
 
+  const [allImages, setAllImages] = useState({
+    pavers: [],
+    lawns: [],
+    mulch: [],
+    trimming: [],
+    powerWashing: [],
+    fallCleanups: [],
+  });
+
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+
+  // Load images dynamically
+  useEffect(() => {
+    const loadImages = async () => {
+      // Try to find images for each category
+      const categories = {
+        pavers: ["paver-1.jpg", "paver-2.jpg", "paver-3.jpg", "paver-4.jpg", "paver1.jpg", "paver2.jpg", "paver3.jpg", "pavers1.jpg", "pavers2.jpg", "brick-paver1.jpg"],
+        lawns: ["lawn-1.jpg", "lawn-2.jpg", "lawn-3.jpg", "lawn1.jpg", "lawn2.jpg", "lawn3.jpg", "lawn-before-after1.jpg", "grass1.jpg"],
+        mulch: ["mulch-1.jpg", "mulch-2.jpg", "mulch-3.jpg", "mulch1.jpg", "mulch2.jpg", "mulch3.jpg", "bed-cleanup1.jpg", "mulch-bed1.jpg"],
+        trimming: ["trim-1.jpg", "trim-2.jpg", "trim1.jpg", "trim2.jpg", "bush-trimming1.jpg", "hedge-trimming1.jpg", "trimming1.jpg"],
+        powerWashing: ["wash-1.jpg", "wash-2.jpg", "wash1.jpg", "wash2.jpg", "power-wash1.jpg", "power-washing1.jpg"],
+        fallCleanups: ["fall-1.jpg", "fall-2.jpg", "fall1.jpg", "fall2.jpg", "fall-cleanup1.jpg", "fall-cleanup2.jpg", "leaf-removal1.jpg"],
+      };
+
+      const loaded = {};
+      
+      for (const [category, names] of Object.entries(categories)) {
+        const foundImages = [];
+        for (const name of names) {
+          try {
+            const imgUrl = new URL(`/src/images/${name}`, import.meta.url).href;
+            // Test if image exists by creating an img element
+            await new Promise((resolve) => {
+              const img = new Image();
+              img.onload = () => {
+                foundImages.push(imgUrl);
+                resolve();
+              };
+              img.onerror = () => resolve();
+              img.src = imgUrl;
+            });
+          } catch (e) {
+            // Image doesn't exist, skip
+          }
+        }
+        loaded[category] = foundImages;
+      }
+      
+      setAllImages(loaded);
+      setImagesLoaded(true);
+    };
+
+    loadImages();
+  }, []);
+
   const toggleSection = (section) => {
     setExpandedSections((prev) => ({
       ...prev,
@@ -38,94 +84,54 @@ export default function Home() {
     }));
   };
 
-  // Define all images - just list your file names here
-  const paverImages = [
-    getImage("paver-1.jpg"),
-    getImage("paver-2.jpg"),
-    getImage("paver-3.jpg"),
-    getImage("paver-4.jpg"),
-  ].filter(img => img !== null);
-
-  const lawnImages = [
-    getImage("lawn-1.jpg"),
-    getImage("lawn-2.jpg"),
-    getImage("lawn-3.jpg"),
-  ].filter(img => img !== null);
-
-  const mulchImages = [
-    getImage("mulch-1.jpg"),
-    getImage("mulch-2.jpg"),
-    getImage("mulch-3.jpg"),
-  ].filter(img => img !== null);
-
-  const trimImages = [
-    getImage("trim-1.jpg"),
-    getImage("trim-2.jpg"),
-  ].filter(img => img !== null);
-
-  const washImages = [
-    getImage("wash-1.jpg"),
-    getImage("wash-2.jpg"),
-  ].filter(img => img !== null);
-
-  const fallImages = [
-    getImage("fall-1.jpg"),
-    getImage("fall-2.jpg"),
-  ].filter(img => img !== null);
-
   // Category data (ordered by priority)
   const categories = [
     {
       id: "pavers",
       title: "Brick Pavers & Patios",
       description: "Custom hardscaping that transforms your outdoor living space",
-      images: paverImages,
-      previewCount: 3,
+      previewCount: 1,
     },
     {
       id: "lawns",
       title: "Lawn Transformations",
       description: "Before & after. See the difference professional care makes",
-      images: lawnImages,
-      previewCount: 3,
+      previewCount: 1,
     },
     {
       id: "mulch",
       title: "Mulch Beds & Clean Up",
       description: "Fresh color, healthy soil, zero weeds",
-      images: mulchImages,
-      previewCount: 3,
+      previewCount: 1,
     },
     {
       id: "trimming",
       title: "Bush & Hedge Trimming",
       description: "Precision shaping for a polished, professional look",
-      images: trimImages,
-      previewCount: 2,
+      previewCount: 1,
     },
     {
       id: "powerWashing",
       title: "Power Washing",
       description: "Restore your home's original beauty in hours",
-      images: washImages,
-      previewCount: 2,
+      previewCount: 1,
     },
     {
       id: "fallCleanups",
       title: "Fall Clean Ups",
       description: "Leaf removal, gutter cleaning, and winter preparation",
-      images: fallImages,
-      previewCount: 2,
+      previewCount: 1,
     },
   ];
 
   const CategorySection = ({ category, index }) => {
     const isExpanded = expandedSections[category.id];
-    const visibleImages = isExpanded ? category.images : category.images.slice(0, category.previewCount);
-    const hasMore = category.images.length > category.previewCount;
+    const categoryImages = allImages[category.id] || [];
+    const visibleImages = isExpanded ? categoryImages : categoryImages.slice(0, category.previewCount);
+    const hasMore = categoryImages.length > category.previewCount;
 
     // Don't render section if no images
-    if (category.images.length === 0) return null;
+    if (categoryImages.length === 0) return null;
 
     return (
       <section
@@ -169,7 +175,7 @@ export default function Home() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+              gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))",
               gap: "24px",
               marginBottom: "32px",
             }}
@@ -208,7 +214,7 @@ export default function Home() {
             ))}
           </div>
 
-          {/* Show More Button */}
+          {/* Show More / Show Less Button with Arrow */}
           {hasMore && (
             <div style={{ textAlign: "center", marginTop: "8px" }}>
               <button
@@ -223,9 +229,10 @@ export default function Home() {
                   display: "inline-flex",
                   alignItems: "center",
                   gap: "8px",
-                  padding: "8px 20px",
-                  borderRadius: "30px",
+                  padding: "10px 24px",
+                  borderRadius: "40px",
                   transition: "all 0.2s ease",
+                  fontFamily: "inherit",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.backgroundColor = "rgba(46, 139, 86, 0.08)";
@@ -236,13 +243,13 @@ export default function Home() {
               >
                 {isExpanded ? (
                   <>
-                    <span>▲</span>
+                    <span style={{ fontSize: "1rem" }}>▲</span>
                     <span>Show Less</span>
                   </>
                 ) : (
                   <>
-                    <span>▼</span>
-                    <span>Show More</span>
+                    <span style={{ fontSize: "1rem" }}>▼</span>
+                    <span>Show More ({categoryImages.length - category.previewCount} more)</span>
                   </>
                 )}
               </button>
@@ -252,6 +259,37 @@ export default function Home() {
       </section>
     );
   };
+
+  // Loading state
+  if (!imagesLoaded) {
+    return (
+      <div style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
+        backgroundColor: "#f8faf8",
+      }}>
+        <div style={{ textAlign: "center" }}>
+          <div style={{
+            width: "50px",
+            height: "50px",
+            border: "3px solid #2E8B57",
+            borderTopColor: "transparent",
+            borderRadius: "50%",
+            animation: "spin 1s linear infinite",
+            margin: "0 auto 20px",
+          }} />
+          <p style={{ color: "#2E8B57" }}>Loading...</p>
+          <style>{`
+            @keyframes spin {
+              to { transform: rotate(360deg); }
+            }
+          `}</style>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -278,19 +316,28 @@ export default function Home() {
             gap: "16px",
           }}
         >
-          {/* Logo */}
+          {/* Logo Image */}
           <Link href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
             <img
               src={logoImg}
               alt="The Greater Edge"
               style={{
-                height: "48px",
+                height: "50px",
                 width: "auto",
+                maxWidth: "200px",
                 objectFit: "contain",
               }}
               onError={(e) => {
+                // Fallback to text logo if image fails to load
                 e.target.style.display = "none";
-                e.target.parentElement.innerHTML = "<span style='font-size:1.3rem;font-weight:bold;color:#2E8B57;'>The Greater Edge</span>";
+                const parent = e.target.parentElement;
+                if (parent && !parent.querySelector(".logo-fallback")) {
+                  const fallback = document.createElement("span");
+                  fallback.className = "logo-fallback";
+                  fallback.style.cssText = "font-size:1.4rem;font-weight:700;color:#2E8B57;letter-spacing:-0.02em;";
+                  fallback.innerHTML = 'The Greater<span style="color:#1a1a1a;"> Edge</span>';
+                  parent.appendChild(fallback);
+                }
               }}
             />
           </Link>
