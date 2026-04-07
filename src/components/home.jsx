@@ -1,9 +1,6 @@
 import { useRef, useState, useEffect } from "preact/hooks";
 import { Link } from "preact-router/match";
 
-// Logo import - now looking for /src/images/logo/Logo.png
-import logoImg from "/src/images/logo/Logo.png";
-
 export default function Home() {
   const aboutRef = useRef(null);
   const workSectionRef = useRef(null);
@@ -293,7 +290,7 @@ export default function Home() {
 
   return (
     <>
-      {/* Sticky Navigation with Logo */}
+      {/* Sticky Navigation with Text Logo (No image file needed) */}
       <nav
         style={{
           position: "sticky",
@@ -316,30 +313,16 @@ export default function Home() {
             gap: "16px",
           }}
         >
-          {/* Logo Image */}
-          <Link href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
-            <img
-              src={logoImg}
-              alt="The Greater Edge"
-              style={{
-                height: "50px",
-                width: "auto",
-                maxWidth: "200px",
-                objectFit: "contain",
-              }}
-              onError={(e) => {
-                // Fallback to text logo if image fails to load
-                e.target.style.display = "none";
-                const parent = e.target.parentElement;
-                if (parent && !parent.querySelector(".logo-fallback")) {
-                  const fallback = document.createElement("span");
-                  fallback.className = "logo-fallback";
-                  fallback.style.cssText = "font-size:1.4rem;font-weight:700;color:#2E8B57;letter-spacing:-0.02em;";
-                  fallback.innerHTML = 'The Greater<span style="color:#1a1a1a;"> Edge</span>';
-                  parent.appendChild(fallback);
-                }
-              }}
-            />
+          {/* Text Logo - Professional and Clean */}
+          <Link href="/" style={{ textDecoration: "none" }}>
+            <span style={{
+              fontSize: "1.5rem",
+              fontWeight: "700",
+              letterSpacing: "-0.02em",
+            }}>
+              <span style={{ color: "#2E8B57" }}>The Greater</span>
+              <span style={{ color: "#1a1a1a" }}> Edge</span>
+            </span>
           </Link>
 
           {/* Nav Links */}
