@@ -10,53 +10,53 @@ export default function Home() {
 
   // Projects array with main image first and rest below
   const projects = [
-    {¹
+    {
       id: 1,
       name: "Bed Clean Up",
       main: "/images/Bed cleanup1.jpg",
-      rest: [] // add other Bed cleanup images if available
+      rest: []
     },
     {
       id: 2,
       name: "Brick Pavers & Patios",
       main: "/images/Paver1.png",
-      rest: [] // add other Paver images if available
+      rest: []
     },
     {
       id: 3,
       name: "Bush & Hedge Trimming",
       main: "/images/Bushtrim1.jpg",
-      rest: [] // add other Bush trimming images if available
+      rest: []
     },
     {
       id: 4,
       name: "Fall Clean Ups",
       main: "/images/Fall cleanup1.jpg",
-      rest: [] // add other Fall cleanup images if available
+      rest: []
     },
     {
       id: 5,
       name: "Lawn Transformations",
       main: "/images/Lawn1.jpg",
-      rest: [] // add other Lawn images if available
+      rest: []
     },
     {
       id: 6,
       name: "Mulching & Bed Maintenance",
       main: "/images/Mulch1.jpg",
-      rest: [] // add other Mulching images if available
+      rest: []
     },
     {
       id: 7,
       name: "Power Washing",
       main: "/images/Powerwashing1.jpg",
-      rest: [] // add other Powerwashing images if available
+      rest: []
     }
   ];
 
   return (
     <div>
-      {/* Header */}
+      {/* Header with Facebook button at top */}
       <div style={{ position: "sticky", top: 0, background: "white", padding: "15px 20px", boxShadow: "0 2px 10px rgba(0,0,0,0.1)", zIndex: 100 }}>
         <div style={{ maxWidth: "1200px", margin: "auto", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
@@ -65,9 +65,11 @@ export default function Home() {
               <span style={{ color: "#2E8B57" }}>The Greater</span> Edge
             </span>
           </div>
-          <div style={{ display: "flex", gap: "20px" }}>
+          <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
             <Link to="/" style={{ textDecoration: "none", color: "#333" }}>Home</Link>
             <Link to="/contact" style={{ textDecoration: "none", color: "#333" }}>Contact</Link>
+            {/* FACEBOOK BUTTON AT TOP */}
+            <a href="https://facebook.com/yourpage" target="_blank" style={{ background: "#1877F2", color: "white", padding: "8px 20px", borderRadius: "25px", textDecoration: "none", fontWeight: "bold", fontSize: "14px" }}>f Facebook</a>
           </div>
         </div>
       </div>
