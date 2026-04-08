@@ -10,7 +10,7 @@ export default function Home() {
 
   // Projects array with main image first and rest below
   const projects = [
-    {
+    {¹
       id: 1,
       name: "Bed Clean Up",
       main: "/images/Bed cleanup1.jpg",
