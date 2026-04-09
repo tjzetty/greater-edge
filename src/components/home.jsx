@@ -1,9 +1,42 @@
-import { useState, useRef } from "preact/hooks";
+import { useState } from "preact/hooks";
 
 export default function Home() {
   const [showMore, setShowMore] = useState({});
-  const [sliderPos, setSliderPos] = useState({});
-  const draggingId = useRef(null);
+  const [slider1, setSlider1] = useState(50);
+  const [slider2, setSlider2] = useState(50);
+  const [slider3, setSlider3] = useState(50);
+  const [slider4, setSlider4] = useState(50);
+  const [slider5, setSlider5] = useState(50);
+  const [slider6, setSlider6] = useState(50);
+  const [slider7, setSlider7] = useState(50);
+  const [slider8, setSlider8] = useState(50);
+
+  const getSlider = (id) => {
+    switch(id) {
+      case 1: return slider1;
+      case 2: return slider2;
+      case 3: return slider3;
+      case 4: return slider4;
+      case 5: return slider5;
+      case 6: return slider6;
+      case 7: return slider7;
+      case 8: return slider8;
+      default: return 50;
+    }
+  };
+
+  const setSlider = (id, value) => {
+    switch(id) {
+      case 1: setSlider1(value); break;
+      case 2: setSlider2(value); break;
+      case 3: setSlider3(value); break;
+      case 4: setSlider4(value); break;
+      case 5: setSlider5(value); break;
+      case 6: setSlider6(value); break;
+      case 7: setSlider7(value); break;
+      case 8: setSlider8(value); break;
+    }
+  };
 
   const toggleDropdown = (id) => {
     setShowMore(prev => ({ ...prev, [id]: !prev[id] }));
@@ -28,156 +61,97 @@ export default function Home() {
     { id: 7, name: "Power Washing", before: "images/powerwashing1.jpg", after: "images/powerwashing2.jpg", hasSecondSlider: false, extras: [] }
   ];
 
-  const Slider = ({ before, after, id }) => {
-    const pos = sliderPos[id] !== undefined ? sliderPos[id] : 50;
-    const sliderRef = useRef(null);
-
-    const updatePosition = (clientX) => {
-      if (!sliderRef.current) return;
-      const rect = sliderRef.current.getBoundingClientRect();
-      let x = (clientX - rect.left) / rect.width;
-      x = Math.min(0.98, Math.max(0.02, x));
-      setSliderPos(prev => ({ ...prev, [id]: x * 100 }));
-    };
-
-    const handleStart = (e) => {
-      e.preventDefault();
-      draggingId.current = id;
-      let clientX = e.touches ? e.touches[0].clientX : e.clientX;
-      updatePosition(clientX);
-    };
-
-    const handleMove = (e) => {
-      if (draggingId.current !== id) return;
-      e.preventDefault();
-      let clientX = e.touches ? e.touches[0].clientX : e.clientX;
-      updatePosition(clientX);
-    };
-
-    const handleEnd = () => {
-      if (draggingId.current === id) {
-        draggingId.current = null;
-      }
-    };
-
+  const Slider = ({ before, after, sliderId }) => {
+    const pos = getSlider(sliderId);
+    
     return (
-      <div>
-        {/* Slider Container */}
+      <div 
+        style={{ 
+          position: "relative", 
+          width: "100%", 
+          aspectRatio: "4/3", 
+          background: "#1a1a1a", 
+          borderRadius: "16px", 
+          overflow: "hidden"
+        }}
+      >
+        <img src={after} alt="After" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+        <div style={{ position: "absolute", top: 0, left: 0, width: `${pos}%`, height: "100%", overflow: "hidden" }}>
+          <img src={before} alt="Before" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+        </div>
+        
+        {/* DRAG HANDLE - This is the only draggable part */}
         <div 
-          ref={sliderRef}
           style={{ 
-            position: "relative", 
-            width: "100%", 
-            aspectRatio: "4/3", 
-            background: "#1a1a1a", 
-            borderRadius: "20px", 
-            overflow: "hidden",
-            cursor: "grab",
-            touchAction: "none"
-          }}
-          onMouseDown={handleStart}
-          onMouseMove={handleMove}
-          onMouseUp={handleEnd}
-          onTouchStart={handleStart}
-          onTouchMove={handleMove}
-          onTouchEnd={handleEnd}
-        >
-          {/* AFTER Image */}
-          <img 
-            src={after} 
-            alt="After" 
-            style={{ 
-              width: "100%", 
-              height: "100%", 
-              objectFit: "cover",
-              display: "block"
-            }} 
-          />
-          
-          {/* BEFORE Image - clipped */}
-          <div 
-            style={{ 
-              position: "absolute", 
-              top: 0, 
-              left: 0, 
-              width: `${pos}%`, 
-              height: "100%", 
-              overflow: "hidden"
-            }}
-          >
-            <img 
-              src={before} 
-              alt="Before" 
-              style={{ 
-                width: "100%", 
-                height: "100%", 
-                objectFit: "cover",
-                display: "block"
-              }} 
-            />
-          </div>
-          
-          {/* Slider Line */}
-          <div style={{ 
             position: "absolute", 
             top: 0, 
-            left: `${pos}%`, 
-            width: "4px", 
-            height: "100%", 
-            background: "white",
+            bottom: 0,
+            left: `${pos}%`,
+            width: "60px",
             transform: "translateX(-50%)",
-            boxShadow: "0 0 0 2px rgba(0,0,0,0.2), 0 0 0 4px rgba(255,255,255,0.5)",
-            zIndex: 10
-          }} />
-          
-          {/* Drag Handle - VISIBLE OVER THE PICTURE */}
+            cursor: "ew-resize",
+            zIndex: 20,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            touchAction: "none"
+          }}
+          onMouseDown={(e) => {
+            e.preventDefault();
+            const sliderDiv = e.currentTarget.parentElement;
+            const onMove = (moveEvent) => {
+              const rect = sliderDiv.getBoundingClientRect();
+              let clientX = moveEvent.touches ? moveEvent.touches[0].clientX : moveEvent.clientX;
+              let x = (clientX - rect.left) / rect.width;
+              x = Math.min(0.98, Math.max(0.02, x));
+              setSlider(sliderId, x * 100);
+            };
+            const onUp = () => {
+              document.removeEventListener('mousemove', onMove);
+              document.removeEventListener('mouseup', onUp);
+              document.removeEventListener('touchmove', onMove);
+              document.removeEventListener('touchend', onUp);
+            };
+            document.addEventListener('mousemove', onMove);
+            document.addEventListener('mouseup', onUp);
+            document.addEventListener('touchmove', onMove, { passive: false });
+            document.addEventListener('touchend', onUp);
+          }}
+          onTouchStart={(e) => {
+            e.preventDefault();
+            const sliderDiv = e.currentTarget.parentElement;
+            const onMove = (moveEvent) => {
+              const rect = sliderDiv.getBoundingClientRect();
+              let clientX = moveEvent.touches[0].clientX;
+              let x = (clientX - rect.left) / rect.width;
+              x = Math.min(0.98, Math.max(0.02, x));
+              setSlider(sliderId, x * 100);
+            };
+            const onUp = () => {
+              document.removeEventListener('touchmove', onMove);
+              document.removeEventListener('touchend', onUp);
+            };
+            document.addEventListener('touchmove', onMove, { passive: false });
+            document.addEventListener('touchend', onUp);
+          }}
+        >
           <div style={{ 
-            position: "absolute", 
-            top: "50%", 
-            left: `${pos}%`, 
-            transform: "translate(-50%, -50%)",
             background: "white", 
-            padding: "12px 20px", 
-            borderRadius: "60px", 
-            fontSize: "14px", 
+            padding: "10px 16px", 
+            borderRadius: "40px", 
+            fontSize: "13px", 
             fontWeight: "bold", 
             color: "#1e293b",
-            whiteSpace: "nowrap", 
-            boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
-            zIndex: 20,
-            letterSpacing: "1px"
+            whiteSpace: "nowrap",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+            pointerEvents: "none"
           }}>
-            ◀  DRAG  ▶
+            ◀ DRAG ▶
           </div>
-          
-          {/* Labels */}
-          <div style={{ 
-            position: "absolute", 
-            bottom: "16px", 
-            left: "16px", 
-            background: "rgba(0,0,0,0.7)", 
-            backdropFilter: "blur(8px)",
-            color: "white", 
-            padding: "6px 14px", 
-            borderRadius: "30px", 
-            fontSize: "12px", 
-            fontWeight: "600",
-            zIndex: 10
-          }}>BEFORE</div>
-          <div style={{ 
-            position: "absolute", 
-            bottom: "16px", 
-            right: "16px", 
-            background: "rgba(0,0,0,0.7)", 
-            backdropFilter: "blur(8px)",
-            color: "white", 
-            padding: "6px 14px", 
-            borderRadius: "30px", 
-            fontSize: "12px", 
-            fontWeight: "600",
-            zIndex: 10
-          }}>AFTER</div>
         </div>
+        
+        <div style={{ position: "absolute", bottom: "12px", left: "12px", background: "rgba(0,0,0,0.6)", color: "white", padding: "4px 12px", borderRadius: "20px", fontSize: "11px", fontWeight: "500" }}>BEFORE</div>
+        <div style={{ position: "absolute", bottom: "12px", right: "12px", background: "rgba(0,0,0,0.6)", color: "white", padding: "4px 12px", borderRadius: "20px", fontSize: "11px", fontWeight: "500" }}>AFTER</div>
       </div>
     );
   };
@@ -204,55 +178,55 @@ export default function Home() {
       </div>
 
       {/* HERO */}
-      <div style={{ background: "linear-gradient(135deg, #2E8B57 0%, #1e6b43 100%)", padding: "70px 20px", textAlign: "center", color: "white" }}>
-        <h1 style={{ fontSize: "38px", fontWeight: "700", marginBottom: "15px" }}>Transform Your Outdoors</h1>
+      <div style={{ background: "linear-gradient(135deg, #2E8B57 0%, #1e6b43 100%)", padding: "80px 20px", textAlign: "center", color: "white" }}>
+        <h1 style={{ fontSize: "40px", fontWeight: "700", marginBottom: "15px" }}>Transform Your Outdoors</h1>
         <p style={{ fontSize: "18px", marginBottom: "25px", opacity: 0.95 }}>Professional Landscaping Services</p>
         <a href="/contact" style={{ background: "white", color: "#2E8B57", padding: "14px 36px", borderRadius: "50px", textDecoration: "none", fontWeight: "700", fontSize: "16px", display: "inline-block" }}>Free Estimate →</a>
       </div>
 
       {/* OUR WORK */}
-      <div style={{ textAlign: "center", padding: "60px 20px 25px" }}>
-        <h2 style={{ fontSize: "34px", fontWeight: "700", color: "white", margin: 0 }}>Our Work</h2>
-        <div style={{ width: "60px", height: "4px", background: "#2E8B57", margin: "18px auto 0", borderRadius: "2px" }}></div>
-        <p style={{ color: "#94a3b8", marginTop: "18px", fontSize: "16px" }}>See the difference we make</p>
+      <div style={{ textAlign: "center", padding: "70px 20px 30px" }}>
+        <h2 style={{ fontSize: "36px", fontWeight: "700", color: "white", margin: 0 }}>Our Work</h2>
+        <div style={{ width: "60px", height: "4px", background: "#2E8B57", margin: "20px auto 0", borderRadius: "2px" }}></div>
+        <p style={{ color: "#94a3b8", marginTop: "20px", fontSize: "16px" }}>See the difference we make</p>
       </div>
 
-      {/* PROJECTS - MASSIVE SPACING */}
+      {/* PROJECTS - HUGE SPACING */}
       <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "20px 16px 100px" }}>
         {projects.map(project => {
-          const secondSliderId = `${project.id}_2`;
+          const secondSliderId = project.hasSecondSlider ? project.id + 10 : null;
           
           return (
-            <div key={project.id} style={{ marginBottom: "150px" }}>
+            <div key={project.id} style={{ marginBottom: "180px" }}>
               
-              <div style={{ marginBottom: "25px", borderLeft: "5px solid #2E8B57", paddingLeft: "16px" }}>
-                <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
-                <p style={{ color: "#94a3b8", fontSize: "14px", marginTop: "6px" }}>Before & After Transformations</p>
+              <div style={{ marginBottom: "30px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
+                <h3 style={{ fontSize: "28px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
+                <p style={{ color: "#94a3b8", fontSize: "14px", marginTop: "8px" }}>Before & After Transformations</p>
               </div>
               
-              <Slider before={project.before} after={project.after} id={project.id} />
+              <Slider before={project.before} after={project.after} sliderId={project.id} />
               
               {project.hasSecondSlider && (
-                <div style={{ marginTop: "70px" }}>
-                  <div style={{ marginBottom: "18px" }}>
+                <div style={{ marginTop: "80px" }}>
+                  <div style={{ marginBottom: "20px" }}>
                     <h4 style={{ fontSize: "20px", fontWeight: "500", color: "#2E8B57", margin: 0 }}>Another Transformation</h4>
-                    <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Another project completed</p>
+                    <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "6px" }}>Another project completed</p>
                   </div>
-                  <Slider before={project.secondBefore} after={project.secondAfter} id={secondSliderId} />
+                  <Slider before={project.secondBefore} after={project.secondAfter} sliderId={secondSliderId} />
                 </div>
               )}
               
               {project.extras.length > 0 && (
-                <div style={{ marginTop: "40px" }}>
+                <div style={{ marginTop: "45px" }}>
                   <button 
                     onClick={() => toggleDropdown(project.id)} 
                     style={{ 
                       width: "100%", 
-                      padding: "15px", 
+                      padding: "16px", 
                       background: "#1e293b", 
                       border: "1px solid #334155", 
                       borderRadius: "14px", 
-                      fontSize: "14px", 
+                      fontSize: "15px", 
                       fontWeight: "500",
                       color: "#2E8B57",
                       cursor: "pointer",
@@ -262,7 +236,7 @@ export default function Home() {
                     {showMore[project.id] ? "▲ Hide Additional Photos" : `▼ Show Additional Photos (${project.extras.length})`}
                   </button>
                   {showMore[project.id] && (
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))", gap: "15px", marginTop: "20px" }}>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))", gap: "16px", marginTop: "20px" }}>
                       {project.extras.map((img, i) => (
                         <div key={i} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3" }}>
                           <img src={img} alt={`Extra ${i+1}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
@@ -279,9 +253,9 @@ export default function Home() {
       </div>
 
       {/* FOOTER */}
-      <div style={{ background: "#020617", color: "#64748b", padding: "40px 20px", textAlign: "center", fontSize: "13px", borderTop: "1px solid #1e293b" }}>
+      <div style={{ background: "#020617", color: "#64748b", padding: "45px 20px", textAlign: "center", fontSize: "13px", borderTop: "1px solid #1e293b" }}>
         <p>© 2026 Greater Edge Landscaping LLC. All rights reserved.</p>
-        <p style={{ marginTop: "10px", fontSize: "12px" }}>Professional Landscaping Services</p>
+        <p style={{ marginTop: "12px", fontSize: "12px" }}>Professional Landscaping Services</p>
       </div>
     </div>
   );
