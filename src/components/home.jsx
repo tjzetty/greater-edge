@@ -180,21 +180,56 @@ export default function Home() {
   return (
     <div style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", background: "#0f172a", minHeight: "100vh" }}>
       
-      {/* TOP HEADER - Clean with logo */}
-      <div style={{ position: "sticky", top: 0, background: "#ffffff", padding: "12px 24px", boxShadow: "0 2px 10px rgba(0,0,0,0.05)", zIndex: 100 }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "16px" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-            <img src="images/logo.jpg" alt="Logo" style={{ height: "50px", width: "auto", borderRadius: "10px" }} />
-            <div>
-              <div style={{ fontSize: "20px", fontWeight: "800", color: "#0f172a" }}>Greater Edge <span style={{ color: "#2E8B57" }}>Landscaping</span></div>
-              <div style={{ fontSize: "11px", color: "#64748b", fontWeight: "500" }}>Professional Landscaping Services</div>
-            </div>
-          </div>
-          <div style={{ display: "flex", gap: "28px", alignItems: "center" }}>
-            <a href="/" style={{ textDecoration: "none", color: "#334155", fontSize: "14px", fontWeight: "600" }}>Home</a>
-            <a href="/gallery" style={{ textDecoration: "none", color: "#334155", fontSize: "14px", fontWeight: "600" }}>Gallery</a>
-            <a href="/contact" style={{ textDecoration: "none", color: "#334155", fontSize: "14px", fontWeight: "600" }}>Contact Us</a>
-            <a href="https://www.facebook.com/profile.php?id=61574004541526" target="_blank" rel="noreferrer" style={{ background: "#1877F2", color: "white", padding: "7px 20px", borderRadius: "30px", textDecoration: "none", fontSize: "13px", fontWeight: "600" }}>📘 Facebook</a>
+      {/* TOP HEADER - Just BIG LOGO, no text */}
+      <div style={{ 
+        position: "sticky", 
+        top: 0, 
+        background: "#ffffff", 
+        padding: "12px 24px", 
+        boxShadow: "0 2px 10px rgba(0,0,0,0.05)", 
+        zIndex: 100,
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center"
+      }}>
+        <div style={{ maxWidth: "1200px", margin: "0 auto", width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "16px" }}>
+          {/* BIG LOGO ONLY - No text */}
+          <img 
+            src="images/logo.jpg" 
+            alt="Greater Edge Landscaping" 
+            style={{ 
+              height: "70px", 
+              width: "auto", 
+              borderRadius: "12px",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
+            }} 
+          />
+          
+          {/* Navigation Links */}
+          <div style={{ display: "flex", gap: "28px", alignItems: "center", flexWrap: "wrap" }}>
+            <a href="/" style={{ textDecoration: "none", color: "#334155", fontSize: "15px", fontWeight: "600" }}>Home</a>
+            <a href="/gallery" style={{ textDecoration: "none", color: "#334155", fontSize: "15px", fontWeight: "600" }}>Gallery</a>
+            <a href="/contact" style={{ textDecoration: "none", color: "#334155", fontSize: "15px", fontWeight: "600" }}>Contact Us</a>
+            <a 
+              href="https://www.facebook.com/profile.php?id=61574004541526" 
+              target="_blank" 
+              rel="noreferrer" 
+              style={{ 
+                background: "#1877F2", 
+                color: "white", 
+                padding: "8px 24px", 
+                borderRadius: "40px", 
+                textDecoration: "none", 
+                fontSize: "14px", 
+                fontWeight: "600",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px"
+              }}
+            >
+              <span>📘</span>
+              Facebook
+            </a>
           </div>
         </div>
       </div>
@@ -210,23 +245,12 @@ export default function Home() {
         </div>
       )}
 
-      {/* HERO WITH BIG BACKGROUND LOGO */}
-      <div style={{ 
-        background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)", 
-        padding: "80px 20px",
-        textAlign: "center",
-        position: "relative",
-        overflow: "hidden"
-      }}>
-        <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", opacity: 0.05, width: "80%", maxWidth: "600px" }}>
-          <img src="images/logo.jpg" alt="" style={{ width: "100%", height: "auto" }} />
-        </div>
-        <div style={{ position: "relative", zIndex: 2 }}>
-          <img src="images/logo.jpg" alt="Greater Edge Landscaping" style={{ width: "100%", maxWidth: "300px", height: "auto", marginBottom: "24px", borderRadius: "20px", boxShadow: "0 20px 40px rgba(0,0,0,0.3)" }} />
-          <h1 style={{ fontSize: "48px", fontWeight: "800", color: "white", marginBottom: "16px", letterSpacing: "-0.5px" }}>Greater Edge <span style={{ color: "#2E8B57" }}>Landscaping</span></h1>
-          <p style={{ fontSize: "20px", color: "#94a3b8", marginBottom: "32px" }}>Professional Landscaping Services</p>
-          <a href="/contact" style={{ background: "#2E8B57", color: "white", padding: "14px 38px", borderRadius: "50px", textDecoration: "none", fontWeight: "700", fontSize: "16px", display: "inline-block" }}>Free Estimate →</a>
-        </div>
+      {/* HERO SECTION */}
+      <div style={{ background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)", padding: "80px 20px", textAlign: "center" }}>
+        <img src="images/logo.jpg" alt="Greater Edge Landscaping" style={{ width: "100%", maxWidth: "400px", height: "auto", marginBottom: "24px", borderRadius: "20px", boxShadow: "0 20px 40px rgba(0,0,0,0.3)" }} />
+        <h1 style={{ fontSize: "48px", fontWeight: "800", color: "white", marginBottom: "16px" }}>Greater Edge <span style={{ color: "#2E8B57" }}>Landscaping</span></h1>
+        <p style={{ fontSize: "20px", color: "#94a3b8", marginBottom: "32px" }}>Professional Landscaping Services</p>
+        <a href="/contact" style={{ background: "#2E8B57", color: "white", padding: "14px 38px", borderRadius: "50px", textDecoration: "none", fontWeight: "700", fontSize: "16px", display: "inline-block" }}>Free Estimate →</a>
       </div>
 
       {/* OUR WORK */}
@@ -236,7 +260,7 @@ export default function Home() {
         <p style={{ color: "#94a3b8", marginTop: "20px", fontSize: "16px" }}>See the difference we make</p>
       </div>
 
-      {/* PROJECTS - CLEAN STRUCTURE */}
+      {/* PROJECTS */}
       <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "20px 16px 100px" }}>
         {projects.map(project => {
           const visiblePairs = project.pairs.slice(0, 3);
