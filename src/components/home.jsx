@@ -1,26 +1,69 @@
-import { useState } from "preact/hooks";
+import { useState, useRef, useEffect } from "preact/hooks";
 
 export default function Home() {
   const [showMore, setShowMore] = useState({});
   const [sliderPos, setSliderPos] = useState({});
+  const activeSlider = useRef(null);
+  const startX = useRef(0);
+  const currentLeft = useRef(0);
 
   const toggleDropdown = (id) => {
     setShowMore(prev => ({ ...prev, [id]: !prev[id] }));
   };
 
-  // Simple drag handler - works anywhere on the slider
-  const handleDrag = (id, e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
+  // Handle drag start
+  const startDrag = (id, e) => {
+    e.preventDefault();
+    activeSlider.current = id;
+    
     let clientX;
     if (e.touches) {
       clientX = e.touches[0].clientX;
     } else {
       clientX = e.clientX;
     }
-    let x = (clientX - rect.left) / rect.width;
-    x = Math.min(0.98, Math.max(0.02, x));
-    setSliderPos(prev => ({ ...prev, [id]: x * 100 }));
+    
+    startX.current = clientX;
+    currentLeft.current = sliderPos[id] !== undefined ? sliderPos[id] : 50;
   };
+
+  // Handle drag move
+  useEffect(() => {
+    const onDrag = (e) => {
+      if (activeSlider.current === null) return;
+      
+      let clientX;
+      if (e.touches) {
+        clientX = e.touches[0].clientX;
+        e.preventDefault();
+      } else {
+        clientX = e.clientX;
+      }
+      
+      const deltaX = clientX - startX.current;
+      const deltaPercent = (deltaX / window.innerWidth) * 100;
+      let newPos = currentLeft.current + deltaPercent;
+      newPos = Math.min(98, Math.max(2, newPos));
+      
+      setSliderPos(prev => ({ ...prev, [activeSlider.current]: newPos }));
+    };
+    
+    const endDrag = () => {
+      activeSlider.current = null;
+    };
+    
+    window.addEventListener('mousemove', onDrag);
+    window.addEventListener('mouseup', endDrag);
+    window.addEventListener('touchmove', onDrag, { passive: false });
+    window.addEventListener('touchend', endDrag);
+    
+    return () => {
+      window.removeEventListener('mousemove', onDrag);
+      window.removeEventListener('mouseup', endDrag);
+      window.removeEventListener('touchmove', onDrag);
+      window.removeEventListener('touchend', endDrag);
+    };
+  }, []);
 
   const projects = [
     { 
@@ -56,41 +99,13 @@ export default function Home() {
           cursor: "grab",
           touchAction: "none"
         }}
-        onMouseDown={(e) => {
-          e.preventDefault();
-          handleDrag(id, e);
-          const onMove = (moveEvent) => {
-            handleDrag(id, moveEvent);
-          };
-          const onUp = () => {
-            document.removeEventListener('mousemove', onMove);
-            document.removeEventListener('mouseup', onUp);
-            document.removeEventListener('touchmove', onMove);
-            document.removeEventListener('touchend', onUp);
-          };
-          document.addEventListener('mousemove', onMove);
-          document.addEventListener('mouseup', onUp);
-          document.addEventListener('touchmove', onMove, { passive: false });
-          document.addEventListener('touchend', onUp);
-        }}
-        onTouchStart={(e) => {
-          e.preventDefault();
-          handleDrag(id, e);
-          const onMove = (moveEvent) => {
-            handleDrag(id, moveEvent);
-          };
-          const onUp = () => {
-            document.removeEventListener('touchmove', onMove);
-            document.removeEventListener('touchend', onUp);
-          };
-          document.addEventListener('touchmove', onMove, { passive: false });
-          document.addEventListener('touchend', onUp);
-        }}
+        onMouseDown={(e) => startDrag(id, e)}
+        onTouchStart={(e) => startDrag(id, e)}
       >
         {/* AFTER IMAGE */}
         <img src={after} alt="After" style={{ width: "100%", height: "100%", objectFit: "cover", pointerEvents: "none" }} />
         
-        {/* BEFORE IMAGE (clipped) */}
+        {/* BEFORE IMAGE */}
         <div style={{ position: "absolute", top: 0, left: 0, width: `${pos}%`, height: "100%", overflow: "hidden", pointerEvents: "none" }}>
           <img src={before} alt="Before" style={{ width: "100%", height: "100%", objectFit: "cover", pointerEvents: "none" }} />
         </div>
@@ -103,20 +118,20 @@ export default function Home() {
           zIndex: 15, pointerEvents: "none" 
         }} />
         
-        {/* DRAG HANDLE - Middle of slider, easy to grab */}
+        {/* DRAG HANDLE - Centered */}
         <div style={{ 
           position: "absolute", top: "50%", left: `${pos}%`, transform: "translate(-50%, -50%)",
-          background: "white", padding: "12px 20px", borderRadius: "50px", 
-          fontSize: "14px", fontWeight: "bold", color: "#1e293b",
+          background: "white", padding: "10px 18px", borderRadius: "50px", 
+          fontSize: "13px", fontWeight: "bold", color: "#1e293b",
           whiteSpace: "nowrap", boxShadow: "0 4px 15px rgba(0,0,0,0.3)",
-          zIndex: 20, pointerEvents: "none", letterSpacing: "1px"
+          zIndex: 20, pointerEvents: "none"
         }}>
           ◀  DRAG  ▶
         </div>
         
         {/* LABELS */}
-        <div style={{ position: "absolute", bottom: "16px", left: "16px", background: "rgba(0,0,0,0.7)", backdropFilter: "blur(10px)", color: "white", padding: "6px 14px", borderRadius: "30px", fontSize: "11px", fontWeight: "600", zIndex: 10, pointerEvents: "none" }}>BEFORE</div>
-        <div style={{ position: "absolute", bottom: "16px", right: "16px", background: "rgba(0,0,0,0.7)", backdropFilter: "blur(10px)", color: "white", padding: "6px 14px", borderRadius: "30px", fontSize: "11px", fontWeight: "600", zIndex: 10, pointerEvents: "none" }}>AFTER</div>
+        <div style={{ position: "absolute", bottom: "16px", left: "16px", background: "rgba(0,0,0,0.7)", backdropFilter: "blur(10px)", color: "white", padding: "5px 12px", borderRadius: "30px", fontSize: "11px", fontWeight: "600", zIndex: 10, pointerEvents: "none" }}>BEFORE</div>
+        <div style={{ position: "absolute", bottom: "16px", right: "16px", background: "rgba(0,0,0,0.7)", backdropFilter: "blur(10px)", color: "white", padding: "5px 12px", borderRadius: "30px", fontSize: "11px", fontWeight: "600", zIndex: 10, pointerEvents: "none" }}>AFTER</div>
       </div>
     );
   };
@@ -156,7 +171,7 @@ export default function Home() {
         <p style={{ color: "#94a3b8", marginTop: "15px", fontSize: "15px" }}>See the difference we make</p>
       </div>
 
-      {/* PROJECTS - Large spacing */}
+      {/* PROJECTS */}
       <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "20px 16px 80px" }}>
         {projects.map(project => {
           const secondSliderId = `${project.id}_2`;
