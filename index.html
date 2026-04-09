@@ -20,5 +20,15 @@
   <body style="margin: 0; padding: 0; background: #0f172a;">
     <div id="app"></div>
     <script type="module" src="/src/main.jsx"></script>
+    
+    <!-- Remove old theme's duplicate header -->
+    <script>
+      window.addEventListener('load', function() {
+        var oldWrappers = document.querySelectorAll('.is-preload, #page-wrapper');
+        oldWrappers.forEach(function(el) {
+          el.remove();
+        });
+      });
+    </script>
   </body>
 </html>
