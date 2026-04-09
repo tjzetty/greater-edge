@@ -4,20 +4,31 @@ export default function Home() {
   const [showMore, setShowMore] = useState({});
   const [sliderPos, setSliderPos] = useState({});
   const draggingId = useRef(null);
-  const startX = useRef(0);
-  const startPos = useRef(0);
-  const hasMoved = useRef(false);
+  const currentPos = useRef(50);
 
   const toggleDropdown = (id) => {
     setShowMore(prev => ({ ...prev, [id]: !prev[id] }));
   };
 
-  // Handle drag start on handle ONLY
-  const handleDragStart = (id, e) => {
+  // Update position based on mouse/touch
+  const updatePosition = (id, clientX) => {
+    const sliderDiv = document.getElementById(`slider-${id}`);
+    if (!sliderDiv) return;
+    
+    const rect = sliderDiv.getBoundingClientRect();
+    let x = (clientX - rect.left) / rect.width;
+    x = Math.min(0.98, Math.max(0.02, x));
+    const newPos = x * 100;
+    
+    currentPos.current = newPos;
+    setSliderPos(prev => ({ ...prev, [id]: newPos }));
+  };
+
+  // Handle drag start
+  const startDrag = (id, e) => {
     e.preventDefault();
     e.stopPropagation();
     draggingId.current = id;
-    hasMoved.current = false;
     
     let clientX;
     if (e.touches) {
@@ -26,14 +37,14 @@ export default function Home() {
       clientX = e.clientX;
     }
     
-    startX.current = clientX;
-    startPos.current = sliderPos[id] !== undefined ? sliderPos[id] : 50;
+    updatePosition(id, clientX);
   };
 
   // Handle drag move
   useEffect(() => {
-    const handleDragMove = (e) => {
+    const onMove = (e) => {
       if (draggingId.current === null) return;
+      e.preventDefault();
       
       let clientX;
       if (e.touches) {
@@ -42,42 +53,32 @@ export default function Home() {
         clientX = e.clientX;
       }
       
-      const deltaX = clientX - startX.current;
-      if (Math.abs(deltaX) > 5) {
-        hasMoved.current = true;
-        e.preventDefault();
-      }
-      
-      const deltaPercent = (deltaX / window.innerWidth) * 100;
-      let newPos = startPos.current + deltaPercent;
-      newPos = Math.min(98, Math.max(2, newPos));
-      
-      setSliderPos(prev => ({ ...prev, [draggingId.current]: newPos }));
+      updatePosition(draggingId.current, clientX);
     };
     
-    const handleDragEnd = () => {
+    const onEnd = () => {
       draggingId.current = null;
-      hasMoved.current = false;
     };
     
-    window.addEventListener('mousemove', handleDragMove);
-    window.addEventListener('mouseup', handleDragEnd);
-    window.addEventListener('touchmove', handleDragMove, { passive: false });
-    window.addEventListener('touchend', handleDragEnd);
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onEnd);
+    window.addEventListener('touchmove', onMove, { passive: false });
+    window.addEventListener('touchend', onEnd);
     
     return () => {
-      window.removeEventListener('mousemove', handleDragMove);
-      window.removeEventListener('mouseup', handleDragEnd);
-      window.removeEventListener('touchmove', handleDragMove);
-      window.removeEventListener('touchend', handleDragEnd);
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseup', onEnd);
+      window.removeEventListener('touchmove', onMove);
+      window.removeEventListener('touchend', onEnd);
     };
   }, []);
 
-  // Handle tap on image (only if not dragging)
-  const handleImageTap = (id, e) => {
-    if (hasMoved.current) return;
+  // Handle tap on image
+  const handleTap = (id, e) => {
+    const sliderDiv = document.getElementById(`slider-${id}`);
+    if (!sliderDiv) return;
     
-    const rect = e.currentTarget.getBoundingClientRect();
+    const rect = sliderDiv.getBoundingClientRect();
     let clientX;
     
     if (e.touches) {
@@ -110,7 +111,6 @@ export default function Home() {
     { id: 7, name: "Power Washing", before: "images/powerwashing1.jpg", after: "images/powerwashing2.jpg", hasSecondSlider: false, extras: [] }
   ];
 
-  // SLIDER COMPONENT
   const Slider = ({ before, after, id }) => {
     const pos = sliderPos[id] !== undefined ? sliderPos[id] : 50;
     
@@ -125,11 +125,11 @@ export default function Home() {
           borderRadius: "16px", 
           overflow: "hidden",
           boxShadow: "0 8px 30px rgba(0,0,0,0.2)",
-          touchAction: "pan-y pinch-zoom",
+          touchAction: "none",
           userSelect: "none"
         }}
       >
-        {/* AFTER IMAGE (bottom) */}
+        {/* AFTER IMAGE */}
         <img 
           src={after} 
           alt="After" 
@@ -181,27 +181,22 @@ export default function Home() {
           }} 
         />
         
-        {/* DRAG HANDLE - ONLY this triggers dragging */}
+        {/* DRAG HANDLE - Drag this to slide */}
         <div 
           style={{ 
             position: "absolute", 
             top: 0, 
             left: `${pos}%`, 
-            width: "80px", 
+            width: "70px", 
             height: "100%", 
             transform: "translateX(-50%)", 
             cursor: "grab",
             zIndex: 20,
-            touchAction: "none"
+            touchAction: "none",
+            background: "transparent"
           }}
-          onMouseDown={(e) => {
-            e.stopPropagation();
-            handleDragStart(id, e);
-          }}
-          onTouchStart={(e) => {
-            e.stopPropagation();
-            handleDragStart(id, e);
-          }}
+          onMouseDown={(e) => startDrag(id, e)}
+          onTouchStart={(e) => startDrag(id, e)}
         >
           <div style={{ 
             position: "absolute", 
@@ -209,9 +204,9 @@ export default function Home() {
             left: "50%", 
             transform: "translate(-50%, -50%)", 
             background: "white", 
-            padding: "12px 20px", 
+            padding: "10px 18px", 
             borderRadius: "50px", 
-            fontSize: "14px", 
+            fontSize: "13px", 
             fontWeight: "bold", 
             color: "#1e293b",
             whiteSpace: "nowrap",
@@ -223,7 +218,7 @@ export default function Home() {
           </div>
         </div>
         
-        {/* TAP ZONE - Click anywhere to jump, but won't block scroll */}
+        {/* Tap Zone - Tap anywhere to jump */}
         <div 
           style={{ 
             position: "absolute", 
@@ -232,17 +227,16 @@ export default function Home() {
             width: "100%", 
             height: "100%", 
             zIndex: 5,
-            cursor: "pointer"
+            cursor: "pointer",
+            background: "transparent"
           }}
           onMouseDown={(e) => {
-            if (e.target === e.currentTarget || e.target.tagName === 'DIV') {
-              handleImageTap(id, e);
-            }
+            e.stopPropagation();
+            handleTap(id, e);
           }}
           onTouchStart={(e) => {
-            if (e.target === e.currentTarget || e.target.tagName === 'DIV') {
-              handleImageTap(id, e);
-            }
+            e.stopPropagation();
+            handleTap(id, e);
           }}
         />
         
@@ -254,9 +248,9 @@ export default function Home() {
           background: "rgba(0,0,0,0.7)", 
           backdropFilter: "blur(10px)",
           color: "white", 
-          padding: "6px 14px", 
+          padding: "5px 14px", 
           borderRadius: "30px", 
-          fontSize: "12px", 
+          fontSize: "11px", 
           fontWeight: "600",
           zIndex: 10,
           pointerEvents: "none"
@@ -270,9 +264,9 @@ export default function Home() {
           background: "rgba(0,0,0,0.7)", 
           backdropFilter: "blur(10px)",
           color: "white", 
-          padding: "6px 14px", 
+          padding: "5px 14px", 
           borderRadius: "30px", 
-          fontSize: "12px", 
+          fontSize: "11px", 
           fontWeight: "600",
           zIndex: 10,
           pointerEvents: "none"
@@ -322,26 +316,23 @@ export default function Home() {
         <p style={{ color: "#94a3b8", marginTop: "15px", fontSize: "15px" }}>See the difference we make</p>
       </div>
 
-      {/* PROJECTS - More spacing on mobile */}
+      {/* PROJECTS */}
       <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "20px 16px 70px" }}>
         {projects.map(project => {
           const secondSliderId = `${project.id}_2`;
           
           return (
-            <div key={project.id} style={{ marginBottom: "70px" }}>
+            <div key={project.id} style={{ marginBottom: "80px" }}>
               
-              {/* Section Title */}
               <div style={{ marginBottom: "20px", borderLeft: "4px solid #2E8B57", paddingLeft: "14px" }}>
                 <h3 style={{ fontSize: "24px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
                 <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Before & After Transformations</p>
               </div>
               
-              {/* First Slider */}
               <Slider before={project.before} after={project.after} id={project.id} />
               
-              {/* Second Slider for Brick Pavers */}
               {project.hasSecondSlider && (
-                <div style={{ marginTop: "45px" }}>
+                <div style={{ marginTop: "50px" }}>
                   <div style={{ marginBottom: "15px" }}>
                     <h4 style={{ fontSize: "18px", fontWeight: "500", color: "#2E8B57", margin: 0 }}>Another Transformation</h4>
                     <p style={{ color: "#94a3b8", fontSize: "12px", marginTop: "4px" }}>Another project completed</p>
@@ -350,7 +341,6 @@ export default function Home() {
                 </div>
               )}
               
-              {/* Dropdown for extras */}
               {project.extras.length > 0 && (
                 <div style={{ marginTop: "25px" }}>
                   <button 
