@@ -134,42 +134,49 @@ export default function Home() {
     );
   };
 
-  // EVERY SECTION has 3 pairs total (1 visible + 2 in dropdown)
+  // EVERY SECTION has 4 pairs total (1 visible + 3 in dropdown)
   const projects = [
     { id: 1, name: "Brick Pavers & Patios", pairs: [
       { before: "images/paver1.jpg", after: "images/paver2.jpg" },   // MAIN SLIDER
       { before: "images/paver3.jpg", after: "images/paver4.jpg" },   // DROPDOWN 1
-      { before: "images/paver5.jpg", after: "images/paver6.jpg" }    // DROPDOWN 2
+      { before: "images/paver5.jpg", after: "images/paver6.jpg" },   // DROPDOWN 2
+      { before: "images/paver7.jpg", after: "images/paver8.jpg" }    // DROPDOWN 3
     ]},
     { id: 2, name: "Lawn Transformations", pairs: [
       { before: "images/lawn1.jpg", after: "images/lawn2.jpg" },      // MAIN SLIDER
       { before: "images/lawn3.jpg", after: "images/lawn4.jpg" },      // DROPDOWN 1
-      { before: "images/lawn5.jpg", after: "images/lawn6.jpg" }       // DROPDOWN 2
+      { before: "images/lawn5.jpg", after: "images/lawn6.jpg" },      // DROPDOWN 2
+      { before: "images/lawn7.jpg", after: "images/lawn8.jpg" }       // DROPDOWN 3
     ]},
     { id: 3, name: "Bed Clean Up", pairs: [
       { before: "images/bedcleanup1.jpg", after: "images/bedcleanup2.jpg" },   // MAIN SLIDER
       { before: "images/bedcleanup3.jpg", after: "images/bedcleanup4.jpg" },   // DROPDOWN 1
-      { before: "images/bedcleanup5.jpg", after: "images/bedcleanup6.jpg" }    // DROPDOWN 2
+      { before: "images/bedcleanup5.jpg", after: "images/bedcleanup6.jpg" },   // DROPDOWN 2
+      { before: "images/bedcleanup7.jpg", after: "images/bedcleanup8.jpg" }    // DROPDOWN 3
     ]},
     { id: 4, name: "Bush & Hedge Trimming", pairs: [
       { before: "images/bushtrim1.jpg", after: "images/bushtrim2.jpg" },   // MAIN SLIDER
       { before: "images/bushtrim3.jpg", after: "images/bushtrim4.jpg" },   // DROPDOWN 1
-      { before: "images/bushtrim5.jpg", after: "images/bushtrim6.jpg" }    // DROPDOWN 2
+      { before: "images/bushtrim5.jpg", after: "images/bushtrim6.jpg" },   // DROPDOWN 2
+      { before: "images/bushtrim7.jpg", after: "images/bushtrim8.jpg" }    // DROPDOWN 3
     ]},
     { id: 5, name: "Fall Clean Ups", pairs: [
       { before: "images/fallcleanup1.jpg", after: "images/fallcleanup2.jpg" },   // MAIN SLIDER
       { before: "images/fallcleanup3.jpg", after: "images/fallcleanup4.jpg" },   // DROPDOWN 1
-      { before: "images/fallcleanup5.jpg", after: "images/fallcleanup6.jpg" }    // DROPDOWN 2
+      { before: "images/fallcleanup5.jpg", after: "images/fallcleanup6.jpg" },   // DROPDOWN 2
+      { before: "images/fallcleanup7.jpg", after: "images/fallcleanup8.jpg" }    // DROPDOWN 3
     ]},
     { id: 6, name: "Mulching & Bed Maintenance", pairs: [
       { before: "images/mulch1.jpg", after: "images/mulch2.jpg" },   // MAIN SLIDER
       { before: "images/mulch3.jpg", after: "images/mulch4.jpg" },   // DROPDOWN 1
-      { before: "images/mulch5.jpg", after: "images/mulch6.jpg" }    // DROPDOWN 2
+      { before: "images/mulch5.jpg", after: "images/mulch6.jpg" },   // DROPDOWN 2
+      { before: "images/mulch7.jpg", after: "images/mulch8.jpg" }    // DROPDOWN 3
     ]},
     { id: 7, name: "Power Washing", pairs: [
       { before: "images/powerwashing1.jpg", after: "images/powerwashing2.jpg" },   // MAIN SLIDER
       { before: "images/powerwashing3.jpg", after: "images/powerwashing4.jpg" },   // DROPDOWN 1
-      { before: "images/powerwashing5.jpg", after: "images/powerwashing6.jpg" }    // DROPDOWN 2
+      { before: "images/powerwashing5.jpg", after: "images/powerwashing6.jpg" },   // DROPDOWN 2
+      { before: "images/powerwashing7.jpg", after: "images/powerwashing8.jpg" }    // DROPDOWN 3
     ]}
   ];
 
@@ -238,7 +245,7 @@ export default function Home() {
               {/* Main Slider */}
               <Slider before={mainPair.before} after={mainPair.after} sliderId={`${project.id}_main`} />
               
-              {/* Dropdown for extra pairs */}
+              {/* Dropdown for extra pairs (3 pairs) */}
               {extraPairs.length > 0 && (
                 <div style={{ marginTop: "50px" }}>
                   <button onClick={() => setShowMore(prev => ({ ...prev, [project.id]: !prev[project.id] }))} style={{ width: "100%", padding: "16px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "15px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
