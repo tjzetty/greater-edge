@@ -217,29 +217,28 @@ export default function Home() {
     );
   };
 
-  // All projects - First 3 pairs are visible, rest go to dropdown
-  // Just add your images in order: 1&2, 3&4, 5&6, 7&8, 9&10, etc.
+  // All projects
   const projects = [
     { 
       id: 1, 
       name: "Brick Pavers & Patios",
       pairs: [
-        { before: "images/paver1.jpg", after: "images/paver2.jpg" },   // Pair 1 - visible
-        { before: "images/paver3.jpg", after: "images/paver4.jpg" },   // Pair 2 - visible
-        { before: "images/paver5.jpg", after: "images/paver6.jpg" },   // Pair 3 - visible
-        { before: "images/paver7.jpg", after: "images/paver8.jpg" },   // Pair 4 - dropdown
-        { before: "images/paver9.jpg", after: "images/paver10.jpg" }    // Pair 5 - dropdown
+        { before: "images/paver1.jpg", after: "images/paver2.jpg" },
+        { before: "images/paver3.jpg", after: "images/paver4.jpg" },
+        { before: "images/paver5.jpg", after: "images/paver6.jpg" },
+        { before: "images/paver7.jpg", after: "images/paver8.jpg" },
+        { before: "images/paver9.jpg", after: "images/paver10.jpg" }
       ]
     },
     { 
       id: 2, 
       name: "Lawn Transformations",
-      isGalleryOnly: true,  // No main slider, just dropdown gallery
+      isGalleryOnly: true,
       pairs: [
-        { before: "images/lawn1.jpg", after: "images/lawn2.jpg" },     // Pair 1 - dropdown
-        { before: "images/lawn3.jpg", after: "images/lawn4.jpg" },     // Pair 2 - dropdown
-        { before: "images/lawn5.jpg", after: "images/lawn6.jpg" },     // Pair 3 - dropdown
-        { before: "images/lawn7.jpg", after: "images/lawn8.jpg" }      // Pair 4 - dropdown
+        { before: "images/lawn1.jpg", after: "images/lawn2.jpg" },
+        { before: "images/lawn3.jpg", after: "images/lawn4.jpg" },
+        { before: "images/lawn5.jpg", after: "images/lawn6.jpg" },
+        { before: "images/lawn7.jpg", after: "images/lawn8.jpg" }
       ]
     },
     { 
@@ -294,14 +293,14 @@ export default function Home() {
   return (
     <div style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", background: "#0f172a", minHeight: "100vh" }}>
       
-      {/* HEADER */}
+      {/* HEADER with larger logo */}
       <div style={{ position: "sticky", top: 0, background: "#0f172a", padding: "16px 20px", borderBottom: "1px solid #1e293b", zIndex: 100 }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-            <img src="images/logo.jpg" alt="Logo" style={{ height: "45px", width: "auto" }} />
+          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+            <img src="images/logo.jpg" alt="Logo" style={{ height: "55px", width: "auto", borderRadius: "12px" }} />
             <div>
-              <div style={{ fontSize: "18px", fontWeight: "700", color: "white" }}>Greater Edge Landscaping</div>
-              <div style={{ fontSize: "11px", color: "#2E8B57", fontWeight: "600" }}>LLC</div>
+              <div style={{ fontSize: "20px", fontWeight: "700", color: "white" }}>Greater Edge Landscaping</div>
+              <div style={{ fontSize: "12px", color: "#2E8B57", fontWeight: "600" }}>LLC</div>
             </div>
           </div>
           <div style={{ display: "flex", gap: "24px", alignItems: "center" }}>
@@ -436,11 +435,61 @@ export default function Home() {
         </div>
       )}
 
-      {/* HERO */}
-      <div style={{ background: "linear-gradient(135deg, #2E8B57 0%, #1e6b43 100%)", padding: "80px 20px", textAlign: "center", color: "white" }}>
-        <h1 style={{ fontSize: "44px", fontWeight: "700", marginBottom: "16px", letterSpacing: "-0.5px" }}>Transform Your Outdoors</h1>
-        <p style={{ fontSize: "18px", marginBottom: "28px", opacity: 0.95 }}>Professional Landscaping Services</p>
-        <a href="/contact" style={{ background: "white", color: "#2E8B57", padding: "14px 38px", borderRadius: "50px", textDecoration: "none", fontWeight: "700", fontSize: "16px", display: "inline-block", boxShadow: "0 4px 15px rgba(0,0,0,0.1)" }}>Free Estimate →</a>
+      {/* BIG LOGO SECTION - Full width at top */}
+      <div style={{ 
+        background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)", 
+        padding: "60px 20px 40px",
+        textAlign: "center",
+        borderBottom: "1px solid #2E8B57"
+      }}>
+        <div style={{ maxWidth: "800px", margin: "0 auto" }}>
+          <img 
+            src="images/logo.jpg" 
+            alt="Greater Edge Landscaping" 
+            style={{ 
+              width: "100%", 
+              maxWidth: "400px", 
+              height: "auto", 
+              marginBottom: "24px",
+              borderRadius: "20px",
+              boxShadow: "0 20px 40px rgba(0,0,0,0.3)"
+            }} 
+          />
+          <h1 style={{ 
+            fontSize: "48px", 
+            fontWeight: "800", 
+            color: "white", 
+            marginBottom: "16px",
+            letterSpacing: "-0.5px"
+          }}>
+            Greater Edge <span style={{ color: "#2E8B57" }}>Landscaping</span>
+          </h1>
+          <p style={{ 
+            fontSize: "20px", 
+            color: "#94a3b8", 
+            marginBottom: "32px"
+          }}>
+            Professional Landscaping Services
+          </p>
+          <a 
+            href="/contact" 
+            style={{ 
+              background: "#2E8B57", 
+              color: "white", 
+              padding: "14px 38px", 
+              borderRadius: "50px", 
+              textDecoration: "none", 
+              fontWeight: "700", 
+              fontSize: "16px", 
+              display: "inline-block",
+              transition: "all 0.2s"
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.background = "#236b45"}
+            onMouseLeave={(e) => e.currentTarget.style.background = "#2E8B57"}
+          >
+            Free Estimate →
+          </a>
+        </div>
       </div>
 
       {/* OUR WORK */}
@@ -453,9 +502,7 @@ export default function Home() {
       {/* PROJECTS */}
       <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "20px 16px 100px" }}>
         {projects.map(project => {
-          // First 3 pairs are visible as sliders
           const visiblePairs = project.pairs.slice(0, 3);
-          // Pairs 4+ go to dropdown
           const extraPairs = project.pairs.slice(3);
           
           return (
@@ -468,36 +515,31 @@ export default function Home() {
                 </p>
               </div>
               
-              {/* For Lawn (gallery only) - No main slider, just dropdown */}
               {project.isGalleryOnly ? (
-                <>
-                  {/* No main slider - just show the first 3 pairs as a gallery grid */}
-                  <div style={{ 
-                    display: "grid", 
-                    gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", 
-                    gap: "20px",
-                    marginBottom: "30px"
-                  }}>
-                    {visiblePairs.map((pair, idx) => (
-                      <div key={idx} style={{ 
-                        background: "#1e293b", 
-                        borderRadius: "16px", 
-                        overflow: "hidden",
-                        aspectRatio: "4/3"
-                      }}>
-                        <img 
-                          src={pair.after} 
-                          alt={`${project.name} ${idx + 1}`}
-                          style={{ width: "100%", height: "100%", objectFit: "cover", cursor: "pointer" }}
-                          onClick={() => openLightbox(pair.after, `${project.name} - Photo ${idx + 1}`, 
-                            [{ src: pair.after, title: `${project.name} - Photo ${idx + 1}` }], 0)}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </>
+                <div style={{ 
+                  display: "grid", 
+                  gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", 
+                  gap: "20px",
+                  marginBottom: "30px"
+                }}>
+                  {visiblePairs.map((pair, idx) => (
+                    <div key={idx} style={{ 
+                      background: "#1e293b", 
+                      borderRadius: "16px", 
+                      overflow: "hidden",
+                      aspectRatio: "4/3"
+                    }}>
+                      <img 
+                        src={pair.after} 
+                        alt={`${project.name} ${idx + 1}`}
+                        style={{ width: "100%", height: "100%", objectFit: "cover", cursor: "pointer" }}
+                        onClick={() => openLightbox(pair.after, `${project.name} - Photo ${idx + 1}`, 
+                          [{ src: pair.after, title: `${project.name} - Photo ${idx + 1}` }], 0)}
+                      />
+                    </div>
+                  ))}
+                </div>
               ) : (
-                // For other sections - show sliders for first 3 pairs
                 <>
                   {visiblePairs.map((pair, idx) => (
                     <div key={idx} style={{ marginBottom: idx < visiblePairs.length - 1 ? "60px" : "0" }}>
@@ -521,7 +563,6 @@ export default function Home() {
                 </>
               )}
               
-              {/* DROPDOWN for Extra Pairs (pairs 4 and beyond) */}
               {extraPairs.length > 0 && (
                 <div style={{ marginTop: "50px" }}>
                   <button 
