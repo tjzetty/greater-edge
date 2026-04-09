@@ -3,6 +3,11 @@ import { useState } from "preact/hooks";
 export default function Home() {
   const [showMore, setShowMore] = useState({});
   const [showMoreExtras, setShowMoreExtras] = useState({});
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [currentImage, setCurrentImage] = useState("");
+  const [currentImageTitle, setCurrentImageTitle] = useState("");
+  const [currentGallery, setCurrentGallery] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const toggleDropdown = (id) => {
     setShowMore(prev => ({ ...prev, [id]: !prev[id] }));
@@ -11,6 +16,52 @@ export default function Home() {
   const toggleExtras = (id) => {
     setShowMoreExtras(prev => ({ ...prev, [id]: !prev[id] }));
   };
+
+  // Open lightbox with image
+  const openLightbox = (image, title, gallery, index) => {
+    setCurrentImage(image);
+    setCurrentImageTitle(title);
+    setCurrentGallery(gallery);
+    setCurrentIndex(index);
+    setLightboxOpen(true);
+    document.body.style.overflow = "hidden";
+  };
+
+  // Close lightbox
+  const closeLightbox = () => {
+    setLightboxOpen(false);
+    document.body.style.overflow = "auto";
+  };
+
+  // Navigate through images
+  const nextImage = () => {
+    const nextIdx = currentIndex + 1;
+    if (nextIdx < currentGallery.length) {
+      setCurrentImage(currentGallery[nextIdx].src);
+      setCurrentImageTitle(currentGallery[nextIdx].title);
+      setCurrentIndex(nextIdx);
+    }
+  };
+
+  const prevImage = () => {
+    const prevIdx = currentIndex - 1;
+    if (prevIdx >= 0) {
+      setCurrentImage(currentGallery[prevIdx].src);
+      setCurrentImageTitle(currentGallery[prevIdx].title);
+      setCurrentIndex(prevIdx);
+    }
+  };
+
+  // Handle keyboard arrows
+  if (typeof window !== "undefined") {
+    window.onkeydown = (e) => {
+      if (lightboxOpen) {
+        if (e.key === "ArrowRight") nextImage();
+        if (e.key === "ArrowLeft") prevImage();
+        if (e.key === "Escape") closeLightbox();
+      }
+    };
+  }
 
   // Slider Component
   const Slider = ({ before, after, sliderId }) => {
@@ -27,9 +78,19 @@ export default function Home() {
           overflow: "hidden"
         }}
       >
-        <img src={after} alt="After" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+        <img 
+          src={after} 
+          alt="After" 
+          style={{ width: "100%", height: "100%", objectFit: "cover", cursor: "pointer" }}
+          onClick={() => openLightbox(after, "After", [], 0)}
+        />
         <div style={{ position: "absolute", top: 0, left: 0, width: `${pos}%`, height: "100%", overflow: "hidden" }}>
-          <img src={before} alt="Before" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          <img 
+            src={before} 
+            alt="Before" 
+            style={{ width: "100%", height: "100%", objectFit: "cover", cursor: "pointer" }}
+            onClick={() => openLightbox(before, "Before", [], 0)}
+          />
         </div>
         
         <div 
@@ -107,8 +168,13 @@ export default function Home() {
     );
   };
 
-  // Small Before/After Pair for Dropdown
-  const SmallPair = ({ before, after, index }) => {
+  // Small Before/After Pair for Dropdown (Clickable)
+  const SmallPair = ({ before, after, index, projectName }) => {
+    const gallery = [
+      { src: before, title: `${projectName} - Before ${index}` },
+      { src: after, title: `${projectName} - After ${index}` }
+    ];
+    
     return (
       <div style={{ 
         background: "#1e293b", 
@@ -127,7 +193,7 @@ export default function Home() {
           </p>
         </div>
         <div style={{ display: "flex", gap: "4px", padding: "12px" }}>
-          <div style={{ flex: 1, textAlign: "center" }}>
+          <div style={{ flex: 1, textAlign: "center", cursor: "pointer" }}>
             <img 
               src={before} 
               alt="Before" 
@@ -137,10 +203,11 @@ export default function Home() {
                 objectFit: "cover", 
                 borderRadius: "8px" 
               }} 
+              onClick={() => openLightbox(before, `${projectName} - Before ${index}`, gallery, 0)}
             />
             <p style={{ color: "#94a3b8", fontSize: "10px", margin: "6px 0 0" }}>Before</p>
           </div>
-          <div style={{ flex: 1, textAlign: "center" }}>
+          <div style={{ flex: 1, textAlign: "center", cursor: "pointer" }}>
             <img 
               src={after} 
               alt="After" 
@@ -150,10 +217,34 @@ export default function Home() {
                 objectFit: "cover", 
                 borderRadius: "8px" 
               }} 
+              onClick={() => openLightbox(after, `${projectName} - After ${index}`, gallery, 1)}
             />
             <p style={{ color: "#94a3b8", fontSize: "10px", margin: "6px 0 0" }}>After</p>
           </div>
         </div>
+      </div>
+    );
+  };
+
+  // Single Image Component (Clickable)
+  const SingleImage = ({ image, title }) => {
+    return (
+      <div 
+        style={{ 
+          background: "#1a1a1a", 
+          borderRadius: "16px", 
+          overflow: "hidden",
+          aspectRatio: "4/3",
+          boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
+          cursor: "pointer"
+        }}
+        onClick={() => openLightbox(image, title, [{ src: image, title }], 0)}
+      >
+        <img 
+          src={image} 
+          alt={title} 
+          style={{ width: "100%", height: "100%", objectFit: "cover" }} 
+        />
       </div>
     );
   };
@@ -247,24 +338,6 @@ export default function Home() {
     }
   ];
 
-  const SingleImage = ({ image, title }) => {
-    return (
-      <div style={{ 
-        background: "#1a1a1a", 
-        borderRadius: "16px", 
-        overflow: "hidden",
-        aspectRatio: "4/3",
-        boxShadow: "0 4px 20px rgba(0,0,0,0.2)"
-      }}>
-        <img 
-          src={image} 
-          alt={title} 
-          style={{ width: "100%", height: "100%", objectFit: "cover" }} 
-        />
-      </div>
-    );
-  };
-
   return (
     <div style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", background: "#0f172a", minHeight: "100vh" }}>
       
@@ -286,6 +359,134 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      {/* LIGHTBOX MODAL */}
+      {lightboxOpen && (
+        <div style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          background: "rgba(0,0,0,0.95)",
+          zIndex: 2000,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: "column"
+        }}>
+          {/* Close Button */}
+          <button
+            onClick={closeLightbox}
+            style={{
+              position: "absolute",
+              top: "20px",
+              right: "20px",
+              background: "rgba(255,255,255,0.2)",
+              border: "none",
+              color: "white",
+              fontSize: "30px",
+              width: "50px",
+              height: "50px",
+              borderRadius: "50%",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              backdropFilter: "blur(10px)",
+              zIndex: 2001
+            }}
+          >
+            ✕
+          </button>
+          
+          {/* Left Arrow */}
+          {currentIndex > 0 && (
+            <button
+              onClick={prevImage}
+              style={{
+                position: "absolute",
+                left: "20px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                background: "rgba(255,255,255,0.2)",
+                border: "none",
+                color: "white",
+                fontSize: "40px",
+                width: "60px",
+                height: "60px",
+                borderRadius: "50%",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                backdropFilter: "blur(10px)",
+                zIndex: 2001
+              }}
+            >
+              ◀
+            </button>
+          )}
+          
+          {/* Right Arrow */}
+          {currentIndex < currentGallery.length - 1 && (
+            <button
+              onClick={nextImage}
+              style={{
+                position: "absolute",
+                right: "20px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                background: "rgba(255,255,255,0.2)",
+                border: "none",
+                color: "white",
+                fontSize: "40px",
+                width: "60px",
+                height: "60px",
+                borderRadius: "50%",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                backdropFilter: "blur(10px)",
+                zIndex: 2001
+              }}
+            >
+              ▶
+            </button>
+          )}
+          
+          {/* Image */}
+          <img 
+            src={currentImage} 
+            alt={currentImageTitle}
+            style={{
+              maxWidth: "90%",
+              maxHeight: "80%",
+              objectFit: "contain",
+              borderRadius: "8px"
+            }}
+          />
+          
+          {/* Title */}
+          <div style={{
+            position: "absolute",
+            bottom: "30px",
+            left: 0,
+            right: 0,
+            textAlign: "center",
+            color: "white",
+            fontSize: "16px",
+            background: "rgba(0,0,0,0.5)",
+            padding: "10px",
+            margin: "0 auto",
+            width: "fit-content",
+            borderRadius: "30px"
+          }}>
+            {currentImageTitle} ({currentIndex + 1} / {currentGallery.length})
+          </div>
+        </div>
+      )}
 
       {/* HERO */}
       <div style={{ background: "linear-gradient(135deg, #2E8B57 0%, #1e6b43 100%)", padding: "80px 20px", textAlign: "center", color: "white" }}>
@@ -336,7 +537,7 @@ export default function Home() {
                 </>
               )}
               
-              {/* DROPDOWN for Extra Before/After Pairs */}
+              {/* DROPDOWN for Extra Before/After Pairs - NOW ON EVERY SECTION including first */}
               {hasExtraPairs && (
                 <div style={{ marginTop: "50px" }}>
                   <button 
@@ -381,6 +582,7 @@ export default function Home() {
                           before={pair.before}
                           after={pair.after}
                           index={idx + 1}
+                          projectName={project.name}
                         />
                       ))}
                     </div>
