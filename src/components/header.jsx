@@ -10,56 +10,48 @@ export default function Header() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap');
         
-        .header-professional {
+        .header-single {
           position: sticky;
           top: 0;
           width: 100%;
           background: #ffffff;
-          box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 2px 6px rgba(0,0,0,0.03);
+          border-bottom: 1px solid #eef2f6;
           z-index: 1000;
           font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
         
         .header-container {
-          max-width: 1280px;
+          max-width: 1400px;
           margin: 0 auto;
           padding: 16px 24px;
           display: flex;
           justify-content: space-between;
           align-items: center;
+          flex-wrap: wrap;
           gap: 20px;
         }
         
-        /* Logo Section */
-        .logo-section {
+        /* Left Section - Logo + Contact Info */
+        .header-left {
           display: flex;
           align-items: center;
-          gap: 14px;
+          gap: 24px;
+          flex-wrap: wrap;
+        }
+        
+        /* Logo */
+        .logo-link {
+          display: flex;
+          align-items: center;
+          gap: 12px;
           text-decoration: none;
         }
         
-        .logo-circle {
-          width: 52px;
-          height: 52px;
-          background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-          border-radius: 14px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          overflow: hidden;
-          transition: all 0.3s ease;
-        }
-        
-        .logo-circle:hover {
-          transform: scale(1.02);
-          box-shadow: 0 4px 12px rgba(46, 139, 86, 0.15);
-        }
-        
-        .logo-image {
-          width: 100%;
-          height: 100%;
+        .logo-img {
+          height: 55px;
+          width: auto;
+          border-radius: 12px;
           object-fit: cover;
-          display: block;
         }
         
         .logo-text {
@@ -67,41 +59,73 @@ export default function Header() {
           flex-direction: column;
         }
         
-        .company-name {
-          font-size: 20px;
-          font-weight: 700;
-          margin: 0;
+        .logo-name {
+          font-size: 18px;
+          font-weight: 800;
           color: #0f172a;
           letter-spacing: -0.3px;
           line-height: 1.3;
         }
         
-        .company-name span {
+        .logo-name span {
           color: #2E8B57;
         }
         
-        .company-tagline {
-          font-size: 12px;
-          margin: 2px 0 0;
+        .logo-tagline {
+          font-size: 11px;
           color: #64748b;
           font-weight: 500;
-          letter-spacing: 0.2px;
+          margin-top: 2px;
         }
         
-        /* Desktop Navigation */
-        .nav-desktop {
+        /* Contact Info - Next to Logo */
+        .contact-info {
           display: flex;
-          gap: 32px;
+          gap: 20px;
+          align-items: center;
+          padding-left: 20px;
+          border-left: 1px solid #e2e8f0;
+        }
+        
+        .contact-item {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          text-decoration: none;
+          color: #334155;
+          font-size: 13px;
+          font-weight: 500;
+          transition: color 0.2s;
+        }
+        
+        .contact-item:hover {
+          color: #2E8B57;
+        }
+        
+        .contact-icon {
+          font-size: 16px;
+        }
+        
+        /* Right Section - Navigation */
+        .header-right {
+          display: flex;
+          align-items: center;
+          gap: 28px;
+        }
+        
+        .nav-links {
+          display: flex;
+          gap: 28px;
           align-items: center;
         }
         
         .nav-link {
           text-decoration: none;
           color: #334155;
-          font-size: 15px;
-          font-weight: 500;
-          transition: all 0.2s ease;
-          padding: 8px 4px;
+          font-size: 14px;
+          font-weight: 600;
+          transition: color 0.2s;
+          padding: 6px 0;
           position: relative;
         }
         
@@ -116,7 +140,7 @@ export default function Header() {
         .nav-link.current::after {
           content: '';
           position: absolute;
-          bottom: 0;
+          bottom: -2px;
           left: 0;
           width: 100%;
           height: 2px;
@@ -125,125 +149,139 @@ export default function Header() {
         }
         
         /* Facebook Button */
-        .facebook-btn {
+        .fb-btn {
           background: #1877F2;
           color: white;
           padding: 8px 22px;
           border-radius: 40px;
           text-decoration: none;
-          font-size: 14px;
+          font-size: 13px;
           font-weight: 600;
           display: flex;
           align-items: center;
           gap: 8px;
-          transition: all 0.2s ease;
-          box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+          transition: all 0.2s;
         }
         
-        .facebook-btn:hover {
+        .fb-btn:hover {
           background: #166fe5;
-          transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba(24, 119, 242, 0.25);
+          transform: translateY(-1px);
         }
         
-        /* Mobile Menu Button */
-        .mobile-menu-btn {
+        /* Mobile Menu */
+        .mobile-btn {
           display: none;
           background: none;
           border: none;
           cursor: pointer;
           padding: 8px;
-          z-index: 1001;
         }
         
-        .mobile-menu-icon {
+        .hamburger {
           width: 24px;
           height: 2px;
           background: #334155;
           position: relative;
-          transition: all 0.3s ease;
+          transition: all 0.3s;
         }
         
-        .mobile-menu-icon::before,
-        .mobile-menu-icon::after {
+        .hamburger::before,
+        .hamburger::after {
           content: '';
           position: absolute;
           width: 24px;
           height: 2px;
           background: #334155;
-          transition: all 0.3s ease;
+          transition: all 0.3s;
         }
         
-        .mobile-menu-icon::before {
-          top: -8px;
-        }
+        .hamburger::before { top: -8px; }
+        .hamburger::after { bottom: -8px; }
         
-        .mobile-menu-icon::after {
-          bottom: -8px;
-        }
-        
-        .mobile-menu-icon.open {
+        .hamburger.open {
           background: transparent;
         }
         
-        .mobile-menu-icon.open::before {
+        .hamburger.open::before {
           transform: rotate(45deg);
           top: 0;
         }
         
-        .mobile-menu-icon.open::after {
+        .hamburger.open::after {
           transform: rotate(-45deg);
           bottom: 0;
         }
         
-        /* Mobile Navigation */
-        .nav-mobile {
+        /* Mobile Menu Panel */
+        .mobile-panel {
           display: none;
           position: fixed;
-          top: 84px;
+          top: 88px;
           left: 0;
           right: 0;
-          background: #ffffff;
+          background: white;
           padding: 24px;
           box-shadow: 0 10px 25px rgba(0,0,0,0.1);
           border-top: 1px solid #eef2f6;
           z-index: 999;
         }
         
-        .nav-mobile.open {
+        .mobile-panel.open {
           display: block;
         }
         
-        .nav-mobile-links {
+        .mobile-nav {
           display: flex;
           flex-direction: column;
           gap: 20px;
           align-items: center;
         }
         
-        .nav-mobile-link {
+        .mobile-nav-link {
           text-decoration: none;
           color: #334155;
           font-size: 16px;
-          font-weight: 500;
+          font-weight: 600;
           padding: 10px;
           width: 100%;
           text-align: center;
         }
         
-        .nav-mobile-link.current {
+        .mobile-nav-link.current {
           color: #2E8B57;
           background: #f0fdf4;
           border-radius: 10px;
         }
         
-        .mobile-facebook-btn {
+        .mobile-contact {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          width: 100%;
+          margin-top: 10px;
+          padding-top: 10px;
+          border-top: 1px solid #e2e8f0;
+        }
+        
+        .mobile-contact-item {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          text-decoration: none;
+          color: #334155;
+          font-size: 14px;
+          font-weight: 500;
+          padding: 8px;
+        }
+        
+        .mobile-fb {
           background: #1877F2;
           color: white;
           padding: 12px 24px;
           border-radius: 40px;
           text-decoration: none;
-          font-size: 15px;
+          font-size: 14px;
           font-weight: 600;
           display: flex;
           align-items: center;
@@ -254,12 +292,16 @@ export default function Header() {
         }
         
         /* Responsive */
-        @media (max-width: 768px) {
-          .nav-desktop {
+        @media (max-width: 900px) {
+          .contact-info {
             display: none;
           }
           
-          .mobile-menu-btn {
+          .nav-links {
+            display: none;
+          }
+          
+          .mobile-btn {
             display: block;
           }
           
@@ -267,101 +309,115 @@ export default function Header() {
             padding: 12px 20px;
           }
           
-          .company-name {
-            font-size: 16px;
+          .logo-img {
+            height: 45px;
           }
           
-          .company-tagline {
-            font-size: 10px;
+          .logo-name {
+            font-size: 15px;
           }
           
-          .logo-circle {
-            width: 44px;
-            height: 44px;
+          .logo-tagline {
+            font-size: 9px;
           }
         }
         
-        @media (min-width: 769px) {
-          .nav-mobile {
+        @media (min-width: 901px) {
+          .mobile-panel {
             display: none !important;
           }
         }
       `}</style>
 
-      <div className="header-professional">
+      <div className="header-single">
         <div className="header-container">
-          {/* Logo Section */}
-          <a href="/" className="logo-section">
-            <div className="logo-circle">
+          
+          {/* LEFT SIDE - Logo + Contact Info */}
+          <div className="header-left">
+            <a href="/" className="logo-link">
               <img 
                 src="/images/logo.jpg" 
                 alt="Greater Edge Landscaping" 
-                className="logo-image"
+                className="logo-img"
                 onError={(e) => {
                   e.target.src = "https://placehold.co/200x200/2E8B57/white?text=GEL";
                 }}
               />
-            </div>
-            <div className="logo-text">
-              <h1 className="company-name">
-                Greater Edge <span>Landscaping</span>
-              </h1>
-              <p className="company-tagline">Professional Landscaping Services</p>
-            </div>
-          </a>
-
-          {/* Desktop Navigation */}
-          <div className="nav-desktop">
-            <Match path="/">
-              {({ matches }) => (
-                <Link href="/" className={`nav-link ${matches ? 'current' : ''}`}>
-                  Home
-                </Link>
-              )}
-            </Match>
-            <Match path="/gallery">
-              {({ matches }) => (
-                <Link href="/gallery" className={`nav-link ${matches ? 'current' : ''}`}>
-                  Gallery
-                </Link>
-              )}
-            </Match>
-            <Match path="/contact">
-              {({ matches }) => (
-                <Link href="/contact" className={`nav-link ${matches ? 'current' : ''}`}>
-                  Contact Us
-                </Link>
-              )}
-            </Match>
-            <a 
-              href="https://www.facebook.com/profile.php?id=61574004541526" 
-              target="_blank" 
-              rel="noreferrer" 
-              className="facebook-btn"
-            >
-              <span>📘</span>
-              Follow Us
+              <div className="logo-text">
+                <div className="logo-name">
+                  Greater Edge <span>Landscaping</span>
+                </div>
+                <div className="logo-tagline">Family Owned & Operated</div>
+              </div>
             </a>
+            
+            {/* Contact Info - Next to Logo */}
+            <div className="contact-info">
+              <a href="mailto:greateredgelandscapingllc@gmail.com" className="contact-item">
+                <span className="contact-icon">✉️</span>
+                <span>greateredgelandscapingllc@gmail.com</span>
+              </a>
+              <a href="tel:+18102188272" className="contact-item">
+                <span className="contact-icon">📞</span>
+                <span>(810) 218-8272</span>
+              </a>
+            </div>
           </div>
-
-          {/* Mobile Menu Button */}
-          <button 
-            className="mobile-menu-btn" 
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Menu"
-          >
-            <div className={`mobile-menu-icon ${mobileMenuOpen ? 'open' : ''}`}></div>
-          </button>
+          
+          {/* RIGHT SIDE - Navigation */}
+          <div className="header-right">
+            <div className="nav-links">
+              <Match path="/">
+                {({ matches }) => (
+                  <Link href="/" className={`nav-link ${matches ? 'current' : ''}`}>
+                    Home
+                  </Link>
+                )}
+              </Match>
+              <Match path="/gallery">
+                {({ matches }) => (
+                  <Link href="/gallery" className={`nav-link ${matches ? 'current' : ''}`}>
+                    Gallery
+                  </Link>
+                )}
+              </Match>
+              <Match path="/contact">
+                {({ matches }) => (
+                  <Link href="/contact" className={`nav-link ${matches ? 'current' : ''}`}>
+                    Contact Us
+                  </Link>
+                )}
+              </Match>
+              <a 
+                href="https://www.facebook.com/profile.php?id=61574004541526" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="fb-btn"
+              >
+                <span>📘</span>
+                Facebook
+              </a>
+            </div>
+            
+            {/* Mobile Menu Button */}
+            <button 
+              className="mobile-btn" 
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Menu"
+            >
+              <div className={`hamburger ${mobileMenuOpen ? 'open' : ''}`}></div>
+            </button>
+          </div>
         </div>
-
-        {/* Mobile Navigation Menu */}
-        <div className={`nav-mobile ${mobileMenuOpen ? 'open' : ''}`}>
-          <div className="nav-mobile-links">
+        
+        {/* Mobile Menu Panel */}
+        <div className={`mobile-panel ${mobileMenuOpen ? 'open' : ''}`}>
+          <div className="mobile-nav">
             <Match path="/">
               {({ matches }) => (
                 <Link 
                   href="/" 
-                  className={`nav-mobile-link ${matches ? 'current' : ''}`}
+                  className={`mobile-nav-link ${matches ? 'current' : ''}`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Home
@@ -372,7 +428,7 @@ export default function Header() {
               {({ matches }) => (
                 <Link 
                   href="/gallery" 
-                  className={`nav-mobile-link ${matches ? 'current' : ''}`}
+                  className={`mobile-nav-link ${matches ? 'current' : ''}`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Gallery
@@ -383,22 +439,35 @@ export default function Header() {
               {({ matches }) => (
                 <Link 
                   href="/contact" 
-                  className={`nav-mobile-link ${matches ? 'current' : ''}`}
+                  className={`mobile-nav-link ${matches ? 'current' : ''}`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Contact Us
                 </Link>
               )}
             </Match>
+            
+            {/* Mobile Contact Info */}
+            <div className="mobile-contact">
+              <a href="mailto:greateredgelandscapingllc@gmail.com" className="mobile-contact-item">
+                <span>✉️</span>
+                <span>greateredgelandscapingllc@gmail.com</span>
+              </a>
+              <a href="tel:+18102188272" className="mobile-contact-item">
+                <span>📞</span>
+                <span>(810) 218-8272</span>
+              </a>
+            </div>
+            
             <a 
               href="https://www.facebook.com/profile.php?id=61574004541526" 
               target="_blank" 
               rel="noreferrer" 
-              className="mobile-facebook-btn"
+              className="mobile-fb"
               onClick={() => setMobileMenuOpen(false)}
             >
               <span>📘</span>
-              Follow Us on Facebook
+              Facebook
             </a>
           </div>
         </div>
