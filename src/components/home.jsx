@@ -18,7 +18,7 @@ export default function Home() {
     {
       id: 2,
       name: "Brick Pavers & Patios",
-      main: "/images/paver1.png",
+      main: "/images/paver1.jpg",
       rest: []
     },
     {
