@@ -12,43 +12,43 @@ export default function Home() {
     {
       id: 1,
       name: "Bed Clean Up",
-      main: "/images/Bed cleanup1.jpg",
+      main: "/images/bedcleanup1.jpg",
       rest: []
     },
     {
       id: 2,
       name: "Brick Pavers & Patios",
-      main: "/images/Paver1.png",
+      main: "/images/paver1.png",
       rest: []
     },
     {
       id: 3,
       name: "Bush & Hedge Trimming",
-      main: "/images/Bushtrim1.jpg",
+      main: "/images/bushtrim1.jpg",
       rest: []
     },
     {
       id: 4,
       name: "Fall Clean Ups",
-      main: "/images/Fall cleanup1.jpg",
+      main: "/images/fallcleanup1.jpg",
       rest: []
     },
     {
       id: 5,
       name: "Lawn Transformations",
-      main: "/images/Lawn1.jpg",
+      main: "/images/lawn1.jpg",
       rest: []
     },
     {
       id: 6,
       name: "Mulching & Bed Maintenance",
-      main: "/images/Mulch1.jpg",
+      main: "/images/mulch1.jpg",
       rest: []
     },
     {
       id: 7,
       name: "Power Washing",
-      main: "/images/Powerwashing1.jpg",
+      main: "/images/powerwashing1.jpg",
       rest: []
     }
   ];
