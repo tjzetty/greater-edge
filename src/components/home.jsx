@@ -68,7 +68,7 @@ export default function Home() {
     }
   ];
 
-  // Component for before/after slider
+  // Fixed Before/After Slider - No zooming issues
   const BeforeAfterSlider = ({ beforeImg, afterImg, id }) => {
     const sliderPos = sliderPositions[id] !== undefined ? sliderPositions[id] : 50;
 
@@ -81,28 +81,38 @@ export default function Home() {
           borderRadius: "12px",
           overflow: "hidden",
           cursor: "ew-resize",
-          boxShadow: "0 4px 20px rgba(0,0,0,0.15)"
+          boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
+          backgroundColor: "#f0f0f0"
         }}
         onMouseMove={(e) => {
           if (e.buttons === 1) handleSliderMove(id, e);
         }}
         onMouseDown={(e) => handleSliderMove(id, e)}
       >
-        {/* After image (bottom layer) */}
-        <img
-          src={afterImg}
-          alt="After"
+        {/* After image (bottom layer) - FIXED: using same container */}
+        <div
           style={{
             position: "absolute",
             top: 0,
             left: 0,
             width: "100%",
             height: "100%",
-            objectFit: "cover"
+            overflow: "hidden"
           }}
-        />
+        >
+          <img
+            src={afterImg}
+            alt="After"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              objectPosition: "center center"
+            }}
+          />
+        </div>
 
-        {/* Before image (top layer with clip) */}
+        {/* Before image (top layer with clip) - FIXED: same styling */}
         <div
           style={{
             position: "absolute",
@@ -117,12 +127,10 @@ export default function Home() {
             src={beforeImg}
             alt="Before"
             style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
               width: "100%",
               height: "100%",
-              objectFit: "cover"
+              objectFit: "cover",
+              objectPosition: "center center"
             }}
           />
         </div>
@@ -156,7 +164,8 @@ export default function Home() {
               color: "#1a1a1a",
               whiteSpace: "nowrap",
               boxShadow: "0 2px 10px rgba(0,0,0,0.2)",
-              fontFamily: "sans-serif"
+              fontFamily: "sans-serif",
+              pointerEvents: "none"
             }}
           >
             ◀ BEFORE ▶
@@ -177,7 +186,8 @@ export default function Home() {
             fontSize: "12px",
             fontWeight: "500",
             zIndex: 10,
-            fontFamily: "sans-serif"
+            fontFamily: "sans-serif",
+            pointerEvents: "none"
           }}
         >
           BEFORE
@@ -195,7 +205,8 @@ export default function Home() {
             fontSize: "12px",
             fontWeight: "500",
             zIndex: 10,
-            fontFamily: "sans-serif"
+            fontFamily: "sans-serif",
+            pointerEvents: "none"
           }}
         >
           AFTER
@@ -206,7 +217,7 @@ export default function Home() {
 
   return (
     <div>
-      {/* HEADER */}
+      {/* HEADER - Updated Logo */}
       <div
         style={{
           position: "sticky",
@@ -229,10 +240,11 @@ export default function Home() {
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            {/* Updated logo */}
             <img
-              src="/images/IMG_20250827_111608(1).png"
+              src="/images/logo.jpg"
               alt="Logo"
-              style={{ height: "50px" }}
+              style={{ height: "50px", width: "auto", objectFit: "contain" }}
             />
             <span style={{ fontSize: "24px", fontWeight: "bold" }}>
               <span style={{ color: "#2E8B57" }}>The Greater</span> Edge
