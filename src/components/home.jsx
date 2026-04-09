@@ -26,7 +26,6 @@ export default function Home() {
     setActiveDrag(null);
   };
 
-  // Projects - Pavers and Lawn at the top
   const projects = [
     {
       id: 1,
@@ -79,7 +78,6 @@ export default function Home() {
     }
   ];
 
-  // Before/After Slider Component
   const BeforeAfterSlider = ({ before, after, id, title }) => {
     const position = sliderPositions[id] !== undefined ? sliderPositions[id] : 50;
     
@@ -99,7 +97,6 @@ export default function Home() {
         onMouseUp={stopDrag}
         onMouseLeave={stopDrag}
       >
-        {/* AFTER image (bottom) */}
         <img
           src={after}
           alt={`${title} - After`}
@@ -112,9 +109,10 @@ export default function Home() {
             objectFit: "cover",
             objectPosition: "center"
           }}
+          onError={(e) => {
+            e.target.src = "https://placehold.co/1920x1080/2E8B57/white?text=After+Image+Missing";
+          }}
         />
-
-        {/* BEFORE image wrapper (top, clipped) */}
         <div
           style={{
             position: "absolute",
@@ -137,10 +135,11 @@ export default function Home() {
               objectFit: "cover",
               objectPosition: "center"
             }}
+            onError={(e) => {
+              e.target.src = "https://placehold.co/1920x1080/2E8B57/white?text=Before+Image+Missing";
+            }}
           />
         </div>
-
-        {/* SLIDER HANDLE */}
         <div
           style={{
             position: "absolute",
@@ -167,16 +166,12 @@ export default function Home() {
               color: "#1e293b",
               boxShadow: "0 4px 12px rgba(0,0,0,0.25)",
               whiteSpace: "nowrap",
-              fontFamily: "sans-serif",
-              letterSpacing: "1px",
               pointerEvents: "none"
             }}
           >
             ◀ DRAG ▶
           </div>
         </div>
-
-        {/* BEFORE LABEL */}
         <div
           style={{
             position: "absolute",
@@ -189,15 +184,12 @@ export default function Home() {
             borderRadius: "20px",
             fontSize: "12px",
             fontWeight: "500",
-            fontFamily: "sans-serif",
             pointerEvents: "none",
             zIndex: 15
           }}
         >
           BEFORE
         </div>
-
-        {/* AFTER LABEL */}
         <div
           style={{
             position: "absolute",
@@ -210,7 +202,6 @@ export default function Home() {
             borderRadius: "20px",
             fontSize: "12px",
             fontWeight: "500",
-            fontFamily: "sans-serif",
             pointerEvents: "none",
             zIndex: 15
           }}
@@ -224,7 +215,7 @@ export default function Home() {
   return (
     <div style={{ fontFamily: "'Inter', system-ui, -apple-system, sans-serif" }}>
       
-      {/* ========== HEADER ========== */}
+      {/* HEADER */}
       <header
         style={{
           position: "sticky",
@@ -247,12 +238,14 @@ export default function Home() {
             gap: "16px"
           }}
         >
-          {/* Logo + Company Name */}
           <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
             <img
               src="/images/logo.jpg"
               alt="Greater Edge Landscaping Logo"
               style={{ height: "52px", width: "auto", objectFit: "contain" }}
+              onError={(e) => {
+                e.target.style.display = "none";
+              }}
             />
             <div>
               <div style={{ fontSize: "20px", fontWeight: "700", color: "#0f172a", lineHeight: 1.2 }}>
@@ -263,8 +256,6 @@ export default function Home() {
               </div>
             </div>
           </div>
-
-          {/* Navigation */}
           <div style={{ display: "flex", alignItems: "center", gap: "28px", flexWrap: "wrap" }}>
             <Link to="/" style={{ textDecoration: "none", color: "#334155", fontWeight: "500", fontSize: "15px" }}>
               Home
@@ -286,11 +277,8 @@ export default function Home() {
                 fontSize: "14px",
                 display: "flex",
                 alignItems: "center",
-                gap: "8px",
-                transition: "all 0.2s"
+                gap: "8px"
               }}
-              onMouseEnter={(e) => e.currentTarget.style.background = "#166fe5"}
-              onMouseLeave={(e) => e.currentTarget.style.background = "#1877F2"}
             >
               <span>📘</span> Facebook
             </a>
@@ -298,7 +286,7 @@ export default function Home() {
         </div>
       </header>
 
-      {/* ========== HERO SECTION ========== */}
+      {/* HERO */}
       <section
         style={{
           background: "linear-gradient(135deg, #2E8B57 0%, #1e6b43 100%)",
@@ -307,10 +295,10 @@ export default function Home() {
           color: "white"
         }}
       >
-        <h1 style={{ fontSize: "48px", fontWeight: "700", marginBottom: "16px", letterSpacing: "-0.5px" }}>
+        <h1 style={{ fontSize: "48px", fontWeight: "700", marginBottom: "16px" }}>
           Transform Your Outdoors
         </h1>
-        <p style={{ fontSize: "20px", marginBottom: "32px", opacity: 0.95 }}>
+        <p style={{ fontSize: "20px", marginBottom: "32px" }}>
           Professional Landscaping Services
         </p>
         <Link
@@ -322,22 +310,20 @@ export default function Home() {
             borderRadius: "50px",
             textDecoration: "none",
             fontWeight: "700",
-            fontSize: "16px",
-            display: "inline-block",
-            boxShadow: "0 4px 14px rgba(0,0,0,0.15)"
+            display: "inline-block"
           }}
         >
           Free Estimate →
         </Link>
       </section>
 
-      {/* ========== OUR WORK SECTION ========== */}
+      {/* OUR WORK */}
       <div style={{ textAlign: "center", padding: "60px 20px 24px" }}>
         <h2 style={{ fontSize: "36px", fontWeight: "700", color: "#0f172a" }}>Our Work</h2>
         <div style={{ width: "70px", height: "4px", background: "#2E8B57", margin: "16px auto 0", borderRadius: "2px" }}></div>
       </div>
 
-      {/* ========== PROJECTS GRID ========== */}
+      {/* PROJECTS */}
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "20px 24px 60px" }}>
         {projects.map((project) => {
           const isOpen = showMore[project.id];
@@ -349,7 +335,6 @@ export default function Home() {
                 {project.name}
               </h3>
 
-              {/* Before/After Slider */}
               <BeforeAfterSlider
                 before={project.before}
                 after={project.after}
@@ -357,7 +342,6 @@ export default function Home() {
                 title={project.name}
               />
 
-              {/* Dropdown for extra photos */}
               {hasExtras && (
                 <div style={{ marginTop: "20px" }}>
                   <button
@@ -374,8 +358,7 @@ export default function Home() {
                       cursor: "pointer",
                       fontSize: "15px",
                       fontWeight: "500",
-                      color: "#2E8B57",
-                      fontFamily: "inherit"
+                      color: "#2E8B57"
                     }}
                   >
                     <span>📸 Additional Photos ({project.extras.length})</span>
@@ -383,32 +366,11 @@ export default function Home() {
                       ▼
                     </span>
                   </button>
-
                   {isOpen && (
-                    <div
-                      style={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
-                        gap: "16px",
-                        marginTop: "16px"
-                      }}
-                    >
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "16px", marginTop: "16px" }}>
                       {project.extras.map((img, idx) => (
-                        <div
-                          key={idx}
-                          style={{
-                            background: "#f1f5f9",
-                            borderRadius: "14px",
-                            overflow: "hidden",
-                            aspectRatio: "4/3",
-                            boxShadow: "0 2px 8px rgba(0,0,0,0.05)"
-                          }}
-                        >
-                          <img
-                            src={img}
-                            alt={`${project.name} ${idx + 1}`}
-                            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                          />
+                        <div key={idx} style={{ background: "#f1f5f9", borderRadius: "14px", overflow: "hidden", aspectRatio: "4/3" }}>
+                          <img src={img} alt={`${project.name} ${idx + 1}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                         </div>
                       ))}
                     </div>
@@ -426,16 +388,8 @@ export default function Home() {
         })}
       </div>
 
-      {/* ========== FOOTER ========== */}
-      <footer
-        style={{
-          background: "#0f172a",
-          color: "#94a3b8",
-          padding: "32px 20px",
-          textAlign: "center",
-          fontSize: "14px"
-        }}
-      >
+      {/* FOOTER */}
+      <footer style={{ background: "#0f172a", color: "#94a3b8", padding: "32px 20px", textAlign: "center", fontSize: "14px" }}>
         <p>© 2026 Greater Edge Landscaping LLC. All rights reserved.</p>
       </footer>
     </div>
