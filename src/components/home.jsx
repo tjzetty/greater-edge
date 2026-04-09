@@ -5,12 +5,14 @@ export default function Home() {
   const [showMore, setShowMore] = useState({});
   const [sliderPositions, setSliderPositions] = useState({});
   const [imageErrors, setImageErrors] = useState({});
+  const [isDragging, setIsDragging] = useState(null);
 
   const toggle = (id) => {
     setShowMore((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
   const handleSliderMove = (id, e) => {
+    if (isDragging !== id) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const x = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
     setSliderPositions((prev) => ({ ...prev, [id]: x }));
@@ -21,7 +23,6 @@ export default function Home() {
       ...prev, 
       [`${projectId}-${imageType}`]: true 
     }));
-    console.error(`Failed to load ${imageType} image for project ${projectId}`);
   };
 
   // Reordered projects - Pavers and Lawn at the top
@@ -77,7 +78,7 @@ export default function Home() {
     }
   ];
 
-  // Before/After Slider with error handling
+  // Before/After Slider - No jQuery, pure Preact
   const BeforeAfterSlider = ({ beforeImg, afterImg, id, projectName }) => {
     const sliderPos = sliderPositions[id] !== undefined ? sliderPositions[id] : 50;
     const beforeError = imageErrors[`${id}-before`];
@@ -102,13 +103,9 @@ export default function Home() {
           <span style={{ fontSize: "48px" }}>⚠️</span>
           <p style={{ color: "#dc2626", textAlign: "center", padding: "0 20px" }}>
             <strong>Image not found</strong>
-            <br />
-            <span style={{ fontSize: "12px", color: "#6c757d" }}>
-              {beforeError ? `Missing: ${beforeImg}` : afterError ? `Missing: ${afterImg}` : ""}
-            </span>
           </p>
           <p style={{ fontSize: "12px", color: "#6c757d", textAlign: "center" }}>
-            Please check that both before and after images exist in your /images/ folder
+            Missing: {beforeError ? beforeImg : afterImg}
           </p>
         </div>
       );
@@ -122,40 +119,30 @@ export default function Home() {
           aspectRatio: "4/3",
           borderRadius: "12px",
           overflow: "hidden",
-          cursor: "ew-resize",
           boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
           backgroundColor: "#f0f0f0"
         }}
-        onMouseMove={(e) => {
-          if (e.buttons === 1) handleSliderMove(id, e);
-        }}
-        onMouseDown={(e) => handleSliderMove(id, e)}
+        onMouseMove={(e) => handleSliderMove(id, e)}
+        onMouseUp={() => setIsDragging(null)}
+        onMouseLeave={() => setIsDragging(null)}
       >
-        {/* After image (bottom layer) */}
-        <div
+        {/* After image */}
+        <img
+          src={afterImg}
+          alt={`${projectName} - After`}
           style={{
             position: "absolute",
             top: 0,
             left: 0,
             width: "100%",
             height: "100%",
-            overflow: "hidden"
+            objectFit: "cover",
+            objectPosition: "center center"
           }}
-        >
-          <img
-            src={afterImg}
-            alt={`${projectName} - After`}
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              objectPosition: "center center"
-            }}
-            onError={() => handleImageError(id, "after")}
-          />
-        </div>
+          onError={() => handleImageError(id, "after")}
+        />
 
-        {/* Before image (top layer with clip) */}
+        {/* Before image wrapper with clip */}
         <div
           style={{
             position: "absolute",
@@ -179,7 +166,7 @@ export default function Home() {
           />
         </div>
 
-        {/* Slider handle */}
+        {/* Slider Handle */}
         <div
           style={{
             position: "absolute",
@@ -193,6 +180,7 @@ export default function Home() {
             cursor: "ew-resize",
             zIndex: 10
           }}
+          onMouseDown={() => setIsDragging(id)}
         >
           <div
             style={{
@@ -208,7 +196,6 @@ export default function Home() {
               color: "#1a1a1a",
               whiteSpace: "nowrap",
               boxShadow: "0 2px 10px rgba(0,0,0,0.2)",
-              fontFamily: "sans-serif",
               pointerEvents: "none"
             }}
           >
@@ -230,7 +217,6 @@ export default function Home() {
             fontSize: "12px",
             fontWeight: "500",
             zIndex: 10,
-            fontFamily: "sans-serif",
             pointerEvents: "none"
           }}
         >
@@ -249,7 +235,6 @@ export default function Home() {
             fontSize: "12px",
             fontWeight: "500",
             zIndex: 10,
-            fontFamily: "sans-serif",
             pointerEvents: "none"
           }}
         >
@@ -261,7 +246,7 @@ export default function Home() {
 
   return (
     <div>
-      {/* HEADER - Professional with original logo */}
+      {/* HEADER */}
       <div
         style={{
           position: "sticky",
@@ -284,9 +269,8 @@ export default function Home() {
             gap: "15px"
           }}
         >
-          {/* Logo and Company Name - Professional layout */}
+          {/* Logo and Company Name */}
           <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
-            {/* Original logo - no filters */}
             <img
               src="/images/logo.jpg"
               alt="Greater Edge Landscaping Logo"
@@ -296,12 +280,9 @@ export default function Home() {
                 objectFit: "contain"
               }}
               onError={(e) => {
-                console.error("Logo not found at /images/logo.jpg");
                 e.target.style.display = "none";
               }}
             />
-            
-            {/* Company Name - Professional black font */}
             <div style={{ 
               display: "flex", 
               flexDirection: "column",
@@ -326,7 +307,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Navigation and Facebook Button */}
+          {/* Navigation */}
           <div style={{ display: "flex", gap: "25px", alignItems: "center", flexWrap: "wrap" }}>
             <Link 
               to="/" 
@@ -334,12 +315,8 @@ export default function Home() {
                 textDecoration: "none", 
                 color: "#334155", 
                 fontWeight: "500",
-                fontSize: "16px",
-                transition: "color 0.2s",
-                padding: "8px 4px"
+                fontSize: "16px"
               }}
-              onMouseEnter={(e) => e.currentTarget.style.color = "#2E8B57"}
-              onMouseLeave={(e) => e.currentTarget.style.color = "#334155"}
             >
               Home
             </Link>
@@ -349,19 +326,14 @@ export default function Home() {
                 textDecoration: "none", 
                 color: "#334155", 
                 fontWeight: "500",
-                fontSize: "16px",
-                transition: "color 0.2s",
-                padding: "8px 4px"
+                fontSize: "16px"
               }}
-              onMouseEnter={(e) => e.currentTarget.style.color = "#2E8B57"}
-              onMouseLeave={(e) => e.currentTarget.style.color = "#334155"}
             >
               Contact
             </Link>
 
-            {/* Professional Facebook Button */}
             <a
-              href="https://facebook.com/yourfacebookpage"
+              href="https://www.facebook.com/profile.php?id=61574004541526"
               target="_blank"
               rel="noreferrer"
               style={{
@@ -374,19 +346,7 @@ export default function Home() {
                 fontSize: "14px",
                 display: "inline-flex",
                 alignItems: "center",
-                gap: "8px",
-                transition: "all 0.2s ease",
-                boxShadow: "0 2px 5px rgba(24, 119, 242, 0.2)"
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "#166fe5";
-                e.currentTarget.style.transform = "translateY(-2px)";
-                e.currentTarget.style.boxShadow = "0 4px 12px rgba(24, 119, 242, 0.3)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "#1877F2";
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "0 2px 5px rgba(24, 119, 242, 0.2)";
+                gap: "8px"
               }}
             >
               <span style={{ fontSize: "16px" }}>📘</span>
@@ -420,17 +380,7 @@ export default function Home() {
             borderRadius: "40px",
             textDecoration: "none",
             fontWeight: "bold",
-            display: "inline-block",
-            transition: "transform 0.2s, box-shadow 0.2s",
-            boxShadow: "0 4px 15px rgba(0,0,0,0.1)"
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = "translateY(-2px)";
-            e.currentTarget.style.boxShadow = "0 6px 20px rgba(0,0,0,0.15)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = "translateY(0)";
-            e.currentTarget.style.boxShadow = "0 4px 15px rgba(0,0,0,0.1)";
+            display: "inline-block"
           }}
         >
           Free Estimate
@@ -463,7 +413,6 @@ export default function Home() {
                 {project.name}
               </h3>
 
-              {/* Before/After Slider */}
               {hasAfter ? (
                 <div style={{ marginBottom: "20px" }}>
                   <BeforeAfterSlider
@@ -491,15 +440,10 @@ export default function Home() {
                       height: "100%",
                       objectFit: "cover"
                     }}
-                    onError={(e) => {
-                      console.error(`Failed to load main image: ${project.main}`);
-                      e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23f0f0f0'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23999' font-family='sans-serif'%3EImage not found%3C/text%3E%3C/svg%3E";
-                    }}
                   />
                 </div>
               )}
 
-              {/* Dropdown Arrow Section */}
               {hasRest && (
                 <div style={{ marginTop: "20px" }}>
                   <button
@@ -517,13 +461,10 @@ export default function Home() {
                       color: "#2E8B57",
                       display: "flex",
                       justifyContent: "space-between",
-                      alignItems: "center",
-                      transition: "all 0.2s"
+                      alignItems: "center"
                     }}
                   >
-                    <span>
-                      📸 Additional Photos ({project.rest.length})
-                    </span>
+                    <span>📸 Additional Photos ({project.rest.length})</span>
                     <span style={{
                       fontSize: "20px",
                       transform: expanded ? "rotate(180deg)" : "rotate(0deg)",
@@ -551,9 +492,7 @@ export default function Home() {
                             borderRadius: "10px",
                             overflow: "hidden",
                             aspectRatio: "4/3",
-                            cursor: "pointer",
-                            transition: "transform 0.2s",
-                            boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
+                            cursor: "pointer"
                           }}
                         >
                           <img
@@ -563,9 +502,6 @@ export default function Home() {
                               width: "100%",
                               height: "100%",
                               objectFit: "cover"
-                            }}
-                            onError={(e) => {
-                              console.error(`Failed to load additional image: ${img}`);
                             }}
                           />
                         </div>
