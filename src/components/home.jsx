@@ -8,20 +8,6 @@ export default function Home() {
     setShowMore(prev => ({ ...prev, [id]: !prev[id] }));
   };
 
-  // Simple slider handler
-  const handleDrag = (id, e) => {
-    const rect = e.currentTarget.parentElement.getBoundingClientRect();
-    let clientX;
-    if (e.touches) {
-      clientX = e.touches[0].clientX;
-    } else {
-      clientX = e.clientX;
-    }
-    let x = (clientX - rect.left) / rect.width;
-    x = Math.min(1, Math.max(0, x));
-    setSliderPos(prev => ({ ...prev, [id]: x * 100 }));
-  };
-
   const projects = [
     { 
       id: 1, 
@@ -41,32 +27,45 @@ export default function Home() {
     { id: 7, name: "Power Washing", before: "images/powerwashing1.jpg", after: "images/powerwashing2.jpg", hasSecondSlider: false, extras: [] }
   ];
 
-  // Slider component
+  // Slider component with 4:3 ratio AND mobile touch working
   const Slider = ({ before, after, id, title }) => {
     const pos = sliderPos[id] !== undefined ? sliderPos[id] : 50;
     
     return (
-      <div style={{ position: "relative", width: "100%", aspectRatio: "16/9", background: "#ddd", borderRadius: "12px", overflow: "hidden", marginTop: "10px" }}>
+      <div 
+        style={{ 
+          position: "relative", 
+          width: "100%", 
+          aspectRatio: "4/3", 
+          background: "#ddd", 
+          borderRadius: "12px", 
+          overflow: "hidden", 
+          marginTop: "10px" 
+        }}
+      >
         <img src={after} alt="After" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
         <div style={{ position: "absolute", top: 0, left: 0, width: `${pos}%`, height: "100%", overflow: "hidden" }}>
           <img src={before} alt="Before" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
         </div>
+        
+        {/* Slider Handle - Mobile Working */}
         <div 
           style={{ 
             position: "absolute", 
             top: 0, 
             left: `${pos}%`, 
-            width: "40px", 
+            width: "44px", 
             height: "100%", 
             transform: "translateX(-50%)", 
-            background: "white",
-            borderRadius: "20px",
             cursor: "pointer",
-            zIndex: 10
+            zIndex: 10,
+            touchAction: "none"
           }}
           onMouseDown={(e) => {
+            e.preventDefault();
+            const sliderDiv = e.currentTarget.parentElement;
             const onMove = (moveEvent) => {
-              const rect = e.currentTarget.parentElement.getBoundingClientRect();
+              const rect = sliderDiv.getBoundingClientRect();
               let clientX = moveEvent.touches ? moveEvent.touches[0].clientX : moveEvent.clientX;
               let x = (clientX - rect.left) / rect.width;
               x = Math.min(1, Math.max(0, x));
@@ -84,8 +83,10 @@ export default function Home() {
             document.addEventListener('touchend', onUp);
           }}
           onTouchStart={(e) => {
+            e.preventDefault();
+            const sliderDiv = e.currentTarget.parentElement;
             const onMove = (moveEvent) => {
-              const rect = e.currentTarget.parentElement.getBoundingClientRect();
+              const rect = sliderDiv.getBoundingClientRect();
               let clientX = moveEvent.touches ? moveEvent.touches[0].clientX : moveEvent.clientX;
               let x = (clientX - rect.left) / rect.width;
               x = Math.min(1, Math.max(0, x));
@@ -99,10 +100,26 @@ export default function Home() {
             document.addEventListener('touchend', onUp);
           }}
         >
-          <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", background: "white", padding: "4px 8px", borderRadius: "20px", fontSize: "10px", fontWeight: "bold", whiteSpace: "nowrap" }}>◀ DRAG ▶</div>
+          <div style={{ 
+            position: "absolute", 
+            top: "50%", 
+            left: "50%", 
+            transform: "translate(-50%, -50%)", 
+            background: "white", 
+            padding: "6px 12px", 
+            borderRadius: "30px", 
+            fontSize: "11px", 
+            fontWeight: "bold", 
+            whiteSpace: "nowrap",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
+            pointerEvents: "none"
+          }}>
+            ◀ DRAG ▶
+          </div>
         </div>
-        <div style={{ position: "absolute", bottom: "10px", left: "10px", background: "black", color: "white", padding: "2px 8px", borderRadius: "15px", fontSize: "10px", opacity: 0.7 }}>BEFORE</div>
-        <div style={{ position: "absolute", bottom: "10px", right: "10px", background: "black", color: "white", padding: "2px 8px", borderRadius: "15px", fontSize: "10px", opacity: 0.7 }}>AFTER</div>
+        
+        <div style={{ position: "absolute", bottom: "10px", left: "10px", background: "rgba(0,0,0,0.6)", color: "white", padding: "3px 10px", borderRadius: "20px", fontSize: "10px", fontWeight: "500" }}>BEFORE</div>
+        <div style={{ position: "absolute", bottom: "10px", right: "10px", background: "rgba(0,0,0,0.6)", color: "white", padding: "3px 10px", borderRadius: "20px", fontSize: "10px", fontWeight: "500" }}>AFTER</div>
       </div>
     );
   };
@@ -148,7 +165,7 @@ export default function Home() {
           const secondSliderId = `${project.id}_2`;
           
           return (
-            <div key={project.id} style={{ marginBottom: "70px" }}>
+            <div key={project.id} style={{ marginBottom: "80px" }}>
               
               {/* Section Title */}
               <div style={{ marginBottom: "20px", borderLeft: "4px solid #2E8B57", paddingLeft: "15px" }}>
@@ -161,7 +178,7 @@ export default function Home() {
               
               {/* Second Slider for Brick Pavers */}
               {project.hasSecondSlider && (
-                <div style={{ marginTop: "40px" }}>
+                <div style={{ marginTop: "45px" }}>
                   <div style={{ marginBottom: "15px" }}>
                     <h4 style={{ fontSize: "18px", fontWeight: "500", color: "#2E8B57", margin: 0 }}>Another Transformation</h4>
                     <p style={{ color: "#64748b", fontSize: "12px", marginTop: "3px" }}>Another project completed</p>
