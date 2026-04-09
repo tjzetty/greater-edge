@@ -1,34 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <title>Greater Edge Landscaping | Family Owned & Operated</title>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, user-scalable=no"
-    />
-    <meta name="description" content="Professional landscaping services in your area. Family owned and operated. Free estimates available." />
-    <meta name="keywords" content="landscaping, pavers, lawn care, mulching, power washing, before and after" />
-    <meta name="author" content="Greater Edge Landscaping" />
-    
-    <!-- Favicon -->
+    <meta name="description" content="Professional landscaping services. Family owned and operated. Free estimates available." />
+    <meta name="keywords" content="landscaping, pavers, lawn care, mulching, power washing" />
     <link rel="icon" type="image/x-icon" href="/images/logo.jpg" />
-    
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+    <style>
+      /* Minimal reset to prevent any old theme styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        background: #0f172a;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      }
+      /* Hide any possible stray elements that might appear */
+      .is-preload, #page-wrapper, [class*="header"]:not(#app *) {
+        display: none !important;
+      }
+    </style>
+    <!-- Aggressive removal of any old theme injected content -->
+    <script>
+      (function() {
+        // Function to kill any element that looks like the old theme header
+        function killOldTheme() {
+          // Remove by class/id
+          var selectors = ['.is-preload', '#page-wrapper', '.header-professional:not(#app .header-professional)'];
+          selectors.forEach(function(sel) {
+            var els = document.querySelectorAll(sel);
+            els.forEach(function(el) {
+              if (el && el.parentNode) el.parentNode.removeChild(el);
+            });
+          });
+          // Remove any element that contains the old header text
+          var all = document.querySelectorAll('body > *:not(#app)');
+          for (var i = 0; i < all.length; i++) {
+            var el = all[i];
+            if (el.innerText && (el.innerText.indexOf('GREATER EDGE') !== -1 || el.innerText.indexOf('810.218.8272') !== -1)) {
+              if (el.parentNode) el.parentNode.removeChild(el);
+            }
+          }
+        }
+        // Run immediately, after DOM ready, and after load
+        if (document.body) killOldTheme();
+        document.addEventListener('DOMContentLoaded', killOldTheme);
+        window.addEventListener('load', killOldTheme);
+        // Also run periodically to catch late injections
+        setInterval(killOldTheme, 500);
+      })();
+    </script>
   </head>
-  <body style="margin: 0; padding: 0; background: #0f172a;">
+  <body style="margin:0; padding:0; background:#0f172a;">
     <div id="app"></div>
     <script type="module" src="/src/main.jsx"></script>
-    
-    <!-- Remove old theme's duplicate header -->
-    <script>
-      window.addEventListener('load', function() {
-        var oldWrappers = document.querySelectorAll('.is-preload, #page-wrapper');
-        oldWrappers.forEach(function(el) {
-          el.remove();
-        });
-      });
-    </script>
   </body>
 </html>
