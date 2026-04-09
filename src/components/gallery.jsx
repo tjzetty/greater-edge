@@ -17,11 +17,11 @@ export default function Gallery() {
       id: "pavers",
       title: "Brick Pavers & Patios",
       images: [
-        "/images/Pavers1.png",
-        "/images/Pavers2.png",
-        "/images/Pavers3.png",
-        "/images/Pavers4.png",
-        "/images/Pavers5.png",
+        "/images/pavers1.png",
+        "/images/pavers2.png",
+        "/images/pavers3.png",
+        "/images/pavers4.png",
+        "/images/pavers5.png",
       ].filter((path) => {
         // Only include if you have the file
         const img = new Image();
@@ -33,54 +33,54 @@ export default function Gallery() {
       id: "lawns",
       title: "Lawn Transformations",
       images: [
-        "/images/Lawn1.png",
-        "/images/Lawn2.png",
-        "/images/Lawn3.png",
+        "/images/lawn1.png",
+        "/images/lawn2.png",
+        "/images/lawn3.png",
       ],
     },
     {
       id: "mulch",
       title: "Mulching & Bed Maintenance",
       images: [
-        "/images/Mulching1.png",
-        "/images/Mulching2.png",
-        "/images/Mulching3.png",
+        "/images/mulching1.png",
+        "/images/mulching2.png",
+        "/images/mulching3.png",
       ],
     },
     {
       id: "bedCleanup",
       title: "Bed Clean Up",
       images: [
-        "/images/Bedcleanup1.png",
-        "/images/Bedcleanup2.png",
-        "/images/Bedcleanup3.png",
+        "/images/bedcleanup1.png",
+        "/images/bedcleanup2.png",
+        "/images/bedcleanup3.png",
       ],
     },
     {
       id: "trimming",
       title: "Bush & Hedge Trimming",
       images: [
-        "/images/Bushtrim1.png",
-        "/images/Bushtrim2.png",
-        "/images/Bushtrim3.png",
+        "/images/bushtrim1.png",
+        "/images/bushtrim2.png",
+        "/images/bushtrim3.png",
       ],
     },
     {
       id: "powerWashing",
       title: "Power Washing",
       images: [
-        "/images/Powerwashing1.png",
-        "/images/Powerwashing2.png",
-        "/images/Powerwashing3.png",
+        "/images/powerwashing1.png",
+        "/images/powerwashing2.png",
+        "/images/powerwashing3.png",
       ],
     },
     {
       id: "fallCleanups",
       title: "Fall Clean Ups",
       images: [
-        "/images/Fallcleanup1.png",
-        "/images/Fallcleanup2.png",
-        "/images/Fallcleanup3.png",
+        "/images/fallcleanup1.png",
+        "/images/fallcleanup2.png",
+        "/images/fallcleanup3.png",
       ],
     },
   ];
