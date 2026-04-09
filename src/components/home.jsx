@@ -134,45 +134,29 @@ export default function Home() {
     );
   };
 
+  // ONLY ADD IMAGES YOU ACTUALLY HAVE - NO BLANKS
   const projects = [
     { id: 1, name: "Brick Pavers & Patios", pairs: [
-      { before: "images/paver1.jpg", after: "images/paver2.jpg" },   // VISIBLE 1
-      { before: "images/paver3.jpg", after: "images/paver4.jpg" },   // VISIBLE 2
-      { before: "images/paver5.jpg", after: "images/paver6.jpg" },   // DROPDOWN
-      { before: "images/paver7.jpg", after: "images/paver8.jpg" },   // DROPDOWN
-      { before: "images/paver9.jpg", after: "images/paver10.jpg" }    // DROPDOWN
+      { before: "images/paver1.jpg", after: "images/paver2.jpg" },
+      { before: "images/paver3.jpg", after: "images/paver4.jpg" }
     ]},
     { id: 2, name: "Lawn Transformations", pairs: [
-      { before: "images/lawn1.jpg", after: "images/lawn2.jpg" },   // VISIBLE 1
-      { before: "images/lawn3.jpg", after: "images/lawn4.jpg" },   // VISIBLE 2
-      { before: "images/lawn5.jpg", after: "images/lawn6.jpg" },   // DROPDOWN
-      { before: "images/lawn7.jpg", after: "images/lawn8.jpg" }    // DROPDOWN
+      { before: "images/lawn1.jpg", after: "images/lawn2.jpg" }
     ]},
     { id: 3, name: "Bed Clean Up", pairs: [
-      { before: "images/bedcleanup1.jpg", after: "images/bedcleanup2.jpg" },   // VISIBLE 1
-      { before: "images/bedcleanup3.jpg", after: "images/bedcleanup4.jpg" },   // VISIBLE 2
-      { before: "images/bedcleanup5.jpg", after: "images/bedcleanup6.jpg" },   // DROPDOWN
-      { before: "images/bedcleanup7.jpg", after: "images/bedcleanup8.jpg" }    // DROPDOWN
+      { before: "images/bedcleanup1.jpg", after: "images/bedcleanup2.jpg" }
     ]},
     { id: 4, name: "Bush & Hedge Trimming", pairs: [
-      { before: "images/bushtrim1.jpg", after: "images/bushtrim2.jpg" },   // VISIBLE 1
-      { before: "images/bushtrim3.jpg", after: "images/bushtrim4.jpg" },   // VISIBLE 2
-      { before: "images/bushtrim5.jpg", after: "images/bushtrim6.jpg" },   // DROPDOWN
-      { before: "images/bushtrim7.jpg", after: "images/bushtrim8.jpg" }    // DROPDOWN
+      { before: "images/bushtrim1.jpg", after: "images/bushtrim2.jpg" }
     ]},
     { id: 5, name: "Fall Clean Ups", pairs: [
-      { before: "images/fallcleanup1.jpg", after: "images/fallcleanup2.jpg" },   // VISIBLE 1
-      { before: "images/fallcleanup3.jpg", after: "images/fallcleanup4.jpg" }    // VISIBLE 2
+      { before: "images/fallcleanup1.jpg", after: "images/fallcleanup2.jpg" }
     ]},
     { id: 6, name: "Mulching & Bed Maintenance", pairs: [
-      { before: "images/mulch1.jpg", after: "images/mulch2.jpg" },   // VISIBLE 1
-      { before: "images/mulch3.jpg", after: "images/mulch4.jpg" },   // VISIBLE 2
-      { before: "images/mulch5.jpg", after: "images/mulch6.jpg" }    // DROPDOWN
+      { before: "images/mulch1.jpg", after: "images/mulch2.jpg" }
     ]},
     { id: 7, name: "Power Washing", pairs: [
-      { before: "images/powerwashing1.jpg", after: "images/powerwashing2.jpg" },   // VISIBLE 1
-      { before: "images/powerwashing3.jpg", after: "images/powerwashing4.jpg" },   // VISIBLE 2
-      { before: "images/powerwashing5.jpg", after: "images/powerwashing6.jpg" }    // DROPDOWN
+      { before: "images/powerwashing1.jpg", after: "images/powerwashing2.jpg" }
     ]}
   ];
 
@@ -228,8 +212,8 @@ export default function Home() {
       {/* PROJECTS */}
       <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "20px 16px 100px" }}>
         {projects.map(project => {
-          const visiblePairs = project.pairs.slice(0, 2);
-          const extraPairs = project.pairs.slice(2);
+          const visiblePairs = project.pairs.slice(0, 1);
+          const extraPairs = project.pairs.slice(1);
           
           return (
             <div key={project.id} style={{ marginBottom: "180px" }}>
@@ -238,21 +222,10 @@ export default function Home() {
                 <p style={{ color: "#94a3b8", fontSize: "14px", marginTop: "8px" }}>Before & After Transformations</p>
               </div>
               
-              {/* First Slider */}
+              {/* Main Slider */}
               <Slider before={visiblePairs[0].before} after={visiblePairs[0].after} sliderId={`${project.id}_0`} />
               
-              {/* Second Slider (if exists) */}
-              {visiblePairs[1] && (
-                <div style={{ marginTop: "60px" }}>
-                  <div style={{ marginBottom: "20px" }}>
-                    <h4 style={{ fontSize: "18px", fontWeight: "500", color: "#2E8B57", margin: 0 }}>Another Transformation</h4>
-                    <p style={{ color: "#94a3b8", fontSize: "12px", marginTop: "4px" }}>More of our work</p>
-                  </div>
-                  <Slider before={visiblePairs[1].before} after={visiblePairs[1].after} sliderId={`${project.id}_1`} />
-                </div>
-              )}
-              
-              {/* Dropdown for extra pairs */}
+              {/* Dropdown for extra pairs (if any) */}
               {extraPairs.length > 0 && (
                 <div style={{ marginTop: "50px" }}>
                   <button onClick={() => setShowMore(prev => ({ ...prev, [project.id]: !prev[project.id] }))} style={{ width: "100%", padding: "16px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "15px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -262,7 +235,7 @@ export default function Home() {
                   {showMore[project.id] && (
                     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "20px", marginTop: "25px" }}>
                       {extraPairs.map((pair, idx) => (
-                        <SmallPair key={idx} before={pair.before} after={pair.after} index={idx + 3} projectName={project.name} />
+                        <SmallPair key={idx} before={pair.before} after={pair.after} index={idx + 2} projectName={project.name} />
                       ))}
                     </div>
                   )}
