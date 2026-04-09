@@ -2,41 +2,6 @@ import { useState } from "preact/hooks";
 
 export default function Home() {
   const [showMore, setShowMore] = useState({});
-  const [slider1, setSlider1] = useState(50);
-  const [slider2, setSlider2] = useState(50);
-  const [slider3, setSlider3] = useState(50);
-  const [slider4, setSlider4] = useState(50);
-  const [slider5, setSlider5] = useState(50);
-  const [slider6, setSlider6] = useState(50);
-  const [slider7, setSlider7] = useState(50);
-  const [slider8, setSlider8] = useState(50);
-
-  const getSlider = (id) => {
-    switch(id) {
-      case 1: return slider1;
-      case 2: return slider2;
-      case 3: return slider3;
-      case 4: return slider4;
-      case 5: return slider5;
-      case 6: return slider6;
-      case 7: return slider7;
-      case 8: return slider8;
-      default: return 50;
-    }
-  };
-
-  const setSlider = (id, value) => {
-    switch(id) {
-      case 1: setSlider1(value); break;
-      case 2: setSlider2(value); break;
-      case 3: setSlider3(value); break;
-      case 4: setSlider4(value); break;
-      case 5: setSlider5(value); break;
-      case 6: setSlider6(value); break;
-      case 7: setSlider7(value); break;
-      case 8: setSlider8(value); break;
-    }
-  };
 
   const toggleDropdown = (id) => {
     setShowMore(prev => ({ ...prev, [id]: !prev[id] }));
@@ -53,7 +18,13 @@ export default function Home() {
       secondAfter: "images/paver4.jpg",
       extras: [] 
     },
-    { id: 2, name: "Lawn Transformations", before: "images/lawn1.jpg", after: "images/lawn2.jpg", hasSecondSlider: false, extras: [] },
+    { 
+      id: 2, 
+      name: "Lawn Transformations", 
+      isGallery: true,
+      images: ["images/lawn1.jpg", "images/lawn2.jpg"],
+      extras: [] 
+    },
     { id: 3, name: "Bed Clean Up", before: "images/bedcleanup1.jpg", after: "images/bedcleanup2.jpg", hasSecondSlider: false, extras: [] },
     { id: 4, name: "Bush & Hedge Trimming", before: "images/bushtrim1.jpg", after: "images/bushtrim2.jpg", hasSecondSlider: false, extras: [] },
     { id: 5, name: "Fall Clean Ups", before: "images/fallcleanup1.jpg", after: "images/fallcleanup2.jpg", hasSecondSlider: false, extras: [] },
@@ -62,7 +33,7 @@ export default function Home() {
   ];
 
   const Slider = ({ before, after, sliderId }) => {
-    const pos = getSlider(sliderId);
+    const [pos, setPos] = useState(50);
     
     return (
       <div 
@@ -80,7 +51,6 @@ export default function Home() {
           <img src={before} alt="Before" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
         </div>
         
-        {/* DRAG HANDLE - This is the only draggable part */}
         <div 
           style={{ 
             position: "absolute", 
@@ -104,7 +74,7 @@ export default function Home() {
               let clientX = moveEvent.touches ? moveEvent.touches[0].clientX : moveEvent.clientX;
               let x = (clientX - rect.left) / rect.width;
               x = Math.min(0.98, Math.max(0.02, x));
-              setSlider(sliderId, x * 100);
+              setPos(x * 100);
             };
             const onUp = () => {
               document.removeEventListener('mousemove', onMove);
@@ -125,7 +95,7 @@ export default function Home() {
               let clientX = moveEvent.touches[0].clientX;
               let x = (clientX - rect.left) / rect.width;
               x = Math.min(0.98, Math.max(0.02, x));
-              setSlider(sliderId, x * 100);
+              setPos(x * 100);
             };
             const onUp = () => {
               document.removeEventListener('touchmove', onMove);
@@ -152,6 +122,34 @@ export default function Home() {
         
         <div style={{ position: "absolute", bottom: "12px", left: "12px", background: "rgba(0,0,0,0.6)", color: "white", padding: "4px 12px", borderRadius: "20px", fontSize: "11px", fontWeight: "500" }}>BEFORE</div>
         <div style={{ position: "absolute", bottom: "12px", right: "12px", background: "rgba(0,0,0,0.6)", color: "white", padding: "4px 12px", borderRadius: "20px", fontSize: "11px", fontWeight: "500" }}>AFTER</div>
+      </div>
+    );
+  };
+
+  // Gallery component for Lawn section
+  const Gallery = ({ images }) => {
+    return (
+      <div style={{ 
+        display: "grid", 
+        gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", 
+        gap: "20px",
+        marginTop: "10px"
+      }}>
+        {images.map((img, idx) => (
+          <div key={idx} style={{ 
+            background: "#1a1a1a", 
+            borderRadius: "16px", 
+            overflow: "hidden",
+            aspectRatio: "4/3",
+            boxShadow: "0 4px 20px rgba(0,0,0,0.2)"
+          }}>
+            <img 
+              src={img} 
+              alt={`Lawn transformation ${idx + 1}`} 
+              style={{ width: "100%", height: "100%", objectFit: "cover" }} 
+            />
+          </div>
+        ))}
       </div>
     );
   };
@@ -191,7 +189,7 @@ export default function Home() {
         <p style={{ color: "#94a3b8", marginTop: "20px", fontSize: "16px" }}>See the difference we make</p>
       </div>
 
-      {/* PROJECTS - HUGE SPACING */}
+      {/* PROJECTS */}
       <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "20px 16px 100px" }}>
         {projects.map(project => {
           const secondSliderId = project.hasSecondSlider ? project.id + 10 : null;
@@ -201,21 +199,31 @@ export default function Home() {
               
               <div style={{ marginBottom: "30px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
                 <h3 style={{ fontSize: "28px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
-                <p style={{ color: "#94a3b8", fontSize: "14px", marginTop: "8px" }}>Before & After Transformations</p>
+                <p style={{ color: "#94a3b8", fontSize: "14px", marginTop: "8px" }}>
+                  {project.isGallery ? "Our Work Gallery" : "Before & After Transformations"}
+                </p>
               </div>
               
-              <Slider before={project.before} after={project.after} sliderId={project.id} />
-              
-              {project.hasSecondSlider && (
-                <div style={{ marginTop: "80px" }}>
-                  <div style={{ marginBottom: "20px" }}>
-                    <h4 style={{ fontSize: "20px", fontWeight: "500", color: "#2E8B57", margin: 0 }}>Another Transformation</h4>
-                    <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "6px" }}>Another project completed</p>
-                  </div>
-                  <Slider before={project.secondBefore} after={project.secondAfter} sliderId={secondSliderId} />
-                </div>
+              {/* Show Gallery or Slider based on project type */}
+              {project.isGallery ? (
+                <Gallery images={project.images} />
+              ) : (
+                <>
+                  <Slider before={project.before} after={project.after} sliderId={project.id} />
+                  
+                  {project.hasSecondSlider && (
+                    <div style={{ marginTop: "80px" }}>
+                      <div style={{ marginBottom: "20px" }}>
+                        <h4 style={{ fontSize: "20px", fontWeight: "500", color: "#2E8B57", margin: 0 }}>Another Transformation</h4>
+                        <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "6px" }}>Another project completed</p>
+                      </div>
+                      <Slider before={project.secondBefore} after={project.secondAfter} sliderId={secondSliderId} />
+                    </div>
+                  )}
+                </>
               )}
               
+              {/* Dropdown for extras */}
               {project.extras.length > 0 && (
                 <div style={{ marginTop: "45px" }}>
                   <button 
