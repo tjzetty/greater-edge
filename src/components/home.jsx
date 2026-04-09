@@ -134,71 +134,73 @@ export default function Home() {
     );
   };
 
-  // EVERY SECTION has 4 pairs total (1 visible + 3 in dropdown)
+  // Lawn section is now a GALLERY (no before/after)
   const projects = [
     { id: 1, name: "Brick Pavers & Patios", pairs: [
-      { before: "images/paver1.jpg", after: "images/paver2.jpg" },   // MAIN SLIDER
-      { before: "images/paver3.jpg", after: "images/paver4.jpg" },   // DROPDOWN 1
-      { before: "images/paver5.jpg", after: "images/paver6.jpg" },   // DROPDOWN 2
-      { before: "images/paver7.jpg", after: "images/paver8.jpg" }    // DROPDOWN 3
+      { before: "images/paver1.jpg", after: "images/paver2.jpg" },
+      { before: "images/paver3.jpg", after: "images/paver4.jpg" },
+      { before: "images/paver5.jpg", after: "images/paver6.jpg" },
+      { before: "images/paver7.jpg", after: "images/paver8.jpg" }
     ]},
-    { id: 2, name: "Lawn Transformations", pairs: [
-      { before: "images/lawn1.jpg", after: "images/lawn2.jpg" },      // MAIN SLIDER
-      { before: "images/lawn3.jpg", after: "images/lawn4.jpg" },      // DROPDOWN 1
-      { before: "images/lawn5.jpg", after: "images/lawn6.jpg" },      // DROPDOWN 2
-      { before: "images/lawn7.jpg", after: "images/lawn8.jpg" }       // DROPDOWN 3
+    { id: 2, name: "Great Cuts", isLawnGallery: true, images: [
+      "images/lawn1.jpg",
+      "images/lawn2.jpg",
+      "images/lawn3.jpg",
+      "images/lawn4.jpg",
+      "images/lawn5.jpg",
+      "images/lawn6.jpg"
     ]},
     { id: 3, name: "Bed Clean Up", pairs: [
-      { before: "images/bedcleanup1.jpg", after: "images/bedcleanup2.jpg" },   // MAIN SLIDER
-      { before: "images/bedcleanup3.jpg", after: "images/bedcleanup4.jpg" },   // DROPDOWN 1
-      { before: "images/bedcleanup5.jpg", after: "images/bedcleanup6.jpg" },   // DROPDOWN 2
-      { before: "images/bedcleanup7.jpg", after: "images/bedcleanup8.jpg" }    // DROPDOWN 3
+      { before: "images/bedcleanup1.jpg", after: "images/bedcleanup2.jpg" },
+      { before: "images/bedcleanup3.jpg", after: "images/bedcleanup4.jpg" },
+      { before: "images/bedcleanup5.jpg", after: "images/bedcleanup6.jpg" },
+      { before: "images/bedcleanup7.jpg", after: "images/bedcleanup8.jpg" }
     ]},
     { id: 4, name: "Bush & Hedge Trimming", pairs: [
-      { before: "images/bushtrim1.jpg", after: "images/bushtrim2.jpg" },   // MAIN SLIDER
-      { before: "images/bushtrim3.jpg", after: "images/bushtrim4.jpg" },   // DROPDOWN 1
-      { before: "images/bushtrim5.jpg", after: "images/bushtrim6.jpg" },   // DROPDOWN 2
-      { before: "images/bushtrim7.jpg", after: "images/bushtrim8.jpg" }    // DROPDOWN 3
+      { before: "images/bushtrim1.jpg", after: "images/bushtrim2.jpg" },
+      { before: "images/bushtrim3.jpg", after: "images/bushtrim4.jpg" },
+      { before: "images/bushtrim5.jpg", after: "images/bushtrim6.jpg" },
+      { before: "images/bushtrim7.jpg", after: "images/bushtrim8.jpg" }
     ]},
     { id: 5, name: "Fall Clean Ups", pairs: [
-      { before: "images/fallcleanup1.jpg", after: "images/fallcleanup2.jpg" },   // MAIN SLIDER
-      { before: "images/fallcleanup3.jpg", after: "images/fallcleanup4.jpg" },   // DROPDOWN 1
-      { before: "images/fallcleanup5.jpg", after: "images/fallcleanup6.jpg" },   // DROPDOWN 2
-      { before: "images/fallcleanup7.jpg", after: "images/fallcleanup8.jpg" }    // DROPDOWN 3
+      { before: "images/fallcleanup1.jpg", after: "images/fallcleanup2.jpg" },
+      { before: "images/fallcleanup3.jpg", after: "images/fallcleanup4.jpg" },
+      { before: "images/fallcleanup5.jpg", after: "images/fallcleanup6.jpg" },
+      { before: "images/fallcleanup7.jpg", after: "images/fallcleanup8.jpg" }
     ]},
     { id: 6, name: "Mulching & Bed Maintenance", pairs: [
-      { before: "images/mulch1.jpg", after: "images/mulch2.jpg" },   // MAIN SLIDER
-      { before: "images/mulch3.jpg", after: "images/mulch4.jpg" },   // DROPDOWN 1
-      { before: "images/mulch5.jpg", after: "images/mulch6.jpg" },   // DROPDOWN 2
-      { before: "images/mulch7.jpg", after: "images/mulch8.jpg" }    // DROPDOWN 3
+      { before: "images/mulch1.jpg", after: "images/mulch2.jpg" },
+      { before: "images/mulch3.jpg", after: "images/mulch4.jpg" },
+      { before: "images/mulch5.jpg", after: "images/mulch6.jpg" },
+      { before: "images/mulch7.jpg", after: "images/mulch8.jpg" }
     ]},
     { id: 7, name: "Power Washing", pairs: [
-      { before: "images/powerwashing1.jpg", after: "images/powerwashing2.jpg" },   // MAIN SLIDER
-      { before: "images/powerwashing3.jpg", after: "images/powerwashing4.jpg" },   // DROPDOWN 1
-      { before: "images/powerwashing5.jpg", after: "images/powerwashing6.jpg" },   // DROPDOWN 2
-      { before: "images/powerwashing7.jpg", after: "images/powerwashing8.jpg" }    // DROPDOWN 3
+      { before: "images/powerwashing1.jpg", after: "images/powerwashing2.jpg" },
+      { before: "images/powerwashing3.jpg", after: "images/powerwashing4.jpg" },
+      { before: "images/powerwashing5.jpg", after: "images/powerwashing6.jpg" },
+      { before: "images/powerwashing7.jpg", after: "images/powerwashing8.jpg" }
     ]}
   ];
 
   return (
     <div style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", background: "#0f172a", minHeight: "100vh" }}>
       
-      {/* SINGLE HEADER */}
+      {/* HEADER - More Professional Links */}
       <div style={{ 
         position: "sticky", 
         top: 0, 
         background: "#ffffff", 
         padding: "16px 24px", 
-        boxShadow: "0 2px 15px rgba(0,0,0,0.08)", 
+        boxShadow: "0 1px 3px rgba(0,0,0,0.05)", 
         zIndex: 100 
       }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "16px" }}>
-          <img src="images/logo.jpg" alt="Greater Edge Landscaping" style={{ height: "65px", width: "auto", borderRadius: "12px" }} />
+          <img src="images/logo.jpg" alt="Greater Edge Landscaping" style={{ height: "60px", width: "auto", borderRadius: "12px" }} />
           <div style={{ display: "flex", gap: "32px", alignItems: "center", flexWrap: "wrap" }}>
-            <a href="/" style={{ textDecoration: "none", color: "#334155", fontSize: "15px", fontWeight: "600" }}>Home</a>
-            <a href="/gallery" style={{ textDecoration: "none", color: "#334155", fontSize: "15px", fontWeight: "600" }}>Gallery</a>
-            <a href="/contact" style={{ textDecoration: "none", color: "#334155", fontSize: "15px", fontWeight: "600" }}>Contact Us</a>
-            <a href="https://www.facebook.com/profile.php?id=61574004541526" target="_blank" rel="noreferrer" style={{ background: "#1877F2", color: "white", padding: "8px 24px", borderRadius: "40px", textDecoration: "none", fontSize: "14px", fontWeight: "600", display: "flex", alignItems: "center", gap: "8px" }}>📘 Facebook</a>
+            <a href="/" style={{ textDecoration: "none", color: "#1e293b", fontSize: "15px", fontWeight: "500", letterSpacing: "0.3px", transition: "color 0.2s" }} onMouseEnter={(e) => e.target.style.color = "#2E8B57"} onMouseLeave={(e) => e.target.style.color = "#1e293b"}>Home</a>
+            <a href="/gallery" style={{ textDecoration: "none", color: "#1e293b", fontSize: "15px", fontWeight: "500", letterSpacing: "0.3px", transition: "color 0.2s" }} onMouseEnter={(e) => e.target.style.color = "#2E8B57"} onMouseLeave={(e) => e.target.style.color = "#1e293b"}>Gallery</a>
+            <a href="/contact" style={{ textDecoration: "none", color: "#1e293b", fontSize: "15px", fontWeight: "500", letterSpacing: "0.3px", transition: "color 0.2s" }} onMouseEnter={(e) => e.target.style.color = "#2E8B57"} onMouseLeave={(e) => e.target.style.color = "#1e293b"}>Contact Us</a>
+            <a href="https://www.facebook.com/profile.php?id=61574004541526" target="_blank" rel="noreferrer" style={{ background: "#1877F2", color: "white", padding: "8px 24px", borderRadius: "40px", textDecoration: "none", fontSize: "14px", fontWeight: "600", display: "flex", alignItems: "center", gap: "8px", transition: "all 0.2s" }} onMouseEnter={(e) => { e.target.style.background = "#166fe5"; e.target.style.transform = "translateY(-1px)" }} onMouseLeave={(e) => { e.target.style.background = "#1877F2"; e.target.style.transform = "translateY(0)" }}>📘 Facebook</a>
           </div>
         </div>
       </div>
@@ -219,7 +221,7 @@ export default function Home() {
         <img src="images/logo.jpg" alt="Greater Edge Landscaping" style={{ width: "100%", maxWidth: "500px", height: "auto", marginBottom: "30px", borderRadius: "24px", boxShadow: "0 30px 50px rgba(0,0,0,0.3)" }} />
         <h1 style={{ fontSize: "52px", fontWeight: "800", color: "white", marginBottom: "16px" }}>Greater Edge <span style={{ color: "#2E8B57" }}>Landscaping</span></h1>
         <p style={{ fontSize: "22px", color: "#94a3b8", marginBottom: "32px" }}>Family Owned & Operated</p>
-        <a href="/contact" style={{ background: "#2E8B57", color: "white", padding: "14px 42px", borderRadius: "50px", textDecoration: "none", fontWeight: "700", fontSize: "18px", display: "inline-block" }}>Free Estimate →</a>
+        <a href="/contact" style={{ background: "#2E8B57", color: "white", padding: "14px 42px", borderRadius: "50px", textDecoration: "none", fontWeight: "700", fontSize: "18px", display: "inline-block", transition: "all 0.2s" }} onMouseEnter={(e) => e.target.style.background = "#236b45"} onMouseLeave={(e) => e.target.style.background = "#2E8B57"}>Free Estimate →</a>
       </div>
 
       {/* OUR WORK */}
@@ -232,20 +234,36 @@ export default function Home() {
       {/* PROJECTS */}
       <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "20px 16px 100px" }}>
         {projects.map(project => {
+          if (project.isLawnGallery) {
+            // LAWN SECTION - Gallery only, no before/after
+            const galleryImages = project.images.map(img => ({ src: img, title: `${project.name} - Beautiful Lawn` }));
+            return (
+              <div key={project.id} style={{ marginBottom: "180px" }}>
+                <div style={{ marginBottom: "30px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
+                  <h3 style={{ fontSize: "28px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
+                  <p style={{ color: "#94a3b8", fontSize: "14px", marginTop: "8px" }}>Beautiful, healthy lawns</p>
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "24px" }}>
+                  {project.images.map((img, idx) => (
+                    <div key={idx} style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", transition: "transform 0.2s" }} onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.02)"} onMouseLeave={(e) => e.currentTarget.style.transform = "scale(1)"}>
+                      <img src={img} alt={`Lawn ${idx + 1}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 1}`, galleryImages, idx)} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          }
+          
+          // Regular sections with before/after sliders
           const mainPair = project.pairs[0];
           const extraPairs = project.pairs.slice(1);
-          
           return (
             <div key={project.id} style={{ marginBottom: "180px" }}>
               <div style={{ marginBottom: "30px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
                 <h3 style={{ fontSize: "28px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
                 <p style={{ color: "#94a3b8", fontSize: "14px", marginTop: "8px" }}>Before & After Transformations</p>
               </div>
-              
-              {/* Main Slider */}
               <Slider before={mainPair.before} after={mainPair.after} sliderId={`${project.id}_main`} />
-              
-              {/* Dropdown for extra pairs (3 pairs) */}
               {extraPairs.length > 0 && (
                 <div style={{ marginTop: "50px" }}>
                   <button onClick={() => setShowMore(prev => ({ ...prev, [project.id]: !prev[project.id] }))} style={{ width: "100%", padding: "16px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "15px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
