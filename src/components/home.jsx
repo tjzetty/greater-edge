@@ -2,20 +2,11 @@ import { useState } from "preact/hooks";
 
 export default function Home() {
   const [showMore, setShowMore] = useState({});
-  const [showMoreExtras, setShowMoreExtras] = useState({});
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState("");
   const [currentImageTitle, setCurrentImageTitle] = useState("");
   const [currentGallery, setCurrentGallery] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-
-  const toggleDropdown = (id) => {
-    setShowMore(prev => ({ ...prev, [id]: !prev[id] }));
-  };
-
-  const toggleExtras = (id) => {
-    setShowMoreExtras(prev => ({ ...prev, [id]: !prev[id] }));
-  };
 
   // Open lightbox with image
   const openLightbox = (image, title, gallery, index) => {
@@ -226,63 +217,36 @@ export default function Home() {
     );
   };
 
-  // Single Image Component (Clickable)
-  const SingleImage = ({ image, title }) => {
-    return (
-      <div 
-        style={{ 
-          background: "#1a1a1a", 
-          borderRadius: "16px", 
-          overflow: "hidden",
-          aspectRatio: "4/3",
-          boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
-          cursor: "pointer"
-        }}
-        onClick={() => openLightbox(image, title, [{ src: image, title }], 0)}
-      >
-        <img 
-          src={image} 
-          alt={title} 
-          style={{ width: "100%", height: "100%", objectFit: "cover" }} 
-        />
-      </div>
-    );
-  };
-
-  // All projects with extra before/after pairs for dropdowns
+  // All projects - First 3 pairs are visible, rest go to dropdown
+  // Just add your images in order: 1&2, 3&4, 5&6, 7&8, 9&10, etc.
   const projects = [
     { 
       id: 1, 
-      name: "Brick Pavers & Patios", 
-      before: "images/paver1.jpg", 
-      after: "images/paver2.jpg",
-      hasSecondSlider: true,
-      secondBefore: "images/paver3.jpg",
-      secondAfter: "images/paver4.jpg",
-      extraPairs: [
-        { before: "images/paver5.jpg", after: "images/paver6.jpg" },
-        { before: "images/paver7.jpg", after: "images/paver8.jpg" },
-        { before: "images/paver9.jpg", after: "images/paver10.jpg" }
+      name: "Brick Pavers & Patios",
+      pairs: [
+        { before: "images/paver1.jpg", after: "images/paver2.jpg" },   // Pair 1 - visible
+        { before: "images/paver3.jpg", after: "images/paver4.jpg" },   // Pair 2 - visible
+        { before: "images/paver5.jpg", after: "images/paver6.jpg" },   // Pair 3 - visible
+        { before: "images/paver7.jpg", after: "images/paver8.jpg" },   // Pair 4 - dropdown
+        { before: "images/paver9.jpg", after: "images/paver10.jpg" }    // Pair 5 - dropdown
       ]
     },
     { 
       id: 2, 
-      name: "Lawn Transformations", 
-      isImage: true,
-      image: "images/lawn2.jpg",
-      extraPairs: [
-        { before: "images/lawn3.jpg", after: "images/lawn4.jpg" },
-        { before: "images/lawn5.jpg", after: "images/lawn6.jpg" },
-        { before: "images/lawn7.jpg", after: "images/lawn8.jpg" }
+      name: "Lawn Transformations",
+      isGalleryOnly: true,  // No main slider, just dropdown gallery
+      pairs: [
+        { before: "images/lawn1.jpg", after: "images/lawn2.jpg" },     // Pair 1 - dropdown
+        { before: "images/lawn3.jpg", after: "images/lawn4.jpg" },     // Pair 2 - dropdown
+        { before: "images/lawn5.jpg", after: "images/lawn6.jpg" },     // Pair 3 - dropdown
+        { before: "images/lawn7.jpg", after: "images/lawn8.jpg" }      // Pair 4 - dropdown
       ]
     },
     { 
       id: 3, 
-      name: "Bed Clean Up", 
-      before: "images/bedcleanup1.jpg", 
-      after: "images/bedcleanup2.jpg",
-      hasSecondSlider: false,
-      extraPairs: [
+      name: "Bed Clean Up",
+      pairs: [
+        { before: "images/bedcleanup1.jpg", after: "images/bedcleanup2.jpg" },
         { before: "images/bedcleanup3.jpg", after: "images/bedcleanup4.jpg" },
         { before: "images/bedcleanup5.jpg", after: "images/bedcleanup6.jpg" },
         { before: "images/bedcleanup7.jpg", after: "images/bedcleanup8.jpg" }
@@ -290,11 +254,9 @@ export default function Home() {
     },
     { 
       id: 4, 
-      name: "Bush & Hedge Trimming", 
-      before: "images/bushtrim1.jpg", 
-      after: "images/bushtrim2.jpg",
-      hasSecondSlider: false,
-      extraPairs: [
+      name: "Bush & Hedge Trimming",
+      pairs: [
+        { before: "images/bushtrim1.jpg", after: "images/bushtrim2.jpg" },
         { before: "images/bushtrim3.jpg", after: "images/bushtrim4.jpg" },
         { before: "images/bushtrim5.jpg", after: "images/bushtrim6.jpg" },
         { before: "images/bushtrim7.jpg", after: "images/bushtrim8.jpg" }
@@ -302,38 +264,29 @@ export default function Home() {
     },
     { 
       id: 5, 
-      name: "Fall Clean Ups", 
-      before: "images/fallcleanup1.jpg", 
-      after: "images/fallcleanup2.jpg",
-      hasSecondSlider: false,
-      extraPairs: [
+      name: "Fall Clean Ups",
+      pairs: [
+        { before: "images/fallcleanup1.jpg", after: "images/fallcleanup2.jpg" },
         { before: "images/fallcleanup3.jpg", after: "images/fallcleanup4.jpg" },
-        { before: "images/fallcleanup5.jpg", after: "images/fallcleanup6.jpg" },
-        { before: "images/fallcleanup7.jpg", after: "images/fallcleanup8.jpg" }
+        { before: "images/fallcleanup5.jpg", after: "images/fallcleanup6.jpg" }
       ]
     },
     { 
       id: 6, 
-      name: "Mulching & Bed Maintenance", 
-      before: "images/mulch1.jpg", 
-      after: "images/mulch2.jpg",
-      hasSecondSlider: false,
-      extraPairs: [
+      name: "Mulching & Bed Maintenance",
+      pairs: [
+        { before: "images/mulch1.jpg", after: "images/mulch2.jpg" },
         { before: "images/mulch3.jpg", after: "images/mulch4.jpg" },
-        { before: "images/mulch5.jpg", after: "images/mulch6.jpg" },
-        { before: "images/mulch7.jpg", after: "images/mulch8.jpg" }
+        { before: "images/mulch5.jpg", after: "images/mulch6.jpg" }
       ]
     },
     { 
       id: 7, 
-      name: "Power Washing", 
-      before: "images/powerwashing1.jpg", 
-      after: "images/powerwashing2.jpg",
-      hasSecondSlider: false,
-      extraPairs: [
+      name: "Power Washing",
+      pairs: [
+        { before: "images/powerwashing1.jpg", after: "images/powerwashing2.jpg" },
         { before: "images/powerwashing3.jpg", after: "images/powerwashing4.jpg" },
-        { before: "images/powerwashing5.jpg", after: "images/powerwashing6.jpg" },
-        { before: "images/powerwashing7.jpg", after: "images/powerwashing8.jpg" }
+        { before: "images/powerwashing5.jpg", after: "images/powerwashing6.jpg" }
       ]
     }
   ];
@@ -375,7 +328,6 @@ export default function Home() {
           justifyContent: "center",
           flexDirection: "column"
         }}>
-          {/* Close Button */}
           <button
             onClick={closeLightbox}
             style={{
@@ -400,7 +352,6 @@ export default function Home() {
             ✕
           </button>
           
-          {/* Left Arrow */}
           {currentIndex > 0 && (
             <button
               onClick={prevImage}
@@ -428,7 +379,6 @@ export default function Home() {
             </button>
           )}
           
-          {/* Right Arrow */}
           {currentIndex < currentGallery.length - 1 && (
             <button
               onClick={nextImage}
@@ -456,7 +406,6 @@ export default function Home() {
             </button>
           )}
           
-          {/* Image */}
           <img 
             src={currentImage} 
             alt={currentImageTitle}
@@ -468,7 +417,6 @@ export default function Home() {
             }}
           />
           
-          {/* Title */}
           <div style={{
             position: "absolute",
             bottom: "30px",
@@ -505,8 +453,10 @@ export default function Home() {
       {/* PROJECTS */}
       <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "20px 16px 100px" }}>
         {projects.map(project => {
-          const secondSliderId = project.hasSecondSlider ? project.id + 10 : null;
-          const hasExtraPairs = project.extraPairs && project.extraPairs.length > 0;
+          // First 3 pairs are visible as sliders
+          const visiblePairs = project.pairs.slice(0, 3);
+          // Pairs 4+ go to dropdown
+          const extraPairs = project.pairs.slice(3);
           
           return (
             <div key={project.id} style={{ marginBottom: "180px" }}>
@@ -514,34 +464,68 @@ export default function Home() {
               <div style={{ marginBottom: "30px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
                 <h3 style={{ fontSize: "28px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
                 <p style={{ color: "#94a3b8", fontSize: "14px", marginTop: "8px" }}>
-                  {project.isImage ? "Featured Work" : "Before & After Transformations"}
+                  {project.isGalleryOnly ? "Photo Gallery" : "Before & After Transformations"}
                 </p>
               </div>
               
-              {/* Main Content */}
-              {project.isImage ? (
-                <SingleImage image={project.image} title={project.name} />
-              ) : (
+              {/* For Lawn (gallery only) - No main slider, just dropdown */}
+              {project.isGalleryOnly ? (
                 <>
-                  <Slider before={project.before} after={project.after} sliderId={project.id} />
-                  
-                  {project.hasSecondSlider && (
-                    <div style={{ marginTop: "80px" }}>
-                      <div style={{ marginBottom: "20px" }}>
-                        <h4 style={{ fontSize: "20px", fontWeight: "500", color: "#2E8B57", margin: 0 }}>Another Transformation</h4>
-                        <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "6px" }}>Another project completed</p>
+                  {/* No main slider - just show the first 3 pairs as a gallery grid */}
+                  <div style={{ 
+                    display: "grid", 
+                    gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", 
+                    gap: "20px",
+                    marginBottom: "30px"
+                  }}>
+                    {visiblePairs.map((pair, idx) => (
+                      <div key={idx} style={{ 
+                        background: "#1e293b", 
+                        borderRadius: "16px", 
+                        overflow: "hidden",
+                        aspectRatio: "4/3"
+                      }}>
+                        <img 
+                          src={pair.after} 
+                          alt={`${project.name} ${idx + 1}`}
+                          style={{ width: "100%", height: "100%", objectFit: "cover", cursor: "pointer" }}
+                          onClick={() => openLightbox(pair.after, `${project.name} - Photo ${idx + 1}`, 
+                            [{ src: pair.after, title: `${project.name} - Photo ${idx + 1}` }], 0)}
+                        />
                       </div>
-                      <Slider before={project.secondBefore} after={project.secondAfter} sliderId={secondSliderId} />
+                    ))}
+                  </div>
+                </>
+              ) : (
+                // For other sections - show sliders for first 3 pairs
+                <>
+                  {visiblePairs.map((pair, idx) => (
+                    <div key={idx} style={{ marginBottom: idx < visiblePairs.length - 1 ? "60px" : "0" }}>
+                      {idx > 0 && (
+                        <div style={{ marginBottom: "20px" }}>
+                          <h4 style={{ fontSize: "18px", fontWeight: "500", color: "#2E8B57", margin: 0 }}>
+                            Another Transformation
+                          </h4>
+                          <p style={{ color: "#94a3b8", fontSize: "12px", marginTop: "4px" }}>
+                            Project {idx + 1}
+                          </p>
+                        </div>
+                      )}
+                      <Slider 
+                        before={pair.before} 
+                        after={pair.after} 
+                        sliderId={`${project.id}_${idx}`} 
+                      />
                     </div>
-                  )}
+                  ))}
                 </>
               )}
               
-              {/* DROPDOWN for Extra Before/After Pairs - NOW ON EVERY SECTION including first */}
-              {hasExtraPairs && (
+              {/* DROPDOWN for Extra Pairs (pairs 4 and beyond) */}
+              {extraPairs.length > 0 && (
                 <div style={{ marginTop: "50px" }}>
                   <button 
-                    onClick={() => toggleExtras(project.id)} 
+                    onClick={() => setShowMore(prev => ({ ...prev, [project.id]: !prev[project.id] }))} 
                     style={{ 
                       width: "100%", 
                       padding: "16px 20px", 
@@ -559,9 +543,9 @@ export default function Home() {
                       transition: "all 0.2s"
                     }}
                   >
-                    <span>📸 More Before & After Photos ({project.extraPairs.length})</span>
+                    <span>📸 More Before & After Photos ({extraPairs.length})</span>
                     <span style={{ 
-                      transform: showMoreExtras[project.id] ? "rotate(180deg)" : "rotate(0deg)", 
+                      transform: showMore[project.id] ? "rotate(180deg)" : "rotate(0deg)", 
                       transition: "transform 0.3s",
                       fontSize: "18px"
                     }}>
@@ -569,19 +553,19 @@ export default function Home() {
                     </span>
                   </button>
                   
-                  {showMoreExtras[project.id] && (
+                  {showMore[project.id] && (
                     <div style={{ 
                       display: "grid", 
                       gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", 
                       gap: "20px", 
                       marginTop: "25px" 
                     }}>
-                      {project.extraPairs.map((pair, idx) => (
+                      {extraPairs.map((pair, idx) => (
                         <SmallPair 
                           key={idx}
                           before={pair.before}
                           after={pair.after}
-                          index={idx + 1}
+                          index={idx + 4}
                           projectName={project.name}
                         />
                       ))}
