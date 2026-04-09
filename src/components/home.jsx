@@ -89,7 +89,7 @@ export default function Home() {
         }}
         onMouseDown={(e) => handleSliderMove(id, e)}
       >
-        {/* After image (bottom layer) - FIXED: using same container */}
+        {/* After image (bottom layer) */}
         <div
           style={{
             position: "absolute",
@@ -112,7 +112,7 @@ export default function Home() {
           />
         </div>
 
-        {/* Before image (top layer with clip) - FIXED: same styling */}
+        {/* Before image (top layer with clip) */}
         <div
           style={{
             position: "absolute",
@@ -217,20 +217,21 @@ export default function Home() {
 
   return (
     <div>
-      {/* HEADER - Updated Logo */}
+      {/* HEADER - Redesigned with professional styling */}
       <div
         style={{
           position: "sticky",
           top: 0,
           background: "white",
-          padding: "15px 20px",
-          boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-          zIndex: 100
+          padding: "12px 20px",
+          boxShadow: "0 2px 15px rgba(0,0,0,0.08)",
+          zIndex: 100,
+          borderBottom: "1px solid #e8edf2"
         }}
       >
         <div
           style={{
-            maxWidth: "1200px",
+            maxWidth: "1280px",
             margin: "auto",
             display: "flex",
             justifyContent: "space-between",
@@ -239,44 +240,118 @@ export default function Home() {
             gap: "15px"
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            {/* Updated logo */}
-            <img
-              src="/images/logo.jpg"
-              alt="Logo"
-              style={{ height: "50px", width: "auto", objectFit: "contain" }}
-            />
-            <span style={{ fontSize: "24px", fontWeight: "bold" }}>
-              <span style={{ color: "#2E8B57" }}>The Greater</span> Edge
-            </span>
+          {/* Logo and Company Name - Professional styling */}
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <div
+              style={{
+                background: "linear-gradient(135deg, #2E8B57 0%, #236b45 100%)",
+                padding: "8px",
+                borderRadius: "12px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow: "0 2px 8px rgba(46, 139, 86, 0.2)"
+              }}
+            >
+              <img
+                src="/images/logo.jpg"
+                alt="Greater Edge Landscaping"
+                style={{ 
+                  height: "45px", 
+                  width: "auto", 
+                  objectFit: "contain",
+                  filter: "brightness(0) invert(1)"
+                }}
+              />
+            </div>
+            <div>
+              <span style={{ 
+                fontSize: "22px", 
+                fontWeight: "700",
+                letterSpacing: "-0.3px",
+                background: "linear-gradient(135deg, #1e293b 0%, #2d3748 100%)",
+                backgroundClip: "text",
+                WebkitBackgroundClip: "text",
+                color: "transparent"
+              }}>
+                Greater Edge
+              </span>
+              <span style={{ 
+                fontSize: "22px", 
+                fontWeight: "500",
+                color: "#2E8B57",
+                marginLeft: "4px"
+              }}>
+                Landscaping
+              </span>
+            </div>
           </div>
 
-          <div style={{ display: "flex", gap: "20px", alignItems: "center", flexWrap: "wrap" }}>
-            <Link to="/" style={{ textDecoration: "none", color: "#333", fontWeight: "500" }}>
+          {/* Navigation and Facebook Button - Improved layout */}
+          <div style={{ display: "flex", gap: "25px", alignItems: "center", flexWrap: "wrap" }}>
+            <Link 
+              to="/" 
+              style={{ 
+                textDecoration: "none", 
+                color: "#334155", 
+                fontWeight: "500",
+                fontSize: "16px",
+                transition: "color 0.2s",
+                padding: "8px 4px"
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.color = "#2E8B57"}
+              onMouseLeave={(e) => e.currentTarget.style.color = "#334155"}
+            >
               Home
             </Link>
             <Link
               to="/contact"
-              style={{ textDecoration: "none", color: "#333", fontWeight: "500" }}
+              style={{ 
+                textDecoration: "none", 
+                color: "#334155", 
+                fontWeight: "500",
+                fontSize: "16px",
+                transition: "color 0.2s",
+                padding: "8px 4px"
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.color = "#2E8B57"}
+              onMouseLeave={(e) => e.currentTarget.style.color = "#334155"}
             >
               Contact
             </Link>
 
+            {/* Professional Facebook Button */}
             <a
-              href="https://facebook.com/yourpage"
+              href="https://facebook.com/yourfacebookpage"  // CHANGE THIS TO YOUR ACTUAL FACEBOOK URL
               target="_blank"
               rel="noreferrer"
               style={{
                 background: "#1877F2",
                 color: "white",
-                padding: "8px 18px",
-                borderRadius: "25px",
+                padding: "10px 24px",
+                borderRadius: "30px",
                 textDecoration: "none",
-                fontWeight: "bold",
-                fontSize: "14px"
+                fontWeight: "600",
+                fontSize: "14px",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                transition: "all 0.2s ease",
+                boxShadow: "0 2px 5px rgba(24, 119, 242, 0.2)"
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "#166fe5";
+                e.currentTarget.style.transform = "translateY(-2px)";
+                e.currentTarget.style.boxShadow = "0 4px 12px rgba(24, 119, 242, 0.3)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "#1877F2";
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "0 2px 5px rgba(24, 119, 242, 0.2)";
               }}
             >
-              Facebook
+              <span style={{ fontSize: "16px" }}>📘</span>
+              Follow Us
             </a>
           </div>
         </div>
@@ -295,18 +370,28 @@ export default function Home() {
           Transform Your Outdoors
         </h1>
         <p style={{ fontSize: "20px", marginBottom: "30px" }}>
-          Get the edge on your neighbors
+          Professional Landscaping Services
         </p>
         <Link
           to="/contact"
           style={{
             background: "white",
             color: "#2E8B57",
-            padding: "12px 30px",
-            borderRadius: "30px",
+            padding: "14px 35px",
+            borderRadius: "40px",
             textDecoration: "none",
             fontWeight: "bold",
-            display: "inline-block"
+            display: "inline-block",
+            transition: "transform 0.2s, box-shadow 0.2s",
+            boxShadow: "0 4px 15px rgba(0,0,0,0.1)"
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = "translateY(-2px)";
+            e.currentTarget.style.boxShadow = "0 6px 20px rgba(0,0,0,0.15)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = "translateY(0)";
+            e.currentTarget.style.boxShadow = "0 4px 15px rgba(0,0,0,0.1)";
           }}
         >
           Free Estimate
@@ -476,7 +561,7 @@ export default function Home() {
           textAlign: "center"
         }}
       >
-        <p>© 2026 The Greater Edge. All rights reserved.</p>
+        <p>© 2026 Greater Edge Landscaping. All rights reserved.</p>
       </div>
     </div>
   );
