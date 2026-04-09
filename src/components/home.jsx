@@ -180,56 +180,22 @@ export default function Home() {
   return (
     <div style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", background: "#0f172a", minHeight: "100vh" }}>
       
-      {/* TOP HEADER - Just BIG LOGO, no text */}
+      {/* SINGLE HEADER - Clean with logo and nav */}
       <div style={{ 
         position: "sticky", 
         top: 0, 
         background: "#ffffff", 
-        padding: "12px 24px", 
-        boxShadow: "0 2px 10px rgba(0,0,0,0.05)", 
-        zIndex: 100,
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center"
+        padding: "16px 24px", 
+        boxShadow: "0 2px 15px rgba(0,0,0,0.08)", 
+        zIndex: 100 
       }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto", width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "16px" }}>
-          {/* BIG LOGO ONLY - No text */}
-          <img 
-            src="images/logo.jpg" 
-            alt="Greater Edge Landscaping" 
-            style={{ 
-              height: "70px", 
-              width: "auto", 
-              borderRadius: "12px",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
-            }} 
-          />
-          
-          {/* Navigation Links */}
-          <div style={{ display: "flex", gap: "28px", alignItems: "center", flexWrap: "wrap" }}>
+        <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "16px" }}>
+          <img src="images/logo.jpg" alt="Greater Edge Landscaping" style={{ height: "65px", width: "auto", borderRadius: "12px" }} />
+          <div style={{ display: "flex", gap: "32px", alignItems: "center", flexWrap: "wrap" }}>
             <a href="/" style={{ textDecoration: "none", color: "#334155", fontSize: "15px", fontWeight: "600" }}>Home</a>
             <a href="/gallery" style={{ textDecoration: "none", color: "#334155", fontSize: "15px", fontWeight: "600" }}>Gallery</a>
             <a href="/contact" style={{ textDecoration: "none", color: "#334155", fontSize: "15px", fontWeight: "600" }}>Contact Us</a>
-            <a 
-              href="https://www.facebook.com/profile.php?id=61574004541526" 
-              target="_blank" 
-              rel="noreferrer" 
-              style={{ 
-                background: "#1877F2", 
-                color: "white", 
-                padding: "8px 24px", 
-                borderRadius: "40px", 
-                textDecoration: "none", 
-                fontSize: "14px", 
-                fontWeight: "600",
-                display: "flex",
-                alignItems: "center",
-                gap: "8px"
-              }}
-            >
-              <span>📘</span>
-              Facebook
-            </a>
+            <a href="https://www.facebook.com/profile.php?id=61574004541526" target="_blank" rel="noreferrer" style={{ background: "#1877F2", color: "white", padding: "8px 24px", borderRadius: "40px", textDecoration: "none", fontSize: "14px", fontWeight: "600", display: "flex", alignItems: "center", gap: "8px" }}>📘 Facebook</a>
           </div>
         </div>
       </div>
@@ -245,12 +211,12 @@ export default function Home() {
         </div>
       )}
 
-      {/* HERO SECTION */}
-      <div style={{ background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)", padding: "80px 20px", textAlign: "center" }}>
-        <img src="images/logo.jpg" alt="Greater Edge Landscaping" style={{ width: "100%", maxWidth: "400px", height: "auto", marginBottom: "24px", borderRadius: "20px", boxShadow: "0 20px 40px rgba(0,0,0,0.3)" }} />
-        <h1 style={{ fontSize: "48px", fontWeight: "800", color: "white", marginBottom: "16px" }}>Greater Edge <span style={{ color: "#2E8B57" }}>Landscaping</span></h1>
-        <p style={{ fontSize: "20px", color: "#94a3b8", marginBottom: "32px" }}>Professional Landscaping Services</p>
-        <a href="/contact" style={{ background: "#2E8B57", color: "white", padding: "14px 38px", borderRadius: "50px", textDecoration: "none", fontWeight: "700", fontSize: "16px", display: "inline-block" }}>Free Estimate →</a>
+      {/* HERO SECTION - BIGGER IMAGE */}
+      <div style={{ background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)", padding: "100px 20px", textAlign: "center" }}>
+        <img src="images/logo.jpg" alt="Greater Edge Landscaping" style={{ width: "100%", maxWidth: "500px", height: "auto", marginBottom: "30px", borderRadius: "24px", boxShadow: "0 30px 50px rgba(0,0,0,0.3)" }} />
+        <h1 style={{ fontSize: "52px", fontWeight: "800", color: "white", marginBottom: "16px" }}>Greater Edge <span style={{ color: "#2E8B57" }}>Landscaping</span></h1>
+        <p style={{ fontSize: "22px", color: "#94a3b8", marginBottom: "32px" }}>Family Owned & Operated</p>
+        <a href="/contact" style={{ background: "#2E8B57", color: "white", padding: "14px 42px", borderRadius: "50px", textDecoration: "none", fontWeight: "700", fontSize: "18px", display: "inline-block" }}>Free Estimate →</a>
       </div>
 
       {/* OUR WORK */}
@@ -260,7 +226,7 @@ export default function Home() {
         <p style={{ color: "#94a3b8", marginTop: "20px", fontSize: "16px" }}>See the difference we make</p>
       </div>
 
-      {/* PROJECTS */}
+      {/* PROJECTS - CLEAN STRUCTURE, NO BLANK IMAGES */}
       <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "20px 16px 100px" }}>
         {projects.map(project => {
           const visiblePairs = project.pairs.slice(0, 3);
@@ -273,18 +239,30 @@ export default function Home() {
                 <p style={{ color: "#94a3b8", fontSize: "14px", marginTop: "8px" }}>Before & After Transformations</p>
               </div>
               
-              {visiblePairs.map((pair, idx) => (
-                <div key={idx} style={{ marginBottom: idx < visiblePairs.length - 1 ? "60px" : "0" }}>
-                  {idx > 0 && (
-                    <div style={{ marginBottom: "20px" }}>
-                      <h4 style={{ fontSize: "18px", fontWeight: "500", color: "#2E8B57", margin: 0 }}>Another Transformation</h4>
-                      <p style={{ color: "#94a3b8", fontSize: "12px", marginTop: "4px" }}>Project {idx + 1}</p>
-                    </div>
-                  )}
-                  <Slider before={pair.before} after={pair.after} sliderId={`${project.id}_${idx}`} />
-                </div>
-              ))}
+              {/* First 3 sliders */}
+              <Slider before={visiblePairs[0].before} after={visiblePairs[0].after} sliderId={`${project.id}_0`} />
               
+              {visiblePairs[1] && (
+                <div style={{ marginTop: "60px" }}>
+                  <div style={{ marginBottom: "20px" }}>
+                    <h4 style={{ fontSize: "18px", fontWeight: "500", color: "#2E8B57", margin: 0 }}>Another Transformation</h4>
+                    <p style={{ color: "#94a3b8", fontSize: "12px", marginTop: "4px" }}>Project 2</p>
+                  </div>
+                  <Slider before={visiblePairs[1].before} after={visiblePairs[1].after} sliderId={`${project.id}_1`} />
+                </div>
+              )}
+              
+              {visiblePairs[2] && (
+                <div style={{ marginTop: "60px" }}>
+                  <div style={{ marginBottom: "20px" }}>
+                    <h4 style={{ fontSize: "18px", fontWeight: "500", color: "#2E8B57", margin: 0 }}>Another Transformation</h4>
+                    <p style={{ color: "#94a3b8", fontSize: "12px", marginTop: "4px" }}>Project 3</p>
+                  </div>
+                  <Slider before={visiblePairs[2].before} after={visiblePairs[2].after} sliderId={`${project.id}_2`} />
+                </div>
+              )}
+              
+              {/* Dropdown for extra pairs */}
               {extraPairs.length > 0 && (
                 <div style={{ marginTop: "50px" }}>
                   <button onClick={() => setShowMore(prev => ({ ...prev, [project.id]: !prev[project.id] }))} style={{ width: "100%", padding: "16px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "15px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -308,7 +286,7 @@ export default function Home() {
       {/* FOOTER */}
       <div style={{ background: "#020617", color: "#64748b", padding: "45px 20px", textAlign: "center", fontSize: "13px", borderTop: "1px solid #1e293b" }}>
         <p>© 2026 Greater Edge Landscaping LLC. All rights reserved.</p>
-        <p style={{ marginTop: "12px", fontSize: "12px" }}>Professional Landscaping Services</p>
+        <p style={{ marginTop: "12px", fontSize: "12px" }}>Family Owned & Operated</p>
       </div>
     </div>
   );
