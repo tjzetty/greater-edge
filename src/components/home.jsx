@@ -2,6 +2,7 @@ import { useState } from "preact/hooks";
 
 export default function Home() {
   const [showMore, setShowMore] = useState({});
+  const [showLawnGallery, setShowLawnGallery] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState("");
   const [currentImageTitle, setCurrentImageTitle] = useState("");
@@ -52,7 +53,6 @@ export default function Home() {
 
   const Slider = ({ before, after, sliderId }) => {
     const [pos, setPos] = useState(50);
-    
     return (
       <div style={{ position: "relative", width: "100%", aspectRatio: "4/3", background: "#1a1a1a", borderRadius: "16px", overflow: "hidden" }}>
         <img src={after} alt="After" style={{ width: "100%", height: "100%", objectFit: "cover", cursor: "pointer" }}
@@ -134,7 +134,6 @@ export default function Home() {
     );
   };
 
-  // Lawn section is now a GALLERY (no before/after)
   const projects = [
     { id: 1, name: "Brick Pavers & Patios", pairs: [
       { before: "images/paver1.jpg", after: "images/paver2.jpg" },
@@ -142,14 +141,13 @@ export default function Home() {
       { before: "images/paver5.jpg", after: "images/paver6.jpg" },
       { before: "images/paver7.jpg", after: "images/paver8.jpg" }
     ]},
-    { id: 2, name: "Great Cuts", isLawnGallery: true, images: [
-      "images/lawn1.jpg",
-      "images/lawn2.jpg",
-      "images/lawn3.jpg",
-      "images/lawn4.jpg",
-      "images/lawn5.jpg",
-      "images/lawn6.jpg"
-    ]},
+    { 
+      id: 2, 
+      name: "Great Cuts", 
+      isLawn: true,
+      mainImage: "images/lawn1.jpg",
+      extraImages: ["images/lawn2.jpg", "images/lawn3.jpg", "images/lawn4.jpg", "images/lawn5.jpg", "images/lawn6.jpg"]
+    },
     { id: 3, name: "Bed Clean Up", pairs: [
       { before: "images/bedcleanup1.jpg", after: "images/bedcleanup2.jpg" },
       { before: "images/bedcleanup3.jpg", after: "images/bedcleanup4.jpg" },
@@ -185,15 +183,8 @@ export default function Home() {
   return (
     <div style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", background: "#0f172a", minHeight: "100vh" }}>
       
-      {/* HEADER - More Professional Links */}
-      <div style={{ 
-        position: "sticky", 
-        top: 0, 
-        background: "#ffffff", 
-        padding: "16px 24px", 
-        boxShadow: "0 1px 3px rgba(0,0,0,0.05)", 
-        zIndex: 100 
-      }}>
+      {/* HEADER */}
+      <div style={{ position: "sticky", top: 0, background: "#ffffff", padding: "16px 24px", boxShadow: "0 1px 3px rgba(0,0,0,0.05)", zIndex: 100 }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "16px" }}>
           <img src="images/logo.jpg" alt="Greater Edge Landscaping" style={{ height: "60px", width: "auto", borderRadius: "12px" }} />
           <div style={{ display: "flex", gap: "32px", alignItems: "center", flexWrap: "wrap" }}>
@@ -234,22 +225,38 @@ export default function Home() {
       {/* PROJECTS */}
       <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "20px 16px 100px" }}>
         {projects.map(project => {
-          if (project.isLawnGallery) {
-            // LAWN SECTION - Gallery only, no before/after
-            const galleryImages = project.images.map(img => ({ src: img, title: `${project.name} - Beautiful Lawn` }));
+          if (project.isLawn) {
+            // Lawn section: main image + dropdown gallery (no before/after)
+            const allLawnImages = [project.mainImage, ...project.extraImages];
+            const galleryItems = allLawnImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
             return (
               <div key={project.id} style={{ marginBottom: "180px" }}>
                 <div style={{ marginBottom: "30px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
                   <h3 style={{ fontSize: "28px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
                   <p style={{ color: "#94a3b8", fontSize: "14px", marginTop: "8px" }}>Beautiful, healthy lawns</p>
                 </div>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "24px" }}>
-                  {project.images.map((img, idx) => (
-                    <div key={idx} style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", transition: "transform 0.2s" }} onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.02)"} onMouseLeave={(e) => e.currentTarget.style.transform = "scale(1)"}>
-                      <img src={img} alt={`Lawn ${idx + 1}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 1}`, galleryImages, idx)} />
-                    </div>
-                  ))}
+                {/* Main large image */}
+                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "30px" }}>
+                  <img src={project.mainImage} alt="Main Lawn" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
                 </div>
+                {/* Dropdown for extra images */}
+                {project.extraImages.length > 0 && (
+                  <div>
+                    <button onClick={() => setShowLawnGallery(!showLawnGallery)} style={{ width: "100%", padding: "16px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "15px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <span>📸 More Lawn Photos ({project.extraImages.length})</span>
+                      <span style={{ transform: showLawnGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "18px" }}>▼</span>
+                    </button>
+                    {showLawnGallery && (
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "20px", marginTop: "25px" }}>
+                        {project.extraImages.map((img, idx) => (
+                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
+                            <img src={img} alt={`Lawn ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             );
           }
