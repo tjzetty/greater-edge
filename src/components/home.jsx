@@ -4,6 +4,7 @@ import { Link } from "preact-router/match";
 export default function Home() {
   const [showMore, setShowMore] = useState({});
   const [sliderPositions, setSliderPositions] = useState({});
+  const [imageErrors, setImageErrors] = useState({});
 
   const toggle = (id) => {
     setShowMore((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -13,6 +14,14 @@ export default function Home() {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
     setSliderPositions((prev) => ({ ...prev, [id]: x }));
+  };
+
+  const handleImageError = (projectId, imageType) => {
+    setImageErrors((prev) => ({ 
+      ...prev, 
+      [`${projectId}-${imageType}`]: true 
+    }));
+    console.error(`Failed to load ${imageType} image for project ${projectId}`);
   };
 
   // Reordered projects - Pavers and Lawn at the top
@@ -68,9 +77,42 @@ export default function Home() {
     }
   ];
 
-  // Fixed Before/After Slider - No zooming issues
-  const BeforeAfterSlider = ({ beforeImg, afterImg, id }) => {
+  // Before/After Slider with error handling
+  const BeforeAfterSlider = ({ beforeImg, afterImg, id, projectName }) => {
     const sliderPos = sliderPositions[id] !== undefined ? sliderPositions[id] : 50;
+    const beforeError = imageErrors[`${id}-before`];
+    const afterError = imageErrors[`${id}-after`];
+
+    if (beforeError || afterError) {
+      return (
+        <div
+          style={{
+            width: "100%",
+            aspectRatio: "4/3",
+            borderRadius: "12px",
+            backgroundColor: "#f8f9fa",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "10px",
+            border: "2px dashed #dee2e6"
+          }}
+        >
+          <span style={{ fontSize: "48px" }}>⚠️</span>
+          <p style={{ color: "#dc2626", textAlign: "center", padding: "0 20px" }}>
+            <strong>Image not found</strong>
+            <br />
+            <span style={{ fontSize: "12px", color: "#6c757d" }}>
+              {beforeError ? `Missing: ${beforeImg}` : afterError ? `Missing: ${afterImg}` : ""}
+            </span>
+          </p>
+          <p style={{ fontSize: "12px", color: "#6c757d", textAlign: "center" }}>
+            Please check that both before and after images exist in your /images/ folder
+          </p>
+        </div>
+      );
+    }
 
     return (
       <div
@@ -102,13 +144,14 @@ export default function Home() {
         >
           <img
             src={afterImg}
-            alt="After"
+            alt={`${projectName} - After`}
             style={{
               width: "100%",
               height: "100%",
               objectFit: "cover",
               objectPosition: "center center"
             }}
+            onError={() => handleImageError(id, "after")}
           />
         </div>
 
@@ -125,13 +168,14 @@ export default function Home() {
         >
           <img
             src={beforeImg}
-            alt="Before"
+            alt={`${projectName} - Before`}
             style={{
               width: "100%",
               height: "100%",
               objectFit: "cover",
               objectPosition: "center center"
             }}
+            onError={() => handleImageError(id, "before")}
           />
         </div>
 
@@ -217,13 +261,13 @@ export default function Home() {
 
   return (
     <div>
-      {/* HEADER - Redesigned with professional styling */}
+      {/* HEADER - Professional with original logo */}
       <div
         style={{
           position: "sticky",
           top: 0,
           background: "white",
-          padding: "12px 20px",
+          padding: "15px 20px",
           boxShadow: "0 2px 15px rgba(0,0,0,0.08)",
           zIndex: 100,
           borderBottom: "1px solid #e8edf2"
@@ -240,54 +284,49 @@ export default function Home() {
             gap: "15px"
           }}
         >
-          {/* Logo and Company Name - Professional styling */}
-          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-            <div
-              style={{
-                background: "linear-gradient(135deg, #2E8B57 0%, #236b45 100%)",
-                padding: "8px",
-                borderRadius: "12px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                boxShadow: "0 2px 8px rgba(46, 139, 86, 0.2)"
+          {/* Logo and Company Name - Professional layout */}
+          <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
+            {/* Original logo - no filters */}
+            <img
+              src="/images/logo.jpg"
+              alt="Greater Edge Landscaping Logo"
+              style={{ 
+                height: "55px", 
+                width: "auto", 
+                objectFit: "contain"
               }}
-            >
-              <img
-                src="/images/logo.jpg"
-                alt="Greater Edge Landscaping"
-                style={{ 
-                  height: "45px", 
-                  width: "auto", 
-                  objectFit: "contain",
-                  filter: "brightness(0) invert(1)"
-                }}
-              />
-            </div>
-            <div>
+              onError={(e) => {
+                console.error("Logo not found at /images/logo.jpg");
+                e.target.style.display = "none";
+              }}
+            />
+            
+            {/* Company Name - Professional black font */}
+            <div style={{ 
+              display: "flex", 
+              flexDirection: "column",
+              lineHeight: 1.2
+            }}>
               <span style={{ 
                 fontSize: "22px", 
                 fontWeight: "700",
-                letterSpacing: "-0.3px",
-                background: "linear-gradient(135deg, #1e293b 0%, #2d3748 100%)",
-                backgroundClip: "text",
-                WebkitBackgroundClip: "text",
-                color: "transparent"
+                color: "#1a1a1a",
+                letterSpacing: "-0.2px"
               }}>
-                Greater Edge
+                Greater Edge Landscaping
               </span>
               <span style={{ 
-                fontSize: "22px", 
+                fontSize: "14px", 
                 fontWeight: "500",
                 color: "#2E8B57",
-                marginLeft: "4px"
+                letterSpacing: "0.3px"
               }}>
-                Landscaping
+                LLC
               </span>
             </div>
           </div>
 
-          {/* Navigation and Facebook Button - Improved layout */}
+          {/* Navigation and Facebook Button */}
           <div style={{ display: "flex", gap: "25px", alignItems: "center", flexWrap: "wrap" }}>
             <Link 
               to="/" 
@@ -322,7 +361,7 @@ export default function Home() {
 
             {/* Professional Facebook Button */}
             <a
-              href="https://facebook.com/yourfacebookpage"  // CHANGE THIS TO YOUR ACTUAL FACEBOOK URL
+              href="https://facebook.com/yourfacebookpage"
               target="_blank"
               rel="noreferrer"
               style={{
@@ -424,13 +463,14 @@ export default function Home() {
                 {project.name}
               </h3>
 
-              {/* Before/After Slider (if after image exists) */}
+              {/* Before/After Slider */}
               {hasAfter ? (
                 <div style={{ marginBottom: "20px" }}>
                   <BeforeAfterSlider
                     beforeImg={project.main}
                     afterImg={project.after}
                     id={project.id}
+                    projectName={project.name}
                   />
                 </div>
               ) : (
@@ -450,6 +490,10 @@ export default function Home() {
                       width: "100%",
                       height: "100%",
                       objectFit: "cover"
+                    }}
+                    onError={(e) => {
+                      console.error(`Failed to load main image: ${project.main}`);
+                      e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23f0f0f0'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23999' font-family='sans-serif'%3EImage not found%3C/text%3E%3C/svg%3E";
                     }}
                   />
                 </div>
@@ -476,8 +520,6 @@ export default function Home() {
                       alignItems: "center",
                       transition: "all 0.2s"
                     }}
-                    onMouseEnter={(e) => e.currentTarget.style.background = "#f1f5f9"}
-                    onMouseLeave={(e) => e.currentTarget.style.background = "#f8f9fa"}
                   >
                     <span>
                       📸 Additional Photos ({project.rest.length})
@@ -491,7 +533,6 @@ export default function Home() {
                     </span>
                   </button>
 
-                  {/* Expandable Gallery */}
                   {expanded && (
                     <div
                       style={{
@@ -514,8 +555,6 @@ export default function Home() {
                             transition: "transform 0.2s",
                             boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
                           }}
-                          onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.02)"}
-                          onMouseLeave={(e) => e.currentTarget.style.transform = "scale(1)"}
                         >
                           <img
                             src={img}
@@ -525,6 +564,9 @@ export default function Home() {
                               height: "100%",
                               objectFit: "cover"
                             }}
+                            onError={(e) => {
+                              console.error(`Failed to load additional image: ${img}`);
+                            }}
                           />
                         </div>
                       ))}
@@ -533,7 +575,6 @@ export default function Home() {
                 </div>
               )}
 
-              {/* If no additional photos, show a subtle indicator */}
               {!hasRest && (
                 <div
                   style={{
@@ -561,7 +602,7 @@ export default function Home() {
           textAlign: "center"
         }}
       >
-        <p>© 2026 Greater Edge Landscaping. All rights reserved.</p>
+        <p>© 2026 Greater Edge Landscaping LLC. All rights reserved.</p>
       </div>
     </div>
   );
