@@ -145,8 +145,8 @@ export default function Home() {
       id: 2, 
       name: "Great Cuts", 
       isLawn: true,
-      mainImage: "images/lawn1.jpg",
-      extraImages: ["images/lawn2.jpg", "images/lawn3.jpg", "images/lawn4.jpg", "images/lawn5.jpg", "images/lawn6.jpg"]
+      mainImage: "images/lawn2.jpg",
+      extraImages: ["images/lawn1.jpg", "images/lawn3.jpg", "images/lawn4.jpg", "images/lawn5.jpg", "images/lawn6.jpg"]
     },
     { id: 3, name: "Bed Clean Up", pairs: [
       { before: "images/bedcleanup1.jpg", after: "images/bedcleanup2.jpg" },
