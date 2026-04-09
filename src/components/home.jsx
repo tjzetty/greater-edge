@@ -1,374 +1,417 @@
+import { Match } from "preact-router/match";
+import { Link } from "preact-router/match";
 import { useState } from "preact/hooks";
 
-export default function Home() {
-  const [showMore, setShowMore] = useState({});
+export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const toggleDropdown = (id) => {
-    setShowMore(prev => ({ ...prev, [id]: !prev[id] }));
-  };
-
-  const projects = [
-    { 
-      id: 1, 
-      name: "Brick Pavers & Patios", 
-      before: "images/paver1.jpg", 
-      after: "images/paver2.jpg",
-      hasSecondSlider: true,
-      secondBefore: "images/paver3.jpg",
-      secondAfter: "images/paver4.jpg",
-      extras: [] 
-    },
-    { 
-      id: 2, 
-      name: "Lawn Transformations", 
-      isImage: true,
-      image: "images/lawn2.jpg",
-      extras: [] 
-    },
-    { id: 3, name: "Bed Clean Up", before: "images/bedcleanup1.jpg", after: "images/bedcleanup2.jpg", hasSecondSlider: false, extras: [] },
-    { id: 4, name: "Bush & Hedge Trimming", before: "images/bushtrim1.jpg", after: "images/bushtrim2.jpg", hasSecondSlider: false, extras: [] },
-    { id: 5, name: "Fall Clean Ups", before: "images/fallcleanup1.jpg", after: "images/fallcleanup2.jpg", hasSecondSlider: false, extras: [] },
-    { id: 6, name: "Mulching & Bed Maintenance", before: "images/mulch1.jpg", after: "images/mulch2.jpg", hasSecondSlider: false, extras: [] },
-    { id: 7, name: "Power Washing", before: "images/powerwashing1.jpg", after: "images/powerwashing2.jpg", hasSecondSlider: false, extras: [] }
-  ];
-
-  const Slider = ({ before, after, sliderId }) => {
-    const [pos, setPos] = useState(50);
-    
-    return (
-      <div 
-        style={{ 
-          position: "relative", 
-          width: "100%", 
-          aspectRatio: "4/3", 
-          background: "#1a1a1a", 
-          borderRadius: "16px", 
-          overflow: "hidden"
-        }}
-      >
-        <img src={after} alt="After" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-        <div style={{ position: "absolute", top: 0, left: 0, width: `${pos}%`, height: "100%", overflow: "hidden" }}>
-          <img src={before} alt="Before" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-        </div>
-        
-        <div 
-          style={{ 
-            position: "absolute", 
-            top: 0, 
-            bottom: 0,
-            left: `${pos}%`,
-            width: "60px",
-            transform: "translateX(-50%)",
-            cursor: "ew-resize",
-            zIndex: 20,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            touchAction: "none"
-          }}
-          onMouseDown={(e) => {
-            e.preventDefault();
-            const sliderDiv = e.currentTarget.parentElement;
-            const onMove = (moveEvent) => {
-              const rect = sliderDiv.getBoundingClientRect();
-              let clientX = moveEvent.touches ? moveEvent.touches[0].clientX : moveEvent.clientX;
-              let x = (clientX - rect.left) / rect.width;
-              x = Math.min(0.98, Math.max(0.02, x));
-              setPos(x * 100);
-            };
-            const onUp = () => {
-              document.removeEventListener('mousemove', onMove);
-              document.removeEventListener('mouseup', onUp);
-              document.removeEventListener('touchmove', onMove);
-              document.removeEventListener('touchend', onUp);
-            };
-            document.addEventListener('mousemove', onMove);
-            document.addEventListener('mouseup', onUp);
-            document.addEventListener('touchmove', onMove, { passive: false });
-            document.addEventListener('touchend', onUp);
-          }}
-          onTouchStart={(e) => {
-            e.preventDefault();
-            const sliderDiv = e.currentTarget.parentElement;
-            const onMove = (moveEvent) => {
-              const rect = sliderDiv.getBoundingClientRect();
-              let clientX = moveEvent.touches[0].clientX;
-              let x = (clientX - rect.left) / rect.width;
-              x = Math.min(0.98, Math.max(0.02, x));
-              setPos(x * 100);
-            };
-            const onUp = () => {
-              document.removeEventListener('touchmove', onMove);
-              document.removeEventListener('touchend', onUp);
-            };
-            document.addEventListener('touchmove', onMove, { passive: false });
-            document.addEventListener('touchend', onUp);
-          }}
-        >
-          <div style={{ 
-            background: "white", 
-            padding: "10px 16px", 
-            borderRadius: "40px", 
-            fontSize: "13px", 
-            fontWeight: "bold", 
-            color: "#1e293b",
-            whiteSpace: "nowrap",
-            boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
-            pointerEvents: "none"
-          }}>
-            ◀ DRAG ▶
-          </div>
-        </div>
-        
-        <div style={{ position: "absolute", bottom: "12px", left: "12px", background: "rgba(0,0,0,0.6)", color: "white", padding: "4px 12px", borderRadius: "20px", fontSize: "11px", fontWeight: "500" }}>BEFORE</div>
-        <div style={{ position: "absolute", bottom: "12px", right: "12px", background: "rgba(0,0,0,0.6)", color: "white", padding: "4px 12px", borderRadius: "20px", fontSize: "11px", fontWeight: "500" }}>AFTER</div>
-      </div>
-    );
-  };
-
-  const SingleImage = ({ image, title }) => {
-    return (
-      <div style={{ 
-        background: "#1a1a1a", 
-        borderRadius: "16px", 
-        overflow: "hidden",
-        aspectRatio: "4/3",
-        boxShadow: "0 4px 20px rgba(0,0,0,0.2)"
-      }}>
-        <img 
-          src={image} 
-          alt={title} 
-          style={{ width: "100%", height: "100%", objectFit: "cover" }} 
-        />
-      </div>
-    );
-  };
-
   return (
-    <div style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", background: "#0f172a", minHeight: "100vh" }}>
-      
-      {/* PROFESSIONAL HEADER - REDESIGNED */}
-      <header style={{ 
-        position: "sticky", 
-        top: 0, 
-        background: "#ffffff", 
-        boxShadow: "0 1px 3px rgba(0,0,0,0.05), 0 2px 6px rgba(0,0,0,0.03)",
-        zIndex: 100,
-        width: "100%"
-      }}>
-        <div style={{ 
-          maxWidth: "1280px", 
-          margin: "0 auto", 
-          padding: "16px 24px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          flexWrap: "wrap",
-          gap: "16px"
-        }}>
+    <>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap');
+        
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+        
+        .header-new {
+          position: sticky;
+          top: 0;
+          width: 100%;
+          background: #ffffff;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+          z-index: 1000;
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        .header-container {
+          max-width: 1400px;
+          margin: 0 auto;
+          padding: 20px 32px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 40px;
+        }
+        
+        /* Logo Section - BIGGER */
+        .logo-area {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          text-decoration: none;
+        }
+        
+        .logo-img {
+          width: 60px;
+          height: 60px;
+          object-fit: cover;
+          border-radius: 16px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        
+        .company-text {
+          display: flex;
+          flex-direction: column;
+        }
+        
+        .company-main {
+          font-size: 28px;
+          font-weight: 800;
+          color: #0f172a;
+          letter-spacing: -0.5px;
+          line-height: 1.2;
+        }
+        
+        .company-main span {
+          color: #2E8B57;
+        }
+        
+        .company-sub {
+          font-size: 13px;
+          color: #64748b;
+          font-weight: 500;
+          letter-spacing: 0.3px;
+          margin-top: 4px;
+        }
+        
+        /* Desktop Navigation - CLEAN LINKS */
+        .nav-links {
+          display: flex;
+          gap: 48px;
+          align-items: center;
+        }
+        
+        .nav-item {
+          text-decoration: none;
+          color: #1e293b;
+          font-size: 16px;
+          font-weight: 600;
+          transition: all 0.2s ease;
+          padding: 8px 0;
+          position: relative;
+        }
+        
+        .nav-item:hover {
+          color: #2E8B57;
+        }
+        
+        .nav-item.current {
+          color: #2E8B57;
+        }
+        
+        .nav-item.current::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 3px;
+          background: #2E8B57;
+          border-radius: 3px;
+        }
+        
+        /* Facebook Button - BOLD */
+        .fb-btn {
+          background: #1877F2;
+          color: white;
+          padding: 10px 28px;
+          border-radius: 50px;
+          text-decoration: none;
+          font-size: 15px;
+          font-weight: 700;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          transition: all 0.2s ease;
+          box-shadow: 0 2px 8px rgba(24, 119, 242, 0.2);
+        }
+        
+        .fb-btn:hover {
+          background: #166fe5;
+          transform: translateY(-2px);
+          box-shadow: 0 6px 16px rgba(24, 119, 242, 0.3);
+        }
+        
+        .fb-icon {
+          font-size: 18px;
+        }
+        
+        /* Mobile Menu Button */
+        .mobile-toggle {
+          display: none;
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 12px;
+          z-index: 1001;
+        }
+        
+        .hamburger {
+          width: 28px;
+          height: 3px;
+          background: #1e293b;
+          position: relative;
+          border-radius: 3px;
+          transition: all 0.3s ease;
+        }
+        
+        .hamburger::before,
+        .hamburger::after {
+          content: '';
+          position: absolute;
+          width: 28px;
+          height: 3px;
+          background: #1e293b;
+          border-radius: 3px;
+          transition: all 0.3s ease;
+        }
+        
+        .hamburger::before {
+          top: -9px;
+        }
+        
+        .hamburger::after {
+          bottom: -9px;
+        }
+        
+        .hamburger.open {
+          background: transparent;
+        }
+        
+        .hamburger.open::before {
+          transform: rotate(45deg);
+          top: 0;
+        }
+        
+        .hamburger.open::after {
+          transform: rotate(-45deg);
+          bottom: 0;
+        }
+        
+        /* Mobile Menu */
+        .mobile-menu {
+          display: none;
+          position: fixed;
+          top: 100px;
+          left: 0;
+          right: 0;
+          background: #ffffff;
+          padding: 32px 24px;
+          box-shadow: 0 20px 35px rgba(0,0,0,0.1);
+          border-top: 1px solid #eef2f6;
+          z-index: 999;
+        }
+        
+        .mobile-menu.open {
+          display: block;
+        }
+        
+        .mobile-nav {
+          display: flex;
+          flex-direction: column;
+          gap: 24px;
+          align-items: center;
+        }
+        
+        .mobile-nav-item {
+          text-decoration: none;
+          color: #1e293b;
+          font-size: 20px;
+          font-weight: 600;
+          padding: 12px;
+          width: 100%;
+          text-align: center;
+        }
+        
+        .mobile-nav-item.current {
+          color: #2E8B57;
+          background: #f0fdf4;
+          border-radius: 16px;
+        }
+        
+        .mobile-fb {
+          background: #1877F2;
+          color: white;
+          padding: 14px 28px;
+          border-radius: 50px;
+          text-decoration: none;
+          font-size: 18px;
+          font-weight: 700;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 12px;
+          width: 100%;
+          margin-top: 16px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 900px) {
+          .header-container {
+            padding: 16px 24px;
+          }
           
-          {/* Logo Section */}
-          <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
-            <div style={{
-              width: "48px",
-              height: "48px",
-              background: "#f0fdf4",
-              borderRadius: "12px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              overflow: "hidden"
-            }}>
-              <img 
-                src="images/logo.jpg" 
-                alt="Greater Edge Landscaping" 
-                style={{ 
-                  width: "100%", 
-                  height: "100%", 
-                  objectFit: "cover",
-                  display: "block"
-                }} 
-              />
-            </div>
-            <div>
-              <h1 style={{ 
-                fontSize: "20px", 
-                fontWeight: "700", 
-                margin: 0,
-                color: "#0f172a",
-                letterSpacing: "-0.3px"
-              }}>
-                Greater Edge <span style={{ color: "#2E8B57" }}>Landscaping</span>
-              </h1>
-              <p style={{ 
-                fontSize: "12px", 
-                margin: "2px 0 0",
-                color: "#64748b",
-                fontWeight: "500"
-              }}>
-                Professional Landscaping Services
-              </p>
-            </div>
-          </div>
+          .company-main {
+            font-size: 22px;
+          }
           
-          {/* Navigation Links - Desktop */}
-          <nav style={{ 
-            display: "flex", 
-            gap: "32px", 
-            alignItems: "center",
-            flexWrap: "wrap"
-          }}>
-            <a 
-              href="/" 
-              style={{ 
-                textDecoration: "none", 
-                color: "#334155", 
-                fontSize: "15px", 
-                fontWeight: "500",
-                transition: "color 0.2s"
+          .logo-img {
+            width: 50px;
+            height: 50px;
+          }
+        }
+        
+        @media (max-width: 768px) {
+          .nav-links {
+            display: none;
+          }
+          
+          .mobile-toggle {
+            display: block;
+          }
+          
+          .header-container {
+            padding: 14px 20px;
+          }
+          
+          .company-main {
+            font-size: 18px;
+          }
+          
+          .company-sub {
+            font-size: 10px;
+          }
+          
+          .logo-img {
+            width: 44px;
+            height: 44px;
+          }
+        }
+        
+        @media (min-width: 769px) {
+          .mobile-menu {
+            display: none !important;
+          }
+        }
+      `}</style>
+
+      <div className="header-new">
+        <div className="header-container">
+          
+          {/* LOGO - BIGGER COMPANY NAME */}
+          <a href="/" className="logo-area">
+            <img 
+              src="/images/logo.jpg" 
+              alt="Logo" 
+              className="logo-img"
+              onError={(e) => {
+                e.target.src = "https://placehold.co/200x200/2E8B57/white?text=GEL";
               }}
-              onMouseEnter={(e) => e.currentTarget.style.color = "#2E8B57"}
-              onMouseLeave={(e) => e.currentTarget.style.color = "#334155"}
-            >
-              Home
-            </a>
-            <a 
-              href="/contact" 
-              style={{ 
-                textDecoration: "none", 
-                color: "#334155", 
-                fontSize: "15px", 
-                fontWeight: "500",
-                transition: "color 0.2s"
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.color = "#2E8B57"}
-              onMouseLeave={(e) => e.currentTarget.style.color = "#334155"}
-            >
-              Contact
-            </a>
+            />
+            <div className="company-text">
+              <div className="company-main">
+                Greater Edge <span>Landscaping</span>
+              </div>
+              <div className="company-sub">PROFESSIONAL LANDSCAPING SERVICES</div>
+            </div>
+          </a>
+
+          {/* DESKTOP NAVIGATION - CLEAR LINKS */}
+          <div className="nav-links">
+            <Match path="/">
+              {({ matches }) => (
+                <Link href="/" className={`nav-item ${matches ? 'current' : ''}`}>
+                  Home
+                </Link>
+              )}
+            </Match>
+            <Match path="/gallery">
+              {({ matches }) => (
+                <Link href="/gallery" className={`nav-item ${matches ? 'current' : ''}`}>
+                  Gallery
+                </Link>
+              )}
+            </Match>
+            <Match path="/contact">
+              {({ matches }) => (
+                <Link href="/contact" className={`nav-item ${matches ? 'current' : ''}`}>
+                  Contact Us
+                </Link>
+              )}
+            </Match>
             <a 
               href="https://www.facebook.com/profile.php?id=61574004541526" 
               target="_blank" 
               rel="noreferrer" 
-              style={{ 
-                background: "#1877F2", 
-                color: "white", 
-                padding: "8px 20px", 
-                borderRadius: "40px", 
-                textDecoration: "none", 
-                fontSize: "14px", 
-                fontWeight: "600",
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                transition: "all 0.2s",
-                boxShadow: "0 1px 2px rgba(0,0,0,0.05)"
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "#166fe5";
-                e.currentTarget.style.transform = "translateY(-1px)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "#1877F2";
-                e.currentTarget.style.transform = "translateY(0)";
-              }}
+              className="fb-btn"
             >
-              <span style={{ fontSize: "14px" }}>📘</span>
-              Follow Us
+              <span className="fb-icon">📘</span>
+              Facebook
             </a>
-          </nav>
+          </div>
+
+          {/* MOBILE MENU BUTTON */}
+          <button 
+            className="mobile-toggle" 
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Menu"
+          >
+            <div className={`hamburger ${mobileMenuOpen ? 'open' : ''}`}></div>
+          </button>
         </div>
-      </header>
 
-      {/* HERO */}
-      <div style={{ background: "linear-gradient(135deg, #2E8B57 0%, #1e6b43 100%)", padding: "80px 20px", textAlign: "center", color: "white" }}>
-        <h1 style={{ fontSize: "44px", fontWeight: "700", marginBottom: "16px", letterSpacing: "-0.5px" }}>Transform Your Outdoors</h1>
-        <p style={{ fontSize: "18px", marginBottom: "28px", opacity: 0.95 }}>Professional Landscaping Services</p>
-        <a href="/contact" style={{ background: "white", color: "#2E8B57", padding: "14px 38px", borderRadius: "50px", textDecoration: "none", fontWeight: "700", fontSize: "16px", display: "inline-block", boxShadow: "0 4px 15px rgba(0,0,0,0.1)" }}>Free Estimate →</a>
-      </div>
-
-      {/* OUR WORK */}
-      <div style={{ textAlign: "center", padding: "70px 20px 30px" }}>
-        <h2 style={{ fontSize: "36px", fontWeight: "700", color: "white", margin: 0 }}>Our Work</h2>
-        <div style={{ width: "60px", height: "4px", background: "#2E8B57", margin: "20px auto 0", borderRadius: "2px" }}></div>
-        <p style={{ color: "#94a3b8", marginTop: "20px", fontSize: "16px" }}>See the difference we make</p>
-      </div>
-
-      {/* PROJECTS */}
-      <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "20px 16px 100px" }}>
-        {projects.map(project => {
-          const secondSliderId = project.hasSecondSlider ? project.id + 10 : null;
-          
-          return (
-            <div key={project.id} style={{ marginBottom: "180px" }}>
-              
-              <div style={{ marginBottom: "30px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
-                <h3 style={{ fontSize: "28px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
-                <p style={{ color: "#94a3b8", fontSize: "14px", marginTop: "8px" }}>
-                  {project.isImage ? "Featured Work" : "Before & After Transformations"}
-                </p>
-              </div>
-              
-              {project.isImage ? (
-                <SingleImage image={project.image} title={project.name} />
-              ) : (
-                <>
-                  <Slider before={project.before} after={project.after} sliderId={project.id} />
-                  
-                  {project.hasSecondSlider && (
-                    <div style={{ marginTop: "80px" }}>
-                      <div style={{ marginBottom: "20px" }}>
-                        <h4 style={{ fontSize: "20px", fontWeight: "500", color: "#2E8B57", margin: 0 }}>Another Transformation</h4>
-                        <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "6px" }}>Another project completed</p>
-                      </div>
-                      <Slider before={project.secondBefore} after={project.secondAfter} sliderId={secondSliderId} />
-                    </div>
-                  )}
-                </>
+        {/* MOBILE MENU */}
+        <div className={`mobile-menu ${mobileMenuOpen ? 'open' : ''}`}>
+          <div className="mobile-nav">
+            <Match path="/">
+              {({ matches }) => (
+                <Link 
+                  href="/" 
+                  className={`mobile-nav-item ${matches ? 'current' : ''}`}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Home
+                </Link>
               )}
-              
-              {project.extras.length > 0 && (
-                <div style={{ marginTop: "45px" }}>
-                  <button 
-                    onClick={() => toggleDropdown(project.id)} 
-                    style={{ 
-                      width: "100%", 
-                      padding: "16px", 
-                      background: "#1e293b", 
-                      border: "1px solid #334155", 
-                      borderRadius: "14px", 
-                      fontSize: "15px", 
-                      fontWeight: "500",
-                      color: "#2E8B57",
-                      cursor: "pointer",
-                      fontFamily: "inherit"
-                    }}
-                  >
-                    {showMore[project.id] ? "▲ Hide Additional Photos" : `▼ Show Additional Photos (${project.extras.length})`}
-                  </button>
-                  {showMore[project.id] && (
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))", gap: "16px", marginTop: "20px" }}>
-                      {project.extras.map((img, i) => (
-                        <div key={i} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3" }}>
-                          <img src={img} alt={`Extra ${i+1}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
+            </Match>
+            <Match path="/gallery">
+              {({ matches }) => (
+                <Link 
+                  href="/gallery" 
+                  className={`mobile-nav-item ${matches ? 'current' : ''}`}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Gallery
+                </Link>
               )}
-              
-            </div>
-          );
-        })}
+            </Match>
+            <Match path="/contact">
+              {({ matches }) => (
+                <Link 
+                  href="/contact" 
+                  className={`mobile-nav-item ${matches ? 'current' : ''}`}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Contact Us
+                </Link>
+              )}
+            </Match>
+            <a 
+              href="https://www.facebook.com/profile.php?id=61574004541526" 
+              target="_blank" 
+              rel="noreferrer" 
+              className="mobile-fb"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <span>📘</span>
+              Facebook
+            </a>
+          </div>
+        </div>
       </div>
-
-      {/* FOOTER */}
-      <footer style={{ background: "#020617", color: "#64748b", padding: "45px 20px", textAlign: "center", fontSize: "13px", borderTop: "1px solid #1e293b" }}>
-        <p>© 2026 Greater Edge Landscaping LLC. All rights reserved.</p>
-        <p style={{ marginTop: "12px", fontSize: "12px" }}>Professional Landscaping Services</p>
-      </footer>
-    </div>
+    </>
   );
 }
