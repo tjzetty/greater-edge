@@ -1,92 +1,22 @@
-import { useState, useRef, useEffect } from "preact/hooks";
+import { useState } from "preact/hooks";
 
 export default function Home() {
   const [showMore, setShowMore] = useState({});
   const [sliderPos, setSliderPos] = useState({});
-  const draggingId = useRef(null);
-  const currentPos = useRef(50);
 
   const toggleDropdown = (id) => {
     setShowMore(prev => ({ ...prev, [id]: !prev[id] }));
   };
 
-  // Update position based on mouse/touch
-  const updatePosition = (id, clientX) => {
-    const sliderDiv = document.getElementById(`slider-${id}`);
-    if (!sliderDiv) return;
-    
-    const rect = sliderDiv.getBoundingClientRect();
-    let x = (clientX - rect.left) / rect.width;
-    x = Math.min(0.98, Math.max(0.02, x));
-    const newPos = x * 100;
-    
-    currentPos.current = newPos;
-    setSliderPos(prev => ({ ...prev, [id]: newPos }));
-  };
-
-  // Handle drag start
-  const startDrag = (id, e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    draggingId.current = id;
-    
+  // Simple drag handler - works anywhere on the slider
+  const handleDrag = (id, e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
     let clientX;
     if (e.touches) {
       clientX = e.touches[0].clientX;
     } else {
       clientX = e.clientX;
     }
-    
-    updatePosition(id, clientX);
-  };
-
-  // Handle drag move
-  useEffect(() => {
-    const onMove = (e) => {
-      if (draggingId.current === null) return;
-      e.preventDefault();
-      
-      let clientX;
-      if (e.touches) {
-        clientX = e.touches[0].clientX;
-      } else {
-        clientX = e.clientX;
-      }
-      
-      updatePosition(draggingId.current, clientX);
-    };
-    
-    const onEnd = () => {
-      draggingId.current = null;
-    };
-    
-    window.addEventListener('mousemove', onMove);
-    window.addEventListener('mouseup', onEnd);
-    window.addEventListener('touchmove', onMove, { passive: false });
-    window.addEventListener('touchend', onEnd);
-    
-    return () => {
-      window.removeEventListener('mousemove', onMove);
-      window.removeEventListener('mouseup', onEnd);
-      window.removeEventListener('touchmove', onMove);
-      window.removeEventListener('touchend', onEnd);
-    };
-  }, []);
-
-  // Handle tap on image
-  const handleTap = (id, e) => {
-    const sliderDiv = document.getElementById(`slider-${id}`);
-    if (!sliderDiv) return;
-    
-    const rect = sliderDiv.getBoundingClientRect();
-    let clientX;
-    
-    if (e.touches) {
-      clientX = e.touches[0].clientX;
-    } else {
-      clientX = e.clientX;
-    }
-    
     let x = (clientX - rect.left) / rect.width;
     x = Math.min(0.98, Math.max(0.02, x));
     setSliderPos(prev => ({ ...prev, [id]: x * 100 }));
@@ -116,7 +46,6 @@ export default function Home() {
     
     return (
       <div 
-        id={`slider-${id}`}
         style={{ 
           position: "relative", 
           width: "100%", 
@@ -124,165 +53,76 @@ export default function Home() {
           background: "#1a1a1a", 
           borderRadius: "16px", 
           overflow: "hidden",
-          boxShadow: "0 8px 30px rgba(0,0,0,0.2)",
-          touchAction: "none",
-          userSelect: "none"
+          cursor: "grab",
+          touchAction: "none"
+        }}
+        onMouseDown={(e) => {
+          e.preventDefault();
+          handleDrag(id, e);
+          const onMove = (moveEvent) => {
+            handleDrag(id, moveEvent);
+          };
+          const onUp = () => {
+            document.removeEventListener('mousemove', onMove);
+            document.removeEventListener('mouseup', onUp);
+            document.removeEventListener('touchmove', onMove);
+            document.removeEventListener('touchend', onUp);
+          };
+          document.addEventListener('mousemove', onMove);
+          document.addEventListener('mouseup', onUp);
+          document.addEventListener('touchmove', onMove, { passive: false });
+          document.addEventListener('touchend', onUp);
+        }}
+        onTouchStart={(e) => {
+          e.preventDefault();
+          handleDrag(id, e);
+          const onMove = (moveEvent) => {
+            handleDrag(id, moveEvent);
+          };
+          const onUp = () => {
+            document.removeEventListener('touchmove', onMove);
+            document.removeEventListener('touchend', onUp);
+          };
+          document.addEventListener('touchmove', onMove, { passive: false });
+          document.addEventListener('touchend', onUp);
         }}
       >
         {/* AFTER IMAGE */}
-        <img 
-          src={after} 
-          alt="After" 
-          style={{ 
-            width: "100%", 
-            height: "100%", 
-            objectFit: "cover",
-            pointerEvents: "none"
-          }} 
-        />
+        <img src={after} alt="After" style={{ width: "100%", height: "100%", objectFit: "cover", pointerEvents: "none" }} />
         
         {/* BEFORE IMAGE (clipped) */}
-        <div 
-          style={{ 
-            position: "absolute", 
-            top: 0, 
-            left: 0, 
-            width: `${pos}%`, 
-            height: "100%", 
-            overflow: "hidden",
-            pointerEvents: "none"
-          }}
-        >
-          <img 
-            src={before} 
-            alt="Before" 
-            style={{ 
-              width: "100%", 
-              height: "100%", 
-              objectFit: "cover",
-              pointerEvents: "none"
-            }} 
-          />
+        <div style={{ position: "absolute", top: 0, left: 0, width: `${pos}%`, height: "100%", overflow: "hidden", pointerEvents: "none" }}>
+          <img src={before} alt="Before" style={{ width: "100%", height: "100%", objectFit: "cover", pointerEvents: "none" }} />
         </div>
         
         {/* SLIDER LINE */}
-        <div 
-          style={{ 
-            position: "absolute", 
-            top: 0, 
-            left: `${pos}%`, 
-            width: "3px", 
-            height: "100%", 
-            background: "white",
-            transform: "translateX(-50%)",
-            boxShadow: "0 0 0 2px rgba(0,0,0,0.2), 0 0 0 4px rgba(255,255,255,0.5)",
-            zIndex: 15,
-            pointerEvents: "none"
-          }} 
-        />
+        <div style={{ 
+          position: "absolute", top: 0, left: `${pos}%`, width: "4px", height: "100%", 
+          background: "white", transform: "translateX(-50%)", 
+          boxShadow: "0 0 0 2px rgba(0,0,0,0.2), 0 0 0 4px rgba(255,255,255,0.5)", 
+          zIndex: 15, pointerEvents: "none" 
+        }} />
         
-        {/* DRAG HANDLE - Drag this to slide */}
-        <div 
-          style={{ 
-            position: "absolute", 
-            top: 0, 
-            left: `${pos}%`, 
-            width: "70px", 
-            height: "100%", 
-            transform: "translateX(-50%)", 
-            cursor: "grab",
-            zIndex: 20,
-            touchAction: "none",
-            background: "transparent"
-          }}
-          onMouseDown={(e) => startDrag(id, e)}
-          onTouchStart={(e) => startDrag(id, e)}
-        >
-          <div style={{ 
-            position: "absolute", 
-            top: "50%", 
-            left: "50%", 
-            transform: "translate(-50%, -50%)", 
-            background: "white", 
-            padding: "10px 18px", 
-            borderRadius: "50px", 
-            fontSize: "13px", 
-            fontWeight: "bold", 
-            color: "#1e293b",
-            whiteSpace: "nowrap",
-            boxShadow: "0 4px 15px rgba(0,0,0,0.3)",
-            pointerEvents: "none",
-            letterSpacing: "1px"
-          }}>
-            ◀  DRAG  ▶
-          </div>
+        {/* DRAG HANDLE - Middle of slider, easy to grab */}
+        <div style={{ 
+          position: "absolute", top: "50%", left: `${pos}%`, transform: "translate(-50%, -50%)",
+          background: "white", padding: "12px 20px", borderRadius: "50px", 
+          fontSize: "14px", fontWeight: "bold", color: "#1e293b",
+          whiteSpace: "nowrap", boxShadow: "0 4px 15px rgba(0,0,0,0.3)",
+          zIndex: 20, pointerEvents: "none", letterSpacing: "1px"
+        }}>
+          ◀  DRAG  ▶
         </div>
-        
-        {/* Tap Zone - Tap anywhere to jump */}
-        <div 
-          style={{ 
-            position: "absolute", 
-            top: 0, 
-            left: 0, 
-            width: "100%", 
-            height: "100%", 
-            zIndex: 5,
-            cursor: "pointer",
-            background: "transparent"
-          }}
-          onMouseDown={(e) => {
-            e.stopPropagation();
-            handleTap(id, e);
-          }}
-          onTouchStart={(e) => {
-            e.stopPropagation();
-            handleTap(id, e);
-          }}
-        />
         
         {/* LABELS */}
-        <div style={{ 
-          position: "absolute", 
-          bottom: "16px", 
-          left: "16px", 
-          background: "rgba(0,0,0,0.7)", 
-          backdropFilter: "blur(10px)",
-          color: "white", 
-          padding: "5px 14px", 
-          borderRadius: "30px", 
-          fontSize: "11px", 
-          fontWeight: "600",
-          zIndex: 10,
-          pointerEvents: "none"
-        }}>
-          BEFORE
-        </div>
-        <div style={{ 
-          position: "absolute", 
-          bottom: "16px", 
-          right: "16px", 
-          background: "rgba(0,0,0,0.7)", 
-          backdropFilter: "blur(10px)",
-          color: "white", 
-          padding: "5px 14px", 
-          borderRadius: "30px", 
-          fontSize: "11px", 
-          fontWeight: "600",
-          zIndex: 10,
-          pointerEvents: "none"
-        }}>
-          AFTER
-        </div>
+        <div style={{ position: "absolute", bottom: "16px", left: "16px", background: "rgba(0,0,0,0.7)", backdropFilter: "blur(10px)", color: "white", padding: "6px 14px", borderRadius: "30px", fontSize: "11px", fontWeight: "600", zIndex: 10, pointerEvents: "none" }}>BEFORE</div>
+        <div style={{ position: "absolute", bottom: "16px", right: "16px", background: "rgba(0,0,0,0.7)", backdropFilter: "blur(10px)", color: "white", padding: "6px 14px", borderRadius: "30px", fontSize: "11px", fontWeight: "600", zIndex: 10, pointerEvents: "none" }}>AFTER</div>
       </div>
     );
   };
 
   return (
-    <div style={{ 
-      fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", 
-      background: "#0f172a",
-      minHeight: "100vh"
-    }}>
+    <div style={{ fontFamily: "Arial, sans-serif", background: "#0f172a", minHeight: "100vh" }}>
       
       {/* HEADER */}
       <div style={{ position: "sticky", top: 0, background: "#0f172a", padding: "14px 20px", borderBottom: "1px solid #1e293b", zIndex: 100 }}>
@@ -310,19 +150,19 @@ export default function Home() {
       </div>
 
       {/* OUR WORK */}
-      <div style={{ textAlign: "center", padding: "50px 20px 25px" }}>
+      <div style={{ textAlign: "center", padding: "50px 20px 20px" }}>
         <h2 style={{ fontSize: "32px", fontWeight: "700", color: "white", margin: 0 }}>Our Work</h2>
         <div style={{ width: "60px", height: "4px", background: "#2E8B57", margin: "15px auto 0", borderRadius: "2px" }}></div>
         <p style={{ color: "#94a3b8", marginTop: "15px", fontSize: "15px" }}>See the difference we make</p>
       </div>
 
-      {/* PROJECTS */}
-      <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "20px 16px 70px" }}>
+      {/* PROJECTS - Large spacing */}
+      <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "20px 16px 80px" }}>
         {projects.map(project => {
           const secondSliderId = `${project.id}_2`;
           
           return (
-            <div key={project.id} style={{ marginBottom: "80px" }}>
+            <div key={project.id} style={{ marginBottom: "100px" }}>
               
               <div style={{ marginBottom: "20px", borderLeft: "4px solid #2E8B57", paddingLeft: "14px" }}>
                 <h3 style={{ fontSize: "24px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
@@ -342,7 +182,7 @@ export default function Home() {
               )}
               
               {project.extras.length > 0 && (
-                <div style={{ marginTop: "25px" }}>
+                <div style={{ marginTop: "30px" }}>
                   <button 
                     onClick={() => toggleDropdown(project.id)} 
                     style={{ 
@@ -379,8 +219,7 @@ export default function Home() {
 
       {/* FOOTER */}
       <div style={{ background: "#020617", color: "#64748b", padding: "30px 20px", textAlign: "center", fontSize: "12px", borderTop: "1px solid #1e293b" }}>
-        <p style={{ margin: 0 }}>© 2026 Greater Edge Landscaping LLC. All rights reserved.</p>
-        <p style={{ margin: "10px 0 0", fontSize: "11px" }}>Professional Landscaping Services</p>
+        <p>© 2026 Greater Edge Landscaping LLC. All rights reserved.</p>
       </div>
     </div>
   );
