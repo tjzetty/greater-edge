@@ -21,8 +21,8 @@ export default function Home() {
     { 
       id: 2, 
       name: "Lawn Transformations", 
-      isGallery: true,
-      images: ["images/lawn1.jpg", "images/lawn2.jpg"],
+      isImage: true,
+      image: "images/lawn2.jpg",
       extras: [] 
     },
     { id: 3, name: "Bed Clean Up", before: "images/bedcleanup1.jpg", after: "images/bedcleanup2.jpg", hasSecondSlider: false, extras: [] },
@@ -126,30 +126,21 @@ export default function Home() {
     );
   };
 
-  // Gallery component for Lawn section
-  const Gallery = ({ images }) => {
+  // Single Image component for Lawn section
+  const SingleImage = ({ image, title }) => {
     return (
       <div style={{ 
-        display: "grid", 
-        gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", 
-        gap: "20px",
-        marginTop: "10px"
+        background: "#1a1a1a", 
+        borderRadius: "16px", 
+        overflow: "hidden",
+        aspectRatio: "4/3",
+        boxShadow: "0 4px 20px rgba(0,0,0,0.2)"
       }}>
-        {images.map((img, idx) => (
-          <div key={idx} style={{ 
-            background: "#1a1a1a", 
-            borderRadius: "16px", 
-            overflow: "hidden",
-            aspectRatio: "4/3",
-            boxShadow: "0 4px 20px rgba(0,0,0,0.2)"
-          }}>
-            <img 
-              src={img} 
-              alt={`Lawn transformation ${idx + 1}`} 
-              style={{ width: "100%", height: "100%", objectFit: "cover" }} 
-            />
-          </div>
-        ))}
+        <img 
+          src={image} 
+          alt={title} 
+          style={{ width: "100%", height: "100%", objectFit: "cover" }} 
+        />
       </div>
     );
   };
@@ -200,13 +191,13 @@ export default function Home() {
               <div style={{ marginBottom: "30px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
                 <h3 style={{ fontSize: "28px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
                 <p style={{ color: "#94a3b8", fontSize: "14px", marginTop: "8px" }}>
-                  {project.isGallery ? "Our Work Gallery" : "Before & After Transformations"}
+                  {project.isImage ? "Featured Work" : "Before & After Transformations"}
                 </p>
               </div>
               
-              {/* Show Gallery or Slider based on project type */}
-              {project.isGallery ? (
-                <Gallery images={project.images} />
+              {/* Show Single Image or Slider based on project type */}
+              {project.isImage ? (
+                <SingleImage image={project.image} title={project.name} />
               ) : (
                 <>
                   <Slider before={project.before} after={project.after} sliderId={project.id} />
