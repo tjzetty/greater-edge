@@ -2,6 +2,7 @@ import { useState } from "preact/hooks";
 
 export default function Home() {
   const [showMore, setShowMore] = useState({});
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const toggleDropdown = (id) => {
     setShowMore(prev => ({ ...prev, [id]: !prev[id] }));
@@ -126,7 +127,6 @@ export default function Home() {
     );
   };
 
-  // Single Image component for Lawn section
   const SingleImage = ({ image, title }) => {
     return (
       <div style={{ 
@@ -146,31 +146,146 @@ export default function Home() {
   };
 
   return (
-    <div style={{ fontFamily: "Arial, sans-serif", background: "#0f172a", minHeight: "100vh" }}>
+    <div style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", background: "#0f172a", minHeight: "100vh" }}>
       
-      {/* HEADER */}
-      <div style={{ position: "sticky", top: 0, background: "#0f172a", padding: "16px 20px", borderBottom: "1px solid #1e293b", zIndex: 100 }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-            <img src="images/logo.jpg" alt="Logo" style={{ height: "45px", width: "auto" }} />
+      {/* PROFESSIONAL HEADER - REDESIGNED */}
+      <header style={{ 
+        position: "sticky", 
+        top: 0, 
+        background: "#ffffff", 
+        boxShadow: "0 1px 3px rgba(0,0,0,0.05), 0 2px 6px rgba(0,0,0,0.03)",
+        zIndex: 100,
+        width: "100%"
+      }}>
+        <div style={{ 
+          maxWidth: "1280px", 
+          margin: "0 auto", 
+          padding: "16px 24px",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: "16px"
+        }}>
+          
+          {/* Logo Section */}
+          <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+            <div style={{
+              width: "48px",
+              height: "48px",
+              background: "#f0fdf4",
+              borderRadius: "12px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              overflow: "hidden"
+            }}>
+              <img 
+                src="images/logo.jpg" 
+                alt="Greater Edge Landscaping" 
+                style={{ 
+                  width: "100%", 
+                  height: "100%", 
+                  objectFit: "cover",
+                  display: "block"
+                }} 
+              />
+            </div>
             <div>
-              <div style={{ fontSize: "18px", fontWeight: "700", color: "white" }}>Greater Edge Landscaping</div>
-              <div style={{ fontSize: "11px", color: "#2E8B57", fontWeight: "600" }}>LLC</div>
+              <h1 style={{ 
+                fontSize: "20px", 
+                fontWeight: "700", 
+                margin: 0,
+                color: "#0f172a",
+                letterSpacing: "-0.3px"
+              }}>
+                Greater Edge <span style={{ color: "#2E8B57" }}>Landscaping</span>
+              </h1>
+              <p style={{ 
+                fontSize: "12px", 
+                margin: "2px 0 0",
+                color: "#64748b",
+                fontWeight: "500"
+              }}>
+                Professional Landscaping Services
+              </p>
             </div>
           </div>
-          <div style={{ display: "flex", gap: "24px", alignItems: "center" }}>
-            <a href="/" style={{ textDecoration: "none", color: "#cbd5e1", fontSize: "14px", fontWeight: "500" }}>Home</a>
-            <a href="/contact" style={{ textDecoration: "none", color: "#cbd5e1", fontSize: "14px", fontWeight: "500" }}>Contact</a>
-            <a href="https://www.facebook.com/profile.php?id=61574004541526" target="_blank" rel="noreferrer" style={{ background: "#1877F2", color: "white", padding: "7px 20px", borderRadius: "30px", textDecoration: "none", fontSize: "13px", fontWeight: "600" }}>📘 Facebook</a>
-          </div>
+          
+          {/* Navigation Links - Desktop */}
+          <nav style={{ 
+            display: "flex", 
+            gap: "32px", 
+            alignItems: "center",
+            flexWrap: "wrap"
+          }}>
+            <a 
+              href="/" 
+              style={{ 
+                textDecoration: "none", 
+                color: "#334155", 
+                fontSize: "15px", 
+                fontWeight: "500",
+                transition: "color 0.2s"
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.color = "#2E8B57"}
+              onMouseLeave={(e) => e.currentTarget.style.color = "#334155"}
+            >
+              Home
+            </a>
+            <a 
+              href="/contact" 
+              style={{ 
+                textDecoration: "none", 
+                color: "#334155", 
+                fontSize: "15px", 
+                fontWeight: "500",
+                transition: "color 0.2s"
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.color = "#2E8B57"}
+              onMouseLeave={(e) => e.currentTarget.style.color = "#334155"}
+            >
+              Contact
+            </a>
+            <a 
+              href="https://www.facebook.com/profile.php?id=61574004541526" 
+              target="_blank" 
+              rel="noreferrer" 
+              style={{ 
+                background: "#1877F2", 
+                color: "white", 
+                padding: "8px 20px", 
+                borderRadius: "40px", 
+                textDecoration: "none", 
+                fontSize: "14px", 
+                fontWeight: "600",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                transition: "all 0.2s",
+                boxShadow: "0 1px 2px rgba(0,0,0,0.05)"
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "#166fe5";
+                e.currentTarget.style.transform = "translateY(-1px)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "#1877F2";
+                e.currentTarget.style.transform = "translateY(0)";
+              }}
+            >
+              <span style={{ fontSize: "14px" }}>📘</span>
+              Follow Us
+            </a>
+          </nav>
         </div>
-      </div>
+      </header>
 
       {/* HERO */}
       <div style={{ background: "linear-gradient(135deg, #2E8B57 0%, #1e6b43 100%)", padding: "80px 20px", textAlign: "center", color: "white" }}>
-        <h1 style={{ fontSize: "40px", fontWeight: "700", marginBottom: "15px" }}>Transform Your Outdoors</h1>
-        <p style={{ fontSize: "18px", marginBottom: "25px", opacity: 0.95 }}>Professional Landscaping Services</p>
-        <a href="/contact" style={{ background: "white", color: "#2E8B57", padding: "14px 36px", borderRadius: "50px", textDecoration: "none", fontWeight: "700", fontSize: "16px", display: "inline-block" }}>Free Estimate →</a>
+        <h1 style={{ fontSize: "44px", fontWeight: "700", marginBottom: "16px", letterSpacing: "-0.5px" }}>Transform Your Outdoors</h1>
+        <p style={{ fontSize: "18px", marginBottom: "28px", opacity: 0.95 }}>Professional Landscaping Services</p>
+        <a href="/contact" style={{ background: "white", color: "#2E8B57", padding: "14px 38px", borderRadius: "50px", textDecoration: "none", fontWeight: "700", fontSize: "16px", display: "inline-block", boxShadow: "0 4px 15px rgba(0,0,0,0.1)" }}>Free Estimate →</a>
       </div>
 
       {/* OUR WORK */}
@@ -195,7 +310,6 @@ export default function Home() {
                 </p>
               </div>
               
-              {/* Show Single Image or Slider based on project type */}
               {project.isImage ? (
                 <SingleImage image={project.image} title={project.name} />
               ) : (
@@ -214,7 +328,6 @@ export default function Home() {
                 </>
               )}
               
-              {/* Dropdown for extras */}
               {project.extras.length > 0 && (
                 <div style={{ marginTop: "45px" }}>
                   <button 
@@ -252,10 +365,10 @@ export default function Home() {
       </div>
 
       {/* FOOTER */}
-      <div style={{ background: "#020617", color: "#64748b", padding: "45px 20px", textAlign: "center", fontSize: "13px", borderTop: "1px solid #1e293b" }}>
+      <footer style={{ background: "#020617", color: "#64748b", padding: "45px 20px", textAlign: "center", fontSize: "13px", borderTop: "1px solid #1e293b" }}>
         <p>© 2026 Greater Edge Landscaping LLC. All rights reserved.</p>
         <p style={{ marginTop: "12px", fontSize: "12px" }}>Professional Landscaping Services</p>
-      </div>
+      </footer>
     </div>
   );
 }
