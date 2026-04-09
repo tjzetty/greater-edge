@@ -1,11 +1,22 @@
-import { useState } from "preact/hooks";
+import { useState, useRef } from "preact/hooks";
 
 export default function Home() {
   const [showMore, setShowMore] = useState({});
   const [sliderPos, setSliderPos] = useState({});
+  const sliderRefs = useRef({});
 
   const toggleDropdown = (id) => {
     setShowMore(prev => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  const handleMove = (id, clientX) => {
+    const slider = sliderRefs.current[id];
+    if (!slider) return;
+    
+    const rect = slider.getBoundingClientRect();
+    let x = (clientX - rect.left) / rect.width;
+    x = Math.min(0.98, Math.max(0.02, x));
+    setSliderPos(prev => ({ ...prev, [id]: x * 100 }));
   };
 
   const projects = [
@@ -32,6 +43,7 @@ export default function Home() {
     
     return (
       <div 
+        ref={el => sliderRefs.current[id] = el}
         style={{ 
           position: "relative", 
           width: "100%", 
@@ -39,43 +51,16 @@ export default function Home() {
           background: "#1a1a1a", 
           borderRadius: "16px", 
           overflow: "hidden",
+          cursor: "grab",
           touchAction: "none"
-        }}
-        onTouchStart={(e) => {
-          e.preventDefault();
-          const touch = e.touches[0];
-          const rect = e.currentTarget.getBoundingClientRect();
-          let x = (touch.clientX - rect.left) / rect.width;
-          x = Math.min(0.98, Math.max(0.02, x));
-          setSliderPos(prev => ({ ...prev, [id]: x * 100 }));
-          
-          const onTouchMove = (moveEvent) => {
-            moveEvent.preventDefault();
-            const moveTouch = moveEvent.touches[0];
-            let moveX = (moveTouch.clientX - rect.left) / rect.width;
-            moveX = Math.min(0.98, Math.max(0.02, moveX));
-            setSliderPos(prev => ({ ...prev, [id]: moveX * 100 }));
-          };
-          
-          const onTouchEnd = () => {
-            document.removeEventListener('touchmove', onTouchMove);
-            document.removeEventListener('touchend', onTouchEnd);
-          };
-          
-          document.addEventListener('touchmove', onTouchMove, { passive: false });
-          document.addEventListener('touchend', onTouchEnd);
         }}
         onMouseDown={(e) => {
           e.preventDefault();
-          const rect = e.currentTarget.getBoundingClientRect();
-          let x = (e.clientX - rect.left) / rect.width;
-          x = Math.min(0.98, Math.max(0.02, x));
-          setSliderPos(prev => ({ ...prev, [id]: x * 100 }));
+          handleMove(id, e.clientX);
           
           const onMouseMove = (moveEvent) => {
-            let moveX = (moveEvent.clientX - rect.left) / rect.width;
-            moveX = Math.min(0.98, Math.max(0.02, moveX));
-            setSliderPos(prev => ({ ...prev, [id]: moveX * 100 }));
+            moveEvent.preventDefault();
+            handleMove(id, moveEvent.clientX);
           };
           
           const onMouseUp = () => {
@@ -86,20 +71,54 @@ export default function Home() {
           document.addEventListener('mousemove', onMouseMove);
           document.addEventListener('mouseup', onMouseUp);
         }}
+        onTouchStart={(e) => {
+          e.preventDefault();
+          const touch = e.touches[0];
+          handleMove(id, touch.clientX);
+          
+          const onTouchMove = (moveEvent) => {
+            moveEvent.preventDefault();
+            const moveTouch = moveEvent.touches[0];
+            handleMove(id, moveTouch.clientX);
+          };
+          
+          const onTouchEnd = () => {
+            document.removeEventListener('touchmove', onTouchMove);
+            document.removeEventListener('touchend', onTouchEnd);
+          };
+          
+          document.addEventListener('touchmove', onTouchMove, { passive: false });
+          document.addEventListener('touchend', onTouchEnd);
+        }}
       >
+        {/* AFTER IMAGE */}
         <img src={after} alt="After" style={{ width: "100%", height: "100%", objectFit: "cover", pointerEvents: "none" }} />
+        
+        {/* BEFORE IMAGE */}
         <div style={{ position: "absolute", top: 0, left: 0, width: `${pos}%`, height: "100%", overflow: "hidden", pointerEvents: "none" }}>
           <img src={before} alt="Before" style={{ width: "100%", height: "100%", objectFit: "cover", pointerEvents: "none" }} />
         </div>
+        
+        {/* SLIDER LINE */}
+        <div style={{ 
+          position: "absolute", top: 0, left: `${pos}%`, width: "4px", height: "100%", 
+          background: "white", transform: "translateX(-50%)", 
+          boxShadow: "0 0 0 2px rgba(0,0,0,0.2), 0 0 0 4px rgba(255,255,255,0.5)", 
+          zIndex: 15, pointerEvents: "none" 
+        }} />
+        
+        {/* DRAG HANDLE - Visual only */}
         <div style={{ 
           position: "absolute", top: "50%", left: `${pos}%`, transform: "translate(-50%, -50%)",
-          background: "white", padding: "10px 16px", borderRadius: "40px", 
+          background: "white", padding: "10px 18px", borderRadius: "50px", 
           fontSize: "13px", fontWeight: "bold", color: "#1e293b",
           whiteSpace: "nowrap", boxShadow: "0 4px 15px rgba(0,0,0,0.3)",
           zIndex: 20, pointerEvents: "none"
         }}>
-          ◀ DRAG ▶
+          ◀  DRAG  ▶
         </div>
+        
+        {/* LABELS */}
         <div style={{ position: "absolute", bottom: "12px", left: "12px", background: "rgba(0,0,0,0.6)", color: "white", padding: "4px 12px", borderRadius: "20px", fontSize: "11px", fontWeight: "500", zIndex: 10, pointerEvents: "none" }}>BEFORE</div>
         <div style={{ position: "absolute", bottom: "12px", right: "12px", background: "rgba(0,0,0,0.6)", color: "white", padding: "4px 12px", borderRadius: "20px", fontSize: "11px", fontWeight: "500", zIndex: 10, pointerEvents: "none" }}>AFTER</div>
       </div>
