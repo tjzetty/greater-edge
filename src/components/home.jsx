@@ -2,70 +2,15 @@ import { useState } from "preact/hooks";
 
 export default function Home() {
   const [showMore, setShowMore] = useState({});
+  const [showMoreExtras, setShowMoreExtras] = useState({});
 
   const toggleDropdown = (id) => {
     setShowMore(prev => ({ ...prev, [id]: !prev[id] }));
   };
 
-  // Define all your images for each category
-  // Just add image names here and they'll auto-pair
-  const projects = [
-    { 
-      id: 1, 
-      name: "Brick Pavers & Patios",
-      images: [
-        "paver1.jpg", "paver2.jpg",  // Pair 1
-        "paver3.jpg", "paver4.jpg",  // Pair 2
-        "paver5.jpg", "paver6.jpg"   // Pair 3 (add more if you have)
-      ]
-    },
-    { 
-      id: 2, 
-      name: "Lawn Transformations",
-      isSingle: true,  // Single image mode
-      image: "lawn2.jpg"
-    },
-    { 
-      id: 3, 
-      name: "Bed Clean Up",
-      images: [
-        "bedcleanup1.jpg", "bedcleanup2.jpg",
-        "bedcleanup3.jpg", "bedcleanup4.jpg"
-      ]
-    },
-    { 
-      id: 4, 
-      name: "Bush & Hedge Trimming",
-      images: [
-        "bushtrim1.jpg", "bushtrim2.jpg",
-        "bushtrim3.jpg", "bushtrim4.jpg"
-      ]
-    },
-    { 
-      id: 5, 
-      name: "Fall Clean Ups",
-      images: [
-        "fallcleanup1.jpg", "fallcleanup2.jpg",
-        "fallcleanup3.jpg", "fallcleanup4.jpg"
-      ]
-    },
-    { 
-      id: 6, 
-      name: "Mulching & Bed Maintenance",
-      images: [
-        "mulch1.jpg", "mulch2.jpg",
-        "mulch3.jpg", "mulch4.jpg"
-      ]
-    },
-    { 
-      id: 7, 
-      name: "Power Washing",
-      images: [
-        "powerwashing1.jpg", "powerwashing2.jpg",
-        "powerwashing3.jpg", "powerwashing4.jpg"
-      ]
-    }
-  ];
+  const toggleExtras = (id) => {
+    setShowMoreExtras(prev => ({ ...prev, [id]: !prev[id] }));
+  };
 
   // Slider Component
   const Slider = ({ before, after, sliderId }) => {
@@ -82,9 +27,9 @@ export default function Home() {
           overflow: "hidden"
         }}
       >
-        <img src={`images/${after}`} alt="After" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+        <img src={after} alt="After" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
         <div style={{ position: "absolute", top: 0, left: 0, width: `${pos}%`, height: "100%", overflow: "hidden" }}>
-          <img src={`images/${before}`} alt="Before" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          <img src={before} alt="Before" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
         </div>
         
         <div 
@@ -162,7 +107,146 @@ export default function Home() {
     );
   };
 
-  // Single Image Component
+  // Small Before/After Pair for Dropdown
+  const SmallPair = ({ before, after, index }) => {
+    return (
+      <div style={{ 
+        background: "#1e293b", 
+        borderRadius: "12px", 
+        overflow: "hidden",
+        transition: "transform 0.2s"
+      }}>
+        <div style={{ 
+          padding: "8px", 
+          background: "#0f172a",
+          borderBottom: "1px solid #334155",
+          textAlign: "center"
+        }}>
+          <p style={{ color: "#2E8B57", fontSize: "11px", fontWeight: "600", margin: 0 }}>
+            Project {index}
+          </p>
+        </div>
+        <div style={{ display: "flex", gap: "4px", padding: "12px" }}>
+          <div style={{ flex: 1, textAlign: "center" }}>
+            <img 
+              src={before} 
+              alt="Before" 
+              style={{ 
+                width: "100%", 
+                aspectRatio: "4/3", 
+                objectFit: "cover", 
+                borderRadius: "8px" 
+              }} 
+            />
+            <p style={{ color: "#94a3b8", fontSize: "10px", margin: "6px 0 0" }}>Before</p>
+          </div>
+          <div style={{ flex: 1, textAlign: "center" }}>
+            <img 
+              src={after} 
+              alt="After" 
+              style={{ 
+                width: "100%", 
+                aspectRatio: "4/3", 
+                objectFit: "cover", 
+                borderRadius: "8px" 
+              }} 
+            />
+            <p style={{ color: "#94a3b8", fontSize: "10px", margin: "6px 0 0" }}>After</p>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // All projects with extra before/after pairs for dropdowns
+  const projects = [
+    { 
+      id: 1, 
+      name: "Brick Pavers & Patios", 
+      before: "images/paver1.jpg", 
+      after: "images/paver2.jpg",
+      hasSecondSlider: true,
+      secondBefore: "images/paver3.jpg",
+      secondAfter: "images/paver4.jpg",
+      extraPairs: [
+        { before: "images/paver5.jpg", after: "images/paver6.jpg" },
+        { before: "images/paver7.jpg", after: "images/paver8.jpg" },
+        { before: "images/paver9.jpg", after: "images/paver10.jpg" }
+      ]
+    },
+    { 
+      id: 2, 
+      name: "Lawn Transformations", 
+      isImage: true,
+      image: "images/lawn2.jpg",
+      extraPairs: [
+        { before: "images/lawn3.jpg", after: "images/lawn4.jpg" },
+        { before: "images/lawn5.jpg", after: "images/lawn6.jpg" },
+        { before: "images/lawn7.jpg", after: "images/lawn8.jpg" }
+      ]
+    },
+    { 
+      id: 3, 
+      name: "Bed Clean Up", 
+      before: "images/bedcleanup1.jpg", 
+      after: "images/bedcleanup2.jpg",
+      hasSecondSlider: false,
+      extraPairs: [
+        { before: "images/bedcleanup3.jpg", after: "images/bedcleanup4.jpg" },
+        { before: "images/bedcleanup5.jpg", after: "images/bedcleanup6.jpg" },
+        { before: "images/bedcleanup7.jpg", after: "images/bedcleanup8.jpg" }
+      ]
+    },
+    { 
+      id: 4, 
+      name: "Bush & Hedge Trimming", 
+      before: "images/bushtrim1.jpg", 
+      after: "images/bushtrim2.jpg",
+      hasSecondSlider: false,
+      extraPairs: [
+        { before: "images/bushtrim3.jpg", after: "images/bushtrim4.jpg" },
+        { before: "images/bushtrim5.jpg", after: "images/bushtrim6.jpg" },
+        { before: "images/bushtrim7.jpg", after: "images/bushtrim8.jpg" }
+      ]
+    },
+    { 
+      id: 5, 
+      name: "Fall Clean Ups", 
+      before: "images/fallcleanup1.jpg", 
+      after: "images/fallcleanup2.jpg",
+      hasSecondSlider: false,
+      extraPairs: [
+        { before: "images/fallcleanup3.jpg", after: "images/fallcleanup4.jpg" },
+        { before: "images/fallcleanup5.jpg", after: "images/fallcleanup6.jpg" },
+        { before: "images/fallcleanup7.jpg", after: "images/fallcleanup8.jpg" }
+      ]
+    },
+    { 
+      id: 6, 
+      name: "Mulching & Bed Maintenance", 
+      before: "images/mulch1.jpg", 
+      after: "images/mulch2.jpg",
+      hasSecondSlider: false,
+      extraPairs: [
+        { before: "images/mulch3.jpg", after: "images/mulch4.jpg" },
+        { before: "images/mulch5.jpg", after: "images/mulch6.jpg" },
+        { before: "images/mulch7.jpg", after: "images/mulch8.jpg" }
+      ]
+    },
+    { 
+      id: 7, 
+      name: "Power Washing", 
+      before: "images/powerwashing1.jpg", 
+      after: "images/powerwashing2.jpg",
+      hasSecondSlider: false,
+      extraPairs: [
+        { before: "images/powerwashing3.jpg", after: "images/powerwashing4.jpg" },
+        { before: "images/powerwashing5.jpg", after: "images/powerwashing6.jpg" },
+        { before: "images/powerwashing7.jpg", after: "images/powerwashing8.jpg" }
+      ]
+    }
+  ];
+
   const SingleImage = ({ image, title }) => {
     return (
       <div style={{ 
@@ -173,7 +257,7 @@ export default function Home() {
         boxShadow: "0 4px 20px rgba(0,0,0,0.2)"
       }}>
         <img 
-          src={`images/${image}`} 
+          src={image} 
           alt={title} 
           style={{ width: "100%", height: "100%", objectFit: "cover" }} 
         />
@@ -184,7 +268,7 @@ export default function Home() {
   return (
     <div style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", background: "#0f172a", minHeight: "100vh" }}>
       
-      {/* HEADER - From your Header component */}
+      {/* HEADER */}
       <div style={{ position: "sticky", top: 0, background: "#0f172a", padding: "16px 20px", borderBottom: "1px solid #1e293b", zIndex: 100 }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
@@ -220,23 +304,8 @@ export default function Home() {
       {/* PROJECTS */}
       <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "20px 16px 100px" }}>
         {projects.map(project => {
-          // Auto-pair images: 1&2, 3&4, 5&6
-          const pairs = [];
-          if (project.images) {
-            for (let i = 0; i < project.images.length; i += 2) {
-              if (project.images[i + 1]) {
-                pairs.push({
-                  before: project.images[i],
-                  after: project.images[i + 1]
-                });
-              }
-            }
-          }
-          
-          // First 3 pairs are visible as sliders
-          const visiblePairs = pairs.slice(0, 3);
-          // Remaining pairs go to dropdown
-          const extraPairs = pairs.slice(3);
+          const secondSliderId = project.hasSecondSlider ? project.id + 10 : null;
+          const hasExtraPairs = project.extraPairs && project.extraPairs.length > 0;
           
           return (
             <div key={project.id} style={{ marginBottom: "180px" }}>
@@ -244,85 +313,75 @@ export default function Home() {
               <div style={{ marginBottom: "30px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
                 <h3 style={{ fontSize: "28px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
                 <p style={{ color: "#94a3b8", fontSize: "14px", marginTop: "8px" }}>
-                  {project.isSingle ? "Featured Work" : "Before & After Transformations"}
+                  {project.isImage ? "Featured Work" : "Before & After Transformations"}
                 </p>
               </div>
               
-              {/* Single Image Mode */}
-              {project.isSingle && (
+              {/* Main Content */}
+              {project.isImage ? (
                 <SingleImage image={project.image} title={project.name} />
-              )}
-              
-              {/* Slider Mode - Show first 3 pairs */}
-              {!project.isSingle && (
+              ) : (
                 <>
-                  {visiblePairs.map((pair, idx) => (
-                    <div key={idx} style={{ marginBottom: idx < visiblePairs.length - 1 ? "60px" : "0" }}>
-                      {idx > 0 && (
-                        <div style={{ marginBottom: "20px" }}>
-                          <h4 style={{ fontSize: "18px", fontWeight: "500", color: "#2E8B57", margin: 0 }}>
-                            Another Transformation
-                          </h4>
-                          <p style={{ color: "#94a3b8", fontSize: "12px", marginTop: "4px" }}>
-                            Project {idx + 1}
-                          </p>
-                        </div>
-                      )}
-                      <Slider 
-                        before={pair.before} 
-                        after={pair.after} 
-                        sliderId={`${project.id}_${idx}`} 
-                      />
+                  <Slider before={project.before} after={project.after} sliderId={project.id} />
+                  
+                  {project.hasSecondSlider && (
+                    <div style={{ marginTop: "80px" }}>
+                      <div style={{ marginBottom: "20px" }}>
+                        <h4 style={{ fontSize: "20px", fontWeight: "500", color: "#2E8B57", margin: 0 }}>Another Transformation</h4>
+                        <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "6px" }}>Another project completed</p>
+                      </div>
+                      <Slider before={project.secondBefore} after={project.secondAfter} sliderId={secondSliderId} />
                     </div>
-                  ))}
+                  )}
                 </>
               )}
               
-              {/* Dropdown for extra photos (pairs beyond first 3) */}
-              {(extraPairs.length > 0 || (project.extras && project.extras.length > 0)) && (
-                <div style={{ marginTop: "45px" }}>
+              {/* DROPDOWN for Extra Before/After Pairs */}
+              {hasExtraPairs && (
+                <div style={{ marginTop: "50px" }}>
                   <button 
-                    onClick={() => toggleDropdown(project.id)} 
+                    onClick={() => toggleExtras(project.id)} 
                     style={{ 
                       width: "100%", 
-                      padding: "16px", 
+                      padding: "16px 20px", 
                       background: "#1e293b", 
                       border: "1px solid #334155", 
                       borderRadius: "14px", 
                       fontSize: "15px", 
-                      fontWeight: "500",
+                      fontWeight: "600",
                       color: "#2E8B57",
                       cursor: "pointer",
-                      fontFamily: "inherit"
+                      fontFamily: "inherit",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      transition: "all 0.2s"
                     }}
                   >
-                    {showMore[project.id] ? "▲ Hide Additional Photos" : `▼ Show Additional Photos (${extraPairs.length + (project.extras?.length || 0)})`}
+                    <span>📸 More Before & After Photos ({project.extraPairs.length})</span>
+                    <span style={{ 
+                      transform: showMoreExtras[project.id] ? "rotate(180deg)" : "rotate(0deg)", 
+                      transition: "transform 0.3s",
+                      fontSize: "18px"
+                    }}>
+                      ▼
+                    </span>
                   </button>
-                  {showMore[project.id] && (
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))", gap: "16px", marginTop: "20px" }}>
-                      {/* Show extra pairs as both before and after images */}
-                      {extraPairs.map((pair, idx) => (
-                        <div key={`extra_${idx}`} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden" }}>
-                          <div style={{ padding: "8px", borderBottom: "1px solid #334155" }}>
-                            <p style={{ color: "#94a3b8", fontSize: "10px", margin: 0, textAlign: "center" }}>Project {visiblePairs.length + idx + 1}</p>
-                          </div>
-                          <div style={{ display: "flex", gap: "4px", padding: "8px" }}>
-                            <div style={{ flex: 1 }}>
-                              <img src={`images/${pair.before}`} alt="Before" style={{ width: "100%", aspectRatio: "1/1", objectFit: "cover", borderRadius: "8px" }} />
-                              <p style={{ color: "#64748b", fontSize: "9px", margin: "4px 0 0", textAlign: "center" }}>Before</p>
-                            </div>
-                            <div style={{ flex: 1 }}>
-                              <img src={`images/${pair.after}`} alt="After" style={{ width: "100%", aspectRatio: "1/1", objectFit: "cover", borderRadius: "8px" }} />
-                              <p style={{ color: "#64748b", fontSize: "9px", margin: "4px 0 0", textAlign: "center" }}>After</p>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                      {/* Show any legacy extras */}
-                      {project.extras && project.extras.map((img, i) => (
-                        <div key={`legacy_${i}`} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3" }}>
-                          <img src={`images/${img}`} alt={`Extra ${i+1}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                        </div>
+                  
+                  {showMoreExtras[project.id] && (
+                    <div style={{ 
+                      display: "grid", 
+                      gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", 
+                      gap: "20px", 
+                      marginTop: "25px" 
+                    }}>
+                      {project.extraPairs.map((pair, idx) => (
+                        <SmallPair 
+                          key={idx}
+                          before={pair.before}
+                          after={pair.after}
+                          index={idx + 1}
+                        />
                       ))}
                     </div>
                   )}
