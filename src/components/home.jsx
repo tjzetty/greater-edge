@@ -54,10 +54,67 @@ export default function Home() {
     };
   }
 
-  // ========== UPDATED SLIDER COMPONENT (blurred background, no black bars) ==========
-  const Slider = ({ before, after, sliderId }) => {
+  // ========== ORIGINAL SLIDER (no blur, object-fit: cover) ==========
+  const OriginalSlider = ({ before, after, sliderId }) => {
     const [pos, setPos] = useState(50);
+    return (
+      <div style={{ position: "relative", width: "100%", aspectRatio: "4/3", background: "#1a1a1a", borderRadius: "16px", overflow: "hidden" }}>
+        <img src={after} alt="After" style={{ width: "100%", height: "100%", objectFit: "cover", cursor: "pointer" }}
+          onClick={() => openLightbox(after, "After", [], 0)} />
+        <div style={{ position: "absolute", top: 0, left: 0, width: `${pos}%`, height: "100%", overflow: "hidden" }}>
+          <img src={before} alt="Before" style={{ width: "100%", height: "100%", objectFit: "cover", cursor: "pointer" }}
+            onClick={() => openLightbox(before, "Before", [], 0)} />
+        </div>
+        <div style={{ position: "absolute", top: 0, bottom: 0, left: `${pos}%`, width: "60px", transform: "translateX(-50%)", cursor: "ew-resize", zIndex: 20, display: "flex", alignItems: "center", justifyContent: "center", touchAction: "none" }}
+          onMouseDown={(e) => {
+            e.preventDefault();
+            const sliderDiv = e.currentTarget.parentElement;
+            const onMove = (moveEvent) => {
+              const rect = sliderDiv.getBoundingClientRect();
+              let clientX = moveEvent.touches ? moveEvent.touches[0].clientX : moveEvent.clientX;
+              let x = (clientX - rect.left) / rect.width;
+              x = Math.min(0.98, Math.max(0.02, x));
+              setPos(x * 100);
+            };
+            const onUp = () => {
+              document.removeEventListener('mousemove', onMove);
+              document.removeEventListener('mouseup', onUp);
+              document.removeEventListener('touchmove', onMove);
+              document.removeEventListener('touchend', onUp);
+            };
+            document.addEventListener('mousemove', onMove);
+            document.addEventListener('mouseup', onUp);
+            document.addEventListener('touchmove', onMove, { passive: false });
+            document.addEventListener('touchend', onUp);
+          }}
+          onTouchStart={(e) => {
+            e.preventDefault();
+            const sliderDiv = e.currentTarget.parentElement;
+            const onMove = (moveEvent) => {
+              const rect = sliderDiv.getBoundingClientRect();
+              let clientX = moveEvent.touches[0].clientX;
+              let x = (clientX - rect.left) / rect.width;
+              x = Math.min(0.98, Math.max(0.02, x));
+              setPos(x * 100);
+            };
+            const onUp = () => {
+              document.removeEventListener('touchmove', onMove);
+              document.removeEventListener('touchend', onUp);
+            };
+            document.addEventListener('touchmove', onMove, { passive: false });
+            document.addEventListener('touchend', onUp);
+          }}>
+          <div style={{ background: "white", padding: "10px 16px", borderRadius: "40px", fontSize: "13px", fontWeight: "bold", color: "#1e293b", whiteSpace: "nowrap", boxShadow: "0 4px 12px rgba(0,0,0,0.3)", pointerEvents: "none" }}>◀ DRAG ▶</div>
+        </div>
+        <div style={{ position: "absolute", bottom: "12px", left: "12px", background: "rgba(0,0,0,0.6)", color: "white", padding: "4px 12px", borderRadius: "20px", fontSize: "11px", fontWeight: "500" }}>BEFORE</div>
+        <div style={{ position: "absolute", bottom: "12px", right: "12px", background: "rgba(0,0,0,0.6)", color: "white", padding: "4px 12px", borderRadius: "20px", fontSize: "11px", fontWeight: "500" }}>AFTER</div>
+      </div>
+    );
+  };
 
+  // ========== NEW BLUR SLIDER (no black bars, no zoom) ==========
+  const BlurSlider = ({ before, after, sliderId }) => {
+    const [pos, setPos] = useState(50);
     return (
       <div style={{ position: "relative", width: "100%", aspectRatio: "4/3", background: "#0f172a", borderRadius: "16px", overflow: "hidden" }}>
         {/* AFTER side – blurred background */}
@@ -75,7 +132,6 @@ export default function Home() {
             transform: "scale(1.05)",
           }}
         />
-        {/* AFTER image – contained (fully visible, no crop) */}
         <img
           src={after}
           alt="After"
@@ -210,7 +266,15 @@ export default function Home() {
       </div>
     );
   };
-  // ========== END SLIDER COMPONENT ==========
+
+  // Helper to choose which slider to use based on project id
+  const getSlider = (projectId, before, after, sliderId) => {
+    // Bed Clean Up (id=3) and Fall Clean Ups (id=5) use original slider
+    if (projectId === 3 || projectId === 5) {
+      return <OriginalSlider before={before} after={after} sliderId={sliderId} />;
+    }
+    return <BlurSlider before={before} after={after} sliderId={sliderId} />;
+  };
 
   const SmallPair = ({ before, after, index, projectName }) => {
     const gallery = [
@@ -480,8 +544,8 @@ export default function Home() {
                 <p style={{ color: "#94a3b8", fontSize: "14px", marginTop: "8px" }}>Before & After Transformations</p>
               </div>
 
-              {/* UPDATED SLIDER USED HERE */}
-              <Slider before={mainPair.before} after={mainPair.after} sliderId={`${project.id}_main`} />
+              {/* Choose slider based on project id */}
+              {getSlider(project.id, mainPair.before, mainPair.after, `${project.id}_main`)}
 
               {extraPairs.length > 0 && (
                 <div style={{ marginTop: "50px" }}>
