@@ -141,12 +141,9 @@ export default function Home() {
       { before: "images/paver5.jpg", after: "images/paver6.jpg" },
       { before: "images/paver7.jpg", after: "images/paver8.jpg" }
     ]},
-    { 
-      id: 2, 
-      name: "Great Cuts", 
-      isLawn: true,
-      mainImage: "images/lawn2.jpg",
-      extraImages: ["images/lawn1.jpg", "images/lawn3.jpg", "images/lawn4.jpg", "images/lawn5.jpg", "images/lawn6.jpg"]
+    { id: 2, name: "Great Cuts", isLawn: true,
+      mainImage: "images/lawn1.jpg",
+      extraImages: ["images/lawn2.jpg", "images/lawn3.jpg", "images/lawn4.jpg"]
     },
     { id: 3, name: "Bed Clean Up", pairs: [
       { before: "images/bedcleanup1.jpg", after: "images/bedcleanup2.jpg" },
@@ -173,7 +170,7 @@ export default function Home() {
       { before: "images/mulch7.jpg", after: "images/mulch8.jpg" }
     ]},
     { id: 7, name: "Power Washing", pairs: [
-      { before: "images/powerwashing1.jpg", after: "images/powerwashing2.jpg" },
+      { before: "images/powerwashing1.jpg", after: "images/powerwashing2.jpg" }, // Must be different files!
       { before: "images/powerwashing3.jpg", after: "images/powerwashing4.jpg" },
       { before: "images/powerwashing5.jpg", after: "images/powerwashing6.jpg" },
       { before: "images/powerwashing7.jpg", after: "images/powerwashing8.jpg" }
@@ -181,52 +178,26 @@ export default function Home() {
   ];
 
   return (
-    <div style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", background: "#0f172a", minHeight: "100vh" }}>
-      
-      {/* HEADER */}
-      <div style={{ position: "sticky", top: 0, background: "#ffffff", padding: "16px 24px", boxShadow: "0 1px 3px rgba(0,0,0,0.05)", zIndex: 100 }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "16px" }}>
-          <img src="images/logo.jpg" alt="Greater Edge Landscaping" style={{ height: "60px", width: "auto", borderRadius: "12px" }} />
-          <div style={{ display: "flex", gap: "32px", alignItems: "center", flexWrap: "wrap" }}>
-            <a href="/" style={{ textDecoration: "none", color: "#1e293b", fontSize: "15px", fontWeight: "500", letterSpacing: "0.3px", transition: "color 0.2s" }} onMouseEnter={(e) => e.target.style.color = "#2E8B57"} onMouseLeave={(e) => e.target.style.color = "#1e293b"}>Home</a>
-            <a href="/gallery" style={{ textDecoration: "none", color: "#1e293b", fontSize: "15px", fontWeight: "500", letterSpacing: "0.3px", transition: "color 0.2s" }} onMouseEnter={(e) => e.target.style.color = "#2E8B57"} onMouseLeave={(e) => e.target.style.color = "#1e293b"}>Gallery</a>
-            <a href="/contact" style={{ textDecoration: "none", color: "#1e293b", fontSize: "15px", fontWeight: "500", letterSpacing: "0.3px", transition: "color 0.2s" }} onMouseEnter={(e) => e.target.style.color = "#2E8B57"} onMouseLeave={(e) => e.target.style.color = "#1e293b"}>Contact Us</a>
-            <a href="https://www.facebook.com/profile.php?id=61574004541526" target="_blank" rel="noreferrer" style={{ background: "#1877F2", color: "white", padding: "8px 24px", borderRadius: "40px", textDecoration: "none", fontSize: "14px", fontWeight: "600", display: "flex", alignItems: "center", gap: "8px", transition: "all 0.2s" }} onMouseEnter={(e) => { e.target.style.background = "#166fe5"; e.target.style.transform = "translateY(-1px)" }} onMouseLeave={(e) => { e.target.style.background = "#1877F2"; e.target.style.transform = "translateY(0)" }}>📘 Facebook</a>
-          </div>
-        </div>
-      </div>
-
-      {/* LIGHTBOX MODAL */}
-      {lightboxOpen && (
-        <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", background: "rgba(0,0,0,0.95)", zIndex: 2000, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
-          <button onClick={closeLightbox} style={{ position: "absolute", top: "20px", right: "20px", background: "rgba(255,255,255,0.2)", border: "none", color: "white", fontSize: "30px", width: "50px", height: "50px", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(10px)", zIndex: 2001 }}>✕</button>
-          {currentIndex > 0 && <button onClick={prevImage} style={{ position: "absolute", left: "20px", top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.2)", border: "none", color: "white", fontSize: "40px", width: "60px", height: "60px", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(10px)", zIndex: 2001 }}>◀</button>}
-          {currentIndex < currentGallery.length - 1 && <button onClick={nextImage} style={{ position: "absolute", right: "20px", top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.2)", border: "none", color: "white", fontSize: "40px", width: "60px", height: "60px", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(10px)", zIndex: 2001 }}>▶</button>}
-          <img src={currentImage} alt={currentImageTitle} style={{ maxWidth: "90%", maxHeight: "80%", objectFit: "contain", borderRadius: "8px" }} />
-          <div style={{ position: "absolute", bottom: "30px", left: 0, right: 0, textAlign: "center", color: "white", fontSize: "16px", background: "rgba(0,0,0,0.5)", padding: "10px", margin: "0 auto", width: "fit-content", borderRadius: "30px" }}>{currentImageTitle} ({currentIndex + 1} / {currentGallery.length})</div>
-        </div>
-      )}
-
-      {/* HERO SECTION */}
+    <div style={{ fontFamily: "'Inter', sans-serif", background: "#0f172a", minHeight: "100vh" }}>
+      {/* Hero Section */}
       <div style={{ background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)", padding: "100px 20px", textAlign: "center" }}>
         <img src="images/logo.jpg" alt="Greater Edge Landscaping" style={{ width: "100%", maxWidth: "500px", height: "auto", marginBottom: "30px", borderRadius: "24px", boxShadow: "0 30px 50px rgba(0,0,0,0.3)" }} />
         <h1 style={{ fontSize: "52px", fontWeight: "800", color: "white", marginBottom: "16px" }}>Greater Edge <span style={{ color: "#2E8B57" }}>Landscaping</span></h1>
         <p style={{ fontSize: "22px", color: "#94a3b8", marginBottom: "32px" }}>Family Owned & Operated</p>
-        <a href="/contact" style={{ background: "#2E8B57", color: "white", padding: "14px 42px", borderRadius: "50px", textDecoration: "none", fontWeight: "700", fontSize: "18px", display: "inline-block", transition: "all 0.2s" }} onMouseEnter={(e) => e.target.style.background = "#236b45"} onMouseLeave={(e) => e.target.style.background = "#2E8B57"}>Free Estimate →</a>
+        <a href="/contact" style={{ background: "#2E8B57", color: "white", padding: "14px 42px", borderRadius: "50px", textDecoration: "none", fontWeight: "700", fontSize: "18px", display: "inline-block" }}>Free Estimate →</a>
       </div>
 
-      {/* OUR WORK */}
+      {/* Our Work */}
       <div style={{ textAlign: "center", padding: "70px 20px 30px" }}>
         <h2 style={{ fontSize: "36px", fontWeight: "700", color: "white", margin: 0 }}>Our Work</h2>
         <div style={{ width: "60px", height: "4px", background: "#2E8B57", margin: "20px auto 0", borderRadius: "2px" }}></div>
         <p style={{ color: "#94a3b8", marginTop: "20px", fontSize: "16px" }}>See the difference we make</p>
       </div>
 
-      {/* PROJECTS */}
+      {/* Projects */}
       <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "20px 16px 100px" }}>
         {projects.map(project => {
           if (project.isLawn) {
-            // Lawn section: main image + dropdown gallery (no before/after)
             const allLawnImages = [project.mainImage, ...project.extraImages];
             const galleryItems = allLawnImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
             return (
@@ -235,11 +206,9 @@ export default function Home() {
                   <h3 style={{ fontSize: "28px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
                   <p style={{ color: "#94a3b8", fontSize: "14px", marginTop: "8px" }}>Beautiful, healthy lawns</p>
                 </div>
-                {/* Main large image */}
                 <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "30px" }}>
                   <img src={project.mainImage} alt="Main Lawn" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
                 </div>
-                {/* Dropdown for extra images */}
                 {project.extraImages.length > 0 && (
                   <div>
                     <button onClick={() => setShowLawnGallery(!showLawnGallery)} style={{ width: "100%", padding: "16px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "15px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -260,8 +229,6 @@ export default function Home() {
               </div>
             );
           }
-          
-          // Regular sections with before/after sliders
           const mainPair = project.pairs[0];
           const extraPairs = project.pairs.slice(1);
           return (
@@ -291,11 +258,22 @@ export default function Home() {
         })}
       </div>
 
-      {/* FOOTER */}
+      {/* Footer */}
       <div style={{ background: "#020617", color: "#64748b", padding: "45px 20px", textAlign: "center", fontSize: "13px", borderTop: "1px solid #1e293b" }}>
         <p>© 2026 Greater Edge Landscaping LLC. All rights reserved.</p>
         <p style={{ marginTop: "12px", fontSize: "12px" }}>Family Owned & Operated</p>
       </div>
+
+      {/* Lightbox Modal */}
+      {lightboxOpen && (
+        <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", background: "rgba(0,0,0,0.95)", zIndex: 2000, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
+          <button onClick={closeLightbox} style={{ position: "absolute", top: "20px", right: "20px", background: "rgba(255,255,255,0.2)", border: "none", color: "white", fontSize: "30px", width: "50px", height: "50px", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(10px)", zIndex: 2001 }}>✕</button>
+          {currentIndex > 0 && <button onClick={prevImage} style={{ position: "absolute", left: "20px", top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.2)", border: "none", color: "white", fontSize: "40px", width: "60px", height: "60px", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(10px)", zIndex: 2001 }}>◀</button>}
+          {currentIndex < currentGallery.length - 1 && <button onClick={nextImage} style={{ position: "absolute", right: "20px", top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.2)", border: "none", color: "white", fontSize: "40px", width: "60px", height: "60px", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(10px)", zIndex: 2001 }}>▶</button>}
+          <img src={currentImage} alt={currentImageTitle} style={{ maxWidth: "90%", maxHeight: "80%", objectFit: "contain", borderRadius: "8px" }} />
+          <div style={{ position: "absolute", bottom: "30px", left: 0, right: 0, textAlign: "center", color: "white", fontSize: "16px", background: "rgba(0,0,0,0.5)", padding: "10px", margin: "0 auto", width: "fit-content", borderRadius: "30px" }}>{currentImageTitle} ({currentIndex + 1} / {currentGallery.length})</div>
+        </div>
+      )}
     </div>
   );
 }
