@@ -1,7 +1,7 @@
 import { useState } from "preact/hooks";
 
 export default function Home() {
-  const [showMore, setShowMore] = useState({});      // for extra before/after pairs
+  const [showMore, setShowMore] = useState({});           // for extra before/after pairs
   const [showExtraSingles, setShowExtraSingles] = useState({}); // for extra single images
   const [showLawnGallery, setShowLawnGallery] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -111,7 +111,7 @@ export default function Home() {
     );
   };
 
-  // Small before/after pair for first dropdown
+  // Small before/after pair (first dropdown)
   const SmallPair = ({ before, after, index, projectName }) => {
     const gallery = [
       { src: before, title: `${projectName} - Before ${index}` },
@@ -138,7 +138,7 @@ export default function Home() {
     );
   };
 
-  // Single image component for the second dropdown (just pictures)
+  // Extra single image (second dropdown)
   const ExtraSingleImage = ({ src, index, projectName, gallery }) => {
     return (
       <div style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}
@@ -154,12 +154,12 @@ export default function Home() {
       id: 1, 
       name: "Brick Pavers & Patios", 
       pairs: [
-        { before: "images/paver1.jpg", after: "images/paver2.jpg" },   // main slider
-        { before: "images/paver3.jpg", after: "images/paver4.jpg" },   // extra pair 1
-        { before: "images/paver5.jpg", after: "images/paver6.jpg" },   // extra pair 2
-        { before: "images/paver7.jpg", after: "images/paver8.jpg" }    // extra pair 3
+        { before: "images/paver1.jpg", after: "images/paver2.jpg" },
+        { before: "images/paver3.jpg", after: "images/paver4.jpg" },
+        { before: "images/paver5.jpg", after: "images/paver6.jpg" },
+        { before: "images/paver7.jpg", after: "images/paver8.jpg" }
       ],
-      extraSingles: []  // 👈 Add your single image URLs here (e.g., "images/paver9.jpg", "images/paver10.jpg", ...)
+      extraSingles: []   // 👈 Add your single images here (e.g., "images/paver9.jpg")
     },
     { 
       id: 2, 
@@ -245,7 +245,7 @@ export default function Home() {
       {/* Projects */}
       <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "20px 16px 100px" }}>
         {projects.map(project => {
-          // ----- Lawn Section (gallery) -----
+          // Lawn section (gallery, no sliders)
           if (project.isLawn) {
             const allLawnImages = [project.mainImage, ...project.extraImages];
             const galleryItems = allLawnImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
@@ -279,12 +279,10 @@ export default function Home() {
             );
           }
 
-          // ----- Regular Categories (with sliders) -----
+          // Regular categories (with sliders)
           const mainPair = project.pairs[0];
-          const extraPairs = project.pairs.slice(1);        // first dropdown (before/after pairs)
-          const extraSingles = project.extraSingles || [];  // second dropdown (single images)
-
-          // Build lightbox gallery for extra singles (all images in this section)
+          const extraPairs = project.pairs.slice(1);
+          const extraSingles = project.extraSingles || [];
           const singlesGallery = extraSingles.map((src, idx) => ({ src, title: `${project.name} - Extra Photo ${idx + 1}` }));
 
           return (
@@ -297,7 +295,7 @@ export default function Home() {
               {/* Main Slider */}
               <Slider before={mainPair.before} after={mainPair.after} sliderId={`${project.id}_main`} />
               
-              {/* FIRST DROPDOWN: Extra before/after pairs (the 3 small ones) */}
+              {/* FIRST DROPDOWN: extra before/after pairs */}
               {extraPairs.length > 0 && (
                 <div style={{ marginTop: "50px" }}>
                   <button onClick={() => setShowMore(prev => ({ ...prev, [project.id]: !prev[project.id] }))} style={{ width: "100%", padding: "16px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "15px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -307,20 +305,14 @@ export default function Home() {
                   {showMore[project.id] && (
                     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "20px", marginTop: "25px" }}>
                       {extraPairs.map((pair, idx) => (
-                        <SmallPair 
-                          key={idx} 
-                          before={pair.before} 
-                          after={pair.after} 
-                          index={idx + 2} 
-                          projectName={project.name} 
-                        />
+                        <SmallPair key={idx} before={pair.before} after={pair.after} index={idx + 2} projectName={project.name} />
                       ))}
                     </div>
                   )}
                 </div>
               )}
 
-              {/* SECOND DROPDOWN: Extra single images (just pictures) */}
+              {/* SECOND DROPDOWN: extra single images (just pictures) */}
               {extraSingles.length > 0 && (
                 <div style={{ marginTop: "40px" }}>
                   <button onClick={() => setShowExtraSingles(prev => ({ ...prev, [project.id]: !prev[project.id] }))} style={{ width: "100%", padding: "16px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "15px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -330,13 +322,7 @@ export default function Home() {
                   {showExtraSingles[project.id] && (
                     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "20px", marginTop: "25px" }}>
                       {extraSingles.map((src, idx) => (
-                        <ExtraSingleImage 
-                          key={idx}
-                          src={src}
-                          index={idx + 1}
-                          projectName={project.name}
-                          gallery={singlesGallery}
-                        />
+                        <ExtraSingleImage key={idx} src={src} index={idx + 1} projectName={project.name} gallery={singlesGallery} />
                       ))}
                     </div>
                   )}
