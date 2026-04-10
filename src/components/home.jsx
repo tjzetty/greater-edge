@@ -9,6 +9,7 @@ export default function Home() {
   const [currentGallery, setCurrentGallery] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Lightbox functions
   const openLightbox = (image, title, gallery, index) => {
     setCurrentImage(image);
     setCurrentImageTitle(title);
@@ -51,6 +52,7 @@ export default function Home() {
     };
   }
 
+  // Slider component
   const Slider = ({ before, after, sliderId }) => {
     const [pos, setPos] = useState(50);
     return (
@@ -108,6 +110,7 @@ export default function Home() {
     );
   };
 
+  // Small Before/After Pair for Dropdown (clickable, opens lightbox)
   const SmallPair = ({ before, after, index, projectName }) => {
     const gallery = [
       { src: before, title: `${projectName} - Before ${index}` },
@@ -134,47 +137,77 @@ export default function Home() {
     );
   };
 
+  // ---------- PROJECTS DATA ----------
+  // Add your extra image pairs to the `extraPairs` array for each category.
+  // The dropdown will automatically appear below the main sliders.
   const projects = [
-    { id: 1, name: "Brick Pavers & Patios", pairs: [
-      { before: "images/paver1.jpg", after: "images/paver2.jpg" },
-      { before: "images/paver3.jpg", after: "images/paver4.jpg" },
-      { before: "images/paver5.jpg", after: "images/paver6.jpg" },
-      { before: "images/paver7.jpg", after: "images/paver8.jpg" }
-    ]},
-    { id: 2, name: "Great Cuts", isLawn: true,
-      mainImage: "images/lawn2.jpg",
-      extraImages: ["images/lawn3.jpg", "images/lawn3.jpg", "images/lawn4.jpg"]
+    { 
+      id: 1, 
+      name: "Brick Pavers & Patios", 
+      pairs: [
+        { before: "images/paver1.jpg", after: "images/paver2.jpg" },   // Main slider
+        { before: "images/paver3.jpg", after: "images/paver4.jpg" },   // Extra pair 1 (dropdown)
+        { before: "images/paver5.jpg", after: "images/paver6.jpg" },   // Extra pair 2 (dropdown)
+        { before: "images/paver7.jpg", after: "images/paver8.jpg" }    // Extra pair 3 (dropdown)
+      ]
     },
-    { id: 3, name: "Bed Clean Up", pairs: [
-      { before: "images/bedcleanup1.jpg", after: "images/bedcleanup2.jpg" },
-      { before: "images/bedcleanup3.jpg", after: "images/bedcleanup4.jpg" },
-      { before: "images/bedcleanup5.jpg", after: "images/bedcleanup6.jpg" },
-      { before: "images/bedcleanup7.jpg", after: "images/bedcleanup8.jpg" }
-    ]},
-    { id: 4, name: "Bush & Hedge Trimming", pairs: [
-      { before: "images/bushtrim1.jpg", after: "images/bushtrim2.jpg" },
-      { before: "images/bushtrim3.jpg", after: "images/bushtrim4.jpg" },
-      { before: "images/bushtrim5.jpg", after: "images/bushtrim6.jpg" },
-      { before: "images/bushtrim7.jpg", after: "images/bushtrim8.jpg" }
-    ]},
-    { id: 5, name: "Fall Clean Ups", pairs: [
-      { before: "images/fallcleanup1.jpg", after: "images/fallcleanup2.jpg" },
-      { before: "images/fallcleanup3.jpg", after: "images/fallcleanup4.jpg" },
-      { before: "images/fallcleanup5.jpg", after: "images/fallcleanup6.jpg" },
-      { before: "images/fallcleanup7.jpg", after: "images/fallcleanup8.jpg" }
-    ]},
-    { id: 6, name: "Mulching & Bed Maintenance", pairs: [
-      { before: "images/mulch1.jpg", after: "images/mulch2.jpg" },
-      { before: "images/mulch3.jpg", after: "images/mulch4.jpg" },
-      { before: "images/mulch5.jpg", after: "images/mulch6.jpg" },
-      { before: "images/mulch7.jpg", after: "images/mulch8.jpg" }
-    ]},
-    { id: 7, name: "Power Washing", pairs: [
-      { before: "images/powerwashing1.jpg", after: "images/powerwashing2.jpg" }, // Must be different files!
-      { before: "images/powerwashing3.jpg", after: "images/powerwashing4.jpg" },
-      { before: "images/powerwashing5.jpg", after: "images/powerwashing6.jpg" },
-      { before: "images/powerwashing7.jpg", after: "images/powerwashing8.jpg" }
-    ]}
+    { 
+      id: 2, 
+      name: "Great Cuts", 
+      isLawn: true,
+      mainImage: "images/lawn1.jpg",
+      extraImages: ["images/lawn2.jpg", "images/lawn3.jpg", "images/lawn4.jpg"] // Add more lawn photos here
+    },
+    { 
+      id: 3, 
+      name: "Bed Clean Up", 
+      pairs: [
+        { before: "images/bedcleanup1.jpg", after: "images/bedcleanup2.jpg" },
+        { before: "images/bedcleanup3.jpg", after: "images/bedcleanup4.jpg" },
+        { before: "images/bedcleanup5.jpg", after: "images/bedcleanup6.jpg" },
+        { before: "images/bedcleanup7.jpg", after: "images/bedcleanup8.jpg" }
+      ]
+    },
+    { 
+      id: 4, 
+      name: "Bush & Hedge Trimming", 
+      pairs: [
+        { before: "images/bushtrim1.jpg", after: "images/bushtrim2.jpg" },
+        { before: "images/bushtrim3.jpg", after: "images/bushtrim4.jpg" },
+        { before: "images/bushtrim5.jpg", after: "images/bushtrim6.jpg" },
+        { before: "images/bushtrim7.jpg", after: "images/bushtrim8.jpg" }
+      ]
+    },
+    { 
+      id: 5, 
+      name: "Fall Clean Ups", 
+      pairs: [
+        { before: "images/fallcleanup1.jpg", after: "images/fallcleanup2.jpg" },
+        { before: "images/fallcleanup3.jpg", after: "images/fallcleanup4.jpg" },
+        { before: "images/fallcleanup5.jpg", after: "images/fallcleanup6.jpg" },
+        { before: "images/fallcleanup7.jpg", after: "images/fallcleanup8.jpg" }
+      ]
+    },
+    { 
+      id: 6, 
+      name: "Mulching & Bed Maintenance", 
+      pairs: [
+        { before: "images/mulch1.jpg", after: "images/mulch2.jpg" },
+        { before: "images/mulch3.jpg", after: "images/mulch4.jpg" },
+        { before: "images/mulch5.jpg", after: "images/mulch6.jpg" },
+        { before: "images/mulch7.jpg", after: "images/mulch8.jpg" }
+      ]
+    },
+    { 
+      id: 7, 
+      name: "Power Washing", 
+      pairs: [
+        { before: "images/powerwashing1.jpg", after: "images/powerwashing2.jpg" },
+        { before: "images/powerwashing3.jpg", after: "images/powerwashing4.jpg" },
+        { before: "images/powerwashing5.jpg", after: "images/powerwashing6.jpg" },
+        { before: "images/powerwashing7.jpg", after: "images/powerwashing8.jpg" }
+      ]
+    }
   ];
 
   return (
@@ -197,6 +230,7 @@ export default function Home() {
       {/* Projects */}
       <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "20px 16px 100px" }}>
         {projects.map(project => {
+          // Lawn section (gallery, no sliders)
           if (project.isLawn) {
             const allLawnImages = [project.mainImage, ...project.extraImages];
             const galleryItems = allLawnImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
@@ -206,9 +240,11 @@ export default function Home() {
                   <h3 style={{ fontSize: "28px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
                   <p style={{ color: "#94a3b8", fontSize: "14px", marginTop: "8px" }}>Beautiful, healthy lawns</p>
                 </div>
+                {/* Main lawn image */}
                 <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "30px" }}>
                   <img src={project.mainImage} alt="Main Lawn" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
                 </div>
+                {/* Dropdown for extra lawn photos */}
                 {project.extraImages.length > 0 && (
                   <div>
                     <button onClick={() => setShowLawnGallery(!showLawnGallery)} style={{ width: "100%", padding: "16px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "15px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -229,15 +265,21 @@ export default function Home() {
               </div>
             );
           }
+
+          // Regular categories with before/after sliders
           const mainPair = project.pairs[0];
-          const extraPairs = project.pairs.slice(1);
+          const extraPairs = project.pairs.slice(1); // All remaining pairs go to dropdown
           return (
             <div key={project.id} style={{ marginBottom: "180px" }}>
               <div style={{ marginBottom: "30px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
                 <h3 style={{ fontSize: "28px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
                 <p style={{ color: "#94a3b8", fontSize: "14px", marginTop: "8px" }}>Before & After Transformations</p>
               </div>
+              
+              {/* Main slider (first pair) */}
               <Slider before={mainPair.before} after={mainPair.after} sliderId={`${project.id}_main`} />
+              
+              {/* Dropdown for extra pairs (all pairs after the first) */}
               {extraPairs.length > 0 && (
                 <div style={{ marginTop: "50px" }}>
                   <button onClick={() => setShowMore(prev => ({ ...prev, [project.id]: !prev[project.id] }))} style={{ width: "100%", padding: "16px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "15px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -247,7 +289,13 @@ export default function Home() {
                   {showMore[project.id] && (
                     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "20px", marginTop: "25px" }}>
                       {extraPairs.map((pair, idx) => (
-                        <SmallPair key={idx} before={pair.before} after={pair.after} index={idx + 2} projectName={project.name} />
+                        <SmallPair 
+                          key={idx} 
+                          before={pair.before} 
+                          after={pair.after} 
+                          index={idx + 2} 
+                          projectName={project.name} 
+                        />
                       ))}
                     </div>
                   )}
