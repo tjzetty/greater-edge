@@ -39,9 +39,7 @@ export default function Header() {
           width: auto;
           border-radius: 12px;
         }
-        .logo-text {
-          line-height: 1.3;
-        }
+        .logo-text { line-height: 1.3; }
         .logo-name {
           font-size: 18px;
           font-weight: 800;
