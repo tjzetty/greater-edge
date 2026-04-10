@@ -54,17 +54,100 @@ export default function Home() {
     };
   }
 
+  // ========== UPDATED SLIDER COMPONENT (blurred background, no black bars) ==========
   const Slider = ({ before, after, sliderId }) => {
     const [pos, setPos] = useState(50);
+
     return (
-      <div style={{ position: "relative", width: "100%", aspectRatio: "4/3", background: "#1a1a1a", borderRadius: "16px", overflow: "hidden" }}>
-        <img src={after} alt="After" style={{ width: "100%", height: "100%", objectFit: "cover", cursor: "pointer" }}
-          onClick={() => openLightbox(after, "After", [], 0)} />
-        <div style={{ position: "absolute", top: 0, left: 0, width: `${pos}%`, height: "100%", overflow: "hidden" }}>
-          <img src={before} alt="Before" style={{ width: "100%", height: "100%", objectFit: "cover", cursor: "pointer" }}
-            onClick={() => openLightbox(before, "Before", [], 0)} />
+      <div style={{ position: "relative", width: "100%", aspectRatio: "4/3", background: "#0f172a", borderRadius: "16px", overflow: "hidden" }}>
+        {/* AFTER side – blurred background */}
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundImage: `url(${after})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            filter: "blur(12px)",
+            transform: "scale(1.05)",
+          }}
+        />
+        {/* AFTER image – contained (fully visible, no crop) */}
+        <img
+          src={after}
+          alt="After"
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "contain",
+            cursor: "pointer",
+          }}
+          onClick={() => openLightbox(after, "After", [], 0)}
+        />
+
+        {/* BEFORE side (clipped) – blurred background */}
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: `${pos}%`,
+            height: "100%",
+            overflow: "hidden",
+          }}
+        >
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              backgroundImage: `url(${before})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              filter: "blur(12px)",
+              transform: "scale(1.05)",
+            }}
+          />
+          <img
+            src={before}
+            alt="Before"
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "contain",
+              cursor: "pointer",
+            }}
+            onClick={() => openLightbox(before, "Before", [], 0)}
+          />
         </div>
-        <div style={{ position: "absolute", top: 0, bottom: 0, left: `${pos}%`, width: "60px", transform: "translateX(-50%)", cursor: "ew-resize", zIndex: 20, display: "flex", alignItems: "center", justifyContent: "center", touchAction: "none" }}
+
+        {/* Slider handle */}
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            bottom: 0,
+            left: `${pos}%`,
+            width: "60px",
+            transform: "translateX(-50%)",
+            cursor: "ew-resize",
+            zIndex: 20,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            touchAction: "none",
+          }}
           onMouseDown={(e) => {
             e.preventDefault();
             const sliderDiv = e.currentTarget.parentElement;
@@ -102,14 +185,32 @@ export default function Home() {
             };
             document.addEventListener('touchmove', onMove, { passive: false });
             document.addEventListener('touchend', onUp);
-          }}>
-          <div style={{ background: "white", padding: "10px 16px", borderRadius: "40px", fontSize: "13px", fontWeight: "bold", color: "#1e293b", whiteSpace: "nowrap", boxShadow: "0 4px 12px rgba(0,0,0,0.3)", pointerEvents: "none" }}>◀ DRAG ▶</div>
+          }}
+        >
+          <div
+            style={{
+              background: "white",
+              padding: "10px 16px",
+              borderRadius: "40px",
+              fontSize: "13px",
+              fontWeight: "bold",
+              color: "#1e293b",
+              whiteSpace: "nowrap",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+              pointerEvents: "none",
+            }}
+          >
+            ◀ DRAG ▶
+          </div>
         </div>
+
+        {/* Labels */}
         <div style={{ position: "absolute", bottom: "12px", left: "12px", background: "rgba(0,0,0,0.6)", color: "white", padding: "4px 12px", borderRadius: "20px", fontSize: "11px", fontWeight: "500" }}>BEFORE</div>
         <div style={{ position: "absolute", bottom: "12px", right: "12px", background: "rgba(0,0,0,0.6)", color: "white", padding: "4px 12px", borderRadius: "20px", fontSize: "11px", fontWeight: "500" }}>AFTER</div>
       </div>
     );
   };
+  // ========== END SLIDER COMPONENT ==========
 
   const SmallPair = ({ before, after, index, projectName }) => {
     const gallery = [
@@ -163,7 +264,7 @@ export default function Home() {
       id: 2, 
       name: "Great Cuts", 
       isLawn: true,
-      mainImage: "images/lawn2.jpg",    // Changed from lawn1.jpg to lawn2.jpg
+      mainImage: "images/lawn2.jpg",
       extraImages: ["images/lawn3.jpg", "images/lawn4.jpg"]
     },
     { 
@@ -204,14 +305,14 @@ export default function Home() {
       name: "Tree Removal",
       isTreeGallery: true,
       mainImage: "images/tree1.jpg",
-      extraImages: []   // Add more tree removal photos here, e.g., "images/tree2.jpg"
+      extraImages: []
     },
     { 
       id: 7, 
       name: "Tree Planting",
       isPlantingGallery: true,
       mainImage: "images/treeplant1.jpg",
-      extraImages: []   // Add more planting photos, e.g., "images/treeplant2.jpg"
+      extraImages: []
     },
     { 
       id: 8, 
@@ -259,7 +360,6 @@ export default function Home() {
                 <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "30px" }}>
                   <img src={project.mainImage} alt="Main Lawn" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
                 </div>
-                {/* Persistent dropdown for extra lawn photos */}
                 <div>
                   <button onClick={() => setShowLawnGallery(!showLawnGallery)} style={{ width: "100%", padding: "16px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "15px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <span>📸 More Lawn Photos {project.extraImages.length > 0 ? `(${project.extraImages.length})` : "(coming soon)"}</span>
@@ -300,7 +400,6 @@ export default function Home() {
                 <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "30px" }}>
                   <img src={project.mainImage} alt="Main Tree Removal" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
                 </div>
-                {/* Persistent dropdown for extra tree removal photos */}
                 <div>
                   <button onClick={() => setShowTreeGallery(!showTreeGallery)} style={{ width: "100%", padding: "16px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "15px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <span>📸 More Tree Removal Photos {project.extraImages.length > 0 ? `(${project.extraImages.length})` : "(coming soon)"}</span>
@@ -341,7 +440,6 @@ export default function Home() {
                 <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "30px" }}>
                   <img src={project.mainImage} alt="Main Tree Planting" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
                 </div>
-                {/* Persistent dropdown for extra tree planting photos */}
                 <div>
                   <button onClick={() => setShowPlantingGallery(!showPlantingGallery)} style={{ width: "100%", padding: "16px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "15px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <span>📸 More Tree Planting Photos {project.extraImages.length > 0 ? `(${project.extraImages.length})` : "(coming soon)"}</span>
@@ -382,6 +480,7 @@ export default function Home() {
                 <p style={{ color: "#94a3b8", fontSize: "14px", marginTop: "8px" }}>Before & After Transformations</p>
               </div>
 
+              {/* UPDATED SLIDER USED HERE */}
               <Slider before={mainPair.before} after={mainPair.after} sliderId={`${project.id}_main`} />
 
               {extraPairs.length > 0 && (
