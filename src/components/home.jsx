@@ -5,6 +5,7 @@ export default function Home() {
   const [showExtraSingles, setShowExtraSingles] = useState({});
   const [showLawnGallery, setShowLawnGallery] = useState(false);
   const [showTreeGallery, setShowTreeGallery] = useState(false);
+  const [showPlantingGallery, setShowPlantingGallery] = useState(false); // new
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState("");
   const [currentImageTitle, setCurrentImageTitle] = useState("");
@@ -162,8 +163,8 @@ export default function Home() {
       id: 2, 
       name: "Great Cuts", 
       isLawn: true,
-      mainImage: "images/lawn2.jpg",
-      extraImages: ["images/lawn1.jpg", "images/lawn3.jpg", "images/lawn4.jpg"]
+      mainImage: "images/lawn1.jpg",
+      extraImages: ["images/lawn2.jpg", "images/lawn3.jpg", "images/lawn4.jpg"]
     },
     { 
       id: 3, 
@@ -200,13 +201,20 @@ export default function Home() {
     },
     { 
       id: 6, 
-      name: "Tree Removal",           // Changed from "Mulching & Bed Maintenance"
-      isTreeGallery: true,            // New flag for tree removal gallery
-      mainImage: "images/tree1.jpg",  // Main image (you'll upload tree1.jpg)
-      extraImages: []                 // Add more tree removal photos here, e.g., "images/tree2.jpg", "images/tree3.jpg"
+      name: "Tree Removal",
+      isTreeGallery: true,
+      mainImage: "images/tree1.jpg",
+      extraImages: []  // Add more tree removal photos here, e.g., "images/tree2.jpg"
     },
     { 
       id: 7, 
+      name: "Tree Planting",            // New section
+      isPlantingGallery: true,
+      mainImage: "images/treeplant1.jpg",
+      extraImages: []                   // Add more planting photos, e.g., "images/treeplant2.jpg"
+    },
+    { 
+      id: 8, 
       name: "Power Washing", 
       pairs: [
         { before: "images/powerwashing1.jpg", after: "images/powerwashing2.jpg" },
@@ -272,7 +280,7 @@ export default function Home() {
             );
           }
 
-          // Tree Removal section (exactly like Lawn)
+          // Tree Removal section
           if (project.isTreeGallery) {
             const allTreeImages = [project.mainImage, ...project.extraImages];
             const galleryItems = allTreeImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
@@ -306,6 +314,40 @@ export default function Home() {
             );
           }
 
+          // Tree Planting section (new)
+          if (project.isPlantingGallery) {
+            const allPlantingImages = [project.mainImage, ...project.extraImages];
+            const galleryItems = allPlantingImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
+            return (
+              <div key={project.id} style={{ marginBottom: "180px" }}>
+                <div style={{ marginBottom: "30px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
+                  <h3 style={{ fontSize: "28px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
+                  <p style={{ color: "#94a3b8", fontSize: "14px", marginTop: "8px" }}>Professional tree planting</p>
+                </div>
+                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "30px" }}>
+                  <img src={project.mainImage} alt="Main Tree Planting" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
+                </div>
+                {project.extraImages.length > 0 && (
+                  <div>
+                    <button onClick={() => setShowPlantingGallery(!showPlantingGallery)} style={{ width: "100%", padding: "16px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "15px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <span>📸 More Tree Planting Photos ({project.extraImages.length})</span>
+                      <span style={{ transform: showPlantingGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "18px" }}>▼</span>
+                    </button>
+                    {showPlantingGallery && (
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "20px", marginTop: "25px" }}>
+                        {project.extraImages.map((img, idx) => (
+                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
+                            <img src={img} alt={`Planting ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          }
+
           // Regular categories (with sliders)
           const mainPair = project.pairs[0];
           const extraPairs = project.pairs.slice(1);
@@ -319,10 +361,8 @@ export default function Home() {
                 <p style={{ color: "#94a3b8", fontSize: "14px", marginTop: "8px" }}>Before & After Transformations</p>
               </div>
 
-              {/* Main slider */}
               <Slider before={mainPair.before} after={mainPair.after} sliderId={`${project.id}_main`} />
 
-              {/* FIRST DROPDOWN: extra before/after pairs */}
               {extraPairs.length > 0 && (
                 <div style={{ marginTop: "50px" }}>
                   <button onClick={() => setShowMore(prev => ({ ...prev, [project.id]: !prev[project.id] }))} style={{ width: "100%", padding: "16px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "15px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -339,7 +379,6 @@ export default function Home() {
                 </div>
               )}
 
-              {/* SECOND DROPDOWN: extra single images */}
               <div style={{ marginTop: extraPairs.length > 0 ? "40px" : "50px" }}>
                 <button onClick={() => setShowExtraSingles(prev => ({ ...prev, [project.id]: !prev[project.id] }))} style={{ width: "100%", padding: "16px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "15px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span>🖼️ Additional Project Photos {extraSingles.length > 0 ? `(${extraSingles.length})` : "(coming soon)"}</span>
