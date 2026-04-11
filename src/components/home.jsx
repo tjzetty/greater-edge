@@ -368,15 +368,15 @@ export default function Home() {
       id: 6, 
       name: "Tree Removal",
       isTreeGallery: true,
-      mainImage: "images/tree1.jpg",
-      extraImages: []
+      mainImage: "images/treer1.jpg",
+      extraImages: ["images/treer2.jpg", "images/treer3.jpg"]
     },
     { 
       id: 7, 
       name: "Tree Planting",
       isPlantingGallery: true,
-      mainImage: "images/treeplant1.jpg",
-      extraImages: []
+      mainImage: "images/treep1.jpg",
+      extraImages: ["images/treep2.jpg", "images/treep3.jpg"]
     },
     { 
       id: 8, 
@@ -416,7 +416,7 @@ export default function Home() {
             const allLawnImages = [project.mainImage, ...project.extraImages];
             const galleryItems = allLawnImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
             return (
-              <div key={project.id} style={{ marginBottom: "180px" }}>
+              <div key={project.id} style={{ marginBottom: "100px" }}>
                 <div style={{ marginBottom: "30px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
                   <h3 style={{ fontSize: "28px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
                   <p style={{ color: "#94a3b8", fontSize: "14px", marginTop: "8px" }}>Beautiful, healthy lawns</p>
@@ -456,7 +456,7 @@ export default function Home() {
             const allTreeImages = [project.mainImage, ...project.extraImages];
             const galleryItems = allTreeImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
             return (
-              <div key={project.id} style={{ marginBottom: "180px" }}>
+              <div key={project.id} style={{ marginBottom: "100px" }}>
                 <div style={{ marginBottom: "30px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
                   <h3 style={{ fontSize: "28px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
                   <p style={{ color: "#94a3b8", fontSize: "14px", marginTop: "8px" }}>Professional tree removal</p>
@@ -496,7 +496,7 @@ export default function Home() {
             const allPlantingImages = [project.mainImage, ...project.extraImages];
             const galleryItems = allPlantingImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
             return (
-              <div key={project.id} style={{ marginBottom: "180px" }}>
+              <div key={project.id} style={{ marginBottom: "100px" }}>
                 <div style={{ marginBottom: "30px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
                   <h3 style={{ fontSize: "28px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
                   <p style={{ color: "#94a3b8", fontSize: "14px", marginTop: "8px" }}>Professional tree planting</p>
@@ -538,13 +538,12 @@ export default function Home() {
           const singlesGallery = extraSingles.map((src, idx) => ({ src, title: `${project.name} - Extra Photo ${idx + 1}` }));
 
           return (
-            <div key={project.id} style={{ marginBottom: "180px" }}>
+            <div key={project.id} style={{ marginBottom: "100px" }}>
               <div style={{ marginBottom: "30px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
                 <h3 style={{ fontSize: "28px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
                 <p style={{ color: "#94a3b8", fontSize: "14px", marginTop: "8px" }}>Before & After Transformations</p>
               </div>
 
-              {/* Choose slider based on project id */}
               {getSlider(project.id, mainPair.before, mainPair.after, `${project.id}_main`)}
 
               {extraPairs.length > 0 && (
