@@ -119,7 +119,7 @@ export default function Home() {
   const BlurSlider = ({ before, after, sliderId }) => {
     const [pos, setPos] = useState(50);
     return (
-      <div style={{ position: "relative", width: "100%", aspectRatio: "4/3", background: "#0f172a", borderRadius: "16px", overflow: "hidden" }}>
+      <div style={{ position: "relative", width: "100%", aspectRatio: "4/3", background: "#0a0f1a", borderRadius: "16px", overflow: "hidden" }}>
         <div
           style={{
             position: "absolute",
@@ -305,7 +305,7 @@ export default function Home() {
     );
   };
 
-  // ---------- PROJECTS (reordered: Seeding & Hydro-Seeding moved to bottom) ----------
+  // ---------- PROJECTS ----------
   const projects = [
     { id: 1, name: "Brick Pavers & Patios", pairs: [
       { before: "images/paver1.jpg", after: "images/paver2.jpg" },
@@ -315,7 +315,8 @@ export default function Home() {
     ], extraSingles: [] },
     { id: 2, name: "Great Cuts", isLawn: true, mainImage: "images/lawn2.jpg", extraImages: ["images/lawn3.jpg", "images/lawn4.jpg"] },
     { id: 9, name: "Custom Landscaping", isCustomGallery: true, mainImage: "images/custom1.jpg", extraImages: ["images/custom2.jpg", "images/custom3.jpg", "images/custom4.jpg", "images/custom5.jpg"] },
-    { id: 10, name: "Road & Turnaround", isRoadGallery: true, mainImage: "images/road1.jpg", extraImages: ["images/road2.jpg", "images/road3.jpg", "images/road4.jpg", "images/road5.jpg"] },
+    // Road & Turnaround – 9 photos total (main + 8 extras)
+    { id: 10, name: "Road & Turnaround", isRoadGallery: true, mainImage: "images/road1.jpg", extraImages: ["images/road2.jpg", "images/road3.jpg", "images/road4.jpg", "images/road5.jpg", "images/road6.jpg", "images/road7.jpg", "images/road8.jpg", "images/road9.jpg"] },
     { id: 3, name: "Bed Clean Up", pairs: [
       { before: "images/bedcleanup1.jpg", after: "images/bedcleanup2.jpg" },
       { before: "images/bedcleanup3.jpg", after: "images/bedcleanup4.jpg" },
@@ -342,14 +343,14 @@ export default function Home() {
       { before: "images/powerwashing5.jpg", after: "images/powerwashing6.jpg" },
       { before: "images/powerwashing7.jpg", after: "images/powerwashing8.jpg" }
     ], extraSingles: [] },
-    // Seeding & Hydro-Seeding moved to bottom
-    { id: 11, name: "Seeding & Hydro-Seeding", isSeedingGallery: true, mainImage: "images/seeding1.jpg", extraImages: [] }
+    // Seeding & Hydro-Seeding – 7 photos total (main + 6 extras)
+    { id: 11, name: "Seeding & Hydro-Seeding", isSeedingGallery: true, mainImage: "images/seeding1.jpg", extraImages: ["images/seeding2.jpg", "images/seeding3.jpg", "images/seeding4.jpg", "images/seeding5.jpg", "images/seeding6.jpg", "images/seeding7.jpg"] }
   ];
 
   return (
-    <div style={{ fontFamily: "'Inter', sans-serif", background: "#0f172a", minHeight: "100vh" }}>
+    <div style={{ fontFamily: "'Inter', sans-serif", background: "#0a0f1a", minHeight: "100vh" }}>
       {/* Hero Section */}
-      <div style={{ background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)", padding: "100px 20px", textAlign: "center" }}>
+      <div style={{ background: "linear-gradient(135deg, #0a0f1a 0%, #0f172a 100%)", padding: "100px 20px", textAlign: "center" }}>
         <img src="images/logo.jpg" alt="Greater Edge Landscaping" style={{ width: "100%", maxWidth: "500px", height: "auto", marginBottom: "30px", borderRadius: "24px", boxShadow: "0 30px 50px rgba(0,0,0,0.3)" }} />
         <h1 style={{ fontSize: "52px", fontWeight: "800", color: "white", marginBottom: "16px" }}>Greater Edge <span style={{ color: "#2E8B57" }}>Landscaping</span></h1>
         <p style={{ fontSize: "22px", color: "#94a3b8", marginBottom: "32px" }}>Family Owned & Operated</p>
@@ -564,7 +565,61 @@ export default function Home() {
             );
           }
 
-          // Seeding & Hydro-Seeding (now at the bottom)
+          // Power Washing and other slider sections
+          if (project.pairs) {
+            const mainPair = project.pairs[0];
+            const extraPairs = project.pairs.slice(1);
+            const extraSingles = project.extraSingles || [];
+            const singlesGallery = extraSingles.map((src, idx) => ({ src, title: `${project.name} - Extra Photo ${idx + 1}` }));
+
+            return (
+              <div key={project.id} style={{ marginBottom: "50px" }}>
+                <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
+                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
+                  <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Before & After Transformations</p>
+                </div>
+                {getSlider(project.id, mainPair.before, mainPair.after, `${project.id}_main`)}
+                {extraPairs.length > 0 && (
+                  <div style={{ marginTop: "40px" }}>
+                    <button onClick={() => setShowMore(prev => ({ ...prev, [project.id]: !prev[project.id] }))} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <span>📸 More Before & After Photos ({extraPairs.length})</span>
+                      <span style={{ transform: showMore[project.id] ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
+                    </button>
+                    {showMore[project.id] && (
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "16px", marginTop: "20px" }}>
+                        {extraPairs.map((pair, idx) => (
+                          <SmallPair key={idx} before={pair.before} after={pair.after} index={idx + 2} projectName={project.name} />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+                <div style={{ marginTop: extraPairs.length > 0 ? "30px" : "40px" }}>
+                  <button onClick={() => setShowExtraSingles(prev => ({ ...prev, [project.id]: !prev[project.id] }))} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span>🖼️ Additional Project Photos {extraSingles.length > 0 ? `(${extraSingles.length})` : "(coming soon)"}</span>
+                    <span style={{ transform: showExtraSingles[project.id] ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
+                  </button>
+                  {showExtraSingles[project.id] && (
+                    <div style={{ marginTop: "20px" }}>
+                      {extraSingles.length > 0 ? (
+                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
+                          {extraSingles.map((src, idx) => (
+                            <ExtraSingleImage key={idx} src={src} index={idx + 1} projectName={project.name} gallery={singlesGallery} />
+                          ))}
+                        </div>
+                      ) : (
+                        <div style={{ textAlign: "center", padding: "30px", background: "#1e293b", borderRadius: "12px", color: "#94a3b8" }}>
+                          No extra photos yet. Check back soon!
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          }
+
+          // Seeding & Hydro-Seeding (gallery, at the bottom)
           if (project.isSeedingGallery) {
             const allImages = [project.mainImage, ...project.extraImages];
             const galleryItems = allImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
@@ -604,57 +659,7 @@ export default function Home() {
             );
           }
 
-          // Regular categories (with sliders)
-          const mainPair = project.pairs[0];
-          const extraPairs = project.pairs.slice(1);
-          const extraSingles = project.extraSingles || [];
-          const singlesGallery = extraSingles.map((src, idx) => ({ src, title: `${project.name} - Extra Photo ${idx + 1}` }));
-
-          return (
-            <div key={project.id} style={{ marginBottom: "50px" }}>
-              <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
-                <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
-                <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Before & After Transformations</p>
-              </div>
-              {getSlider(project.id, mainPair.before, mainPair.after, `${project.id}_main`)}
-              {extraPairs.length > 0 && (
-                <div style={{ marginTop: "40px" }}>
-                  <button onClick={() => setShowMore(prev => ({ ...prev, [project.id]: !prev[project.id] }))} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <span>📸 More Before & After Photos ({extraPairs.length})</span>
-                    <span style={{ transform: showMore[project.id] ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
-                  </button>
-                  {showMore[project.id] && (
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "16px", marginTop: "20px" }}>
-                      {extraPairs.map((pair, idx) => (
-                        <SmallPair key={idx} before={pair.before} after={pair.after} index={idx + 2} projectName={project.name} />
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
-              <div style={{ marginTop: extraPairs.length > 0 ? "30px" : "40px" }}>
-                <button onClick={() => setShowExtraSingles(prev => ({ ...prev, [project.id]: !prev[project.id] }))} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <span>🖼️ Additional Project Photos {extraSingles.length > 0 ? `(${extraSingles.length})` : "(coming soon)"}</span>
-                  <span style={{ transform: showExtraSingles[project.id] ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
-                </button>
-                {showExtraSingles[project.id] && (
-                  <div style={{ marginTop: "20px" }}>
-                    {extraSingles.length > 0 ? (
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
-                        {extraSingles.map((src, idx) => (
-                          <ExtraSingleImage key={idx} src={src} index={idx + 1} projectName={project.name} gallery={singlesGallery} />
-                        ))}
-                      </div>
-                    ) : (
-                      <div style={{ textAlign: "center", padding: "30px", background: "#1e293b", borderRadius: "12px", color: "#94a3b8" }}>
-                        No extra photos yet. Check back soon!
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-            </div>
-          );
+          return null;
         })}
       </div>
 
