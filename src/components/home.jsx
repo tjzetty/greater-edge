@@ -6,12 +6,15 @@ export default function Home() {
   const [showLawnGallery, setShowLawnGallery] = useState(false);
   const [showCustomGallery, setShowCustomGallery] = useState(false);
   const [showRoadGallery, setShowRoadGallery] = useState(false);
+  const [showRockGallery, setShowRockGallery] = useState(false);
+  const [showGradingGallery, setShowGradingGallery] = useState(false);
   const [showMaterialGallery, setShowMaterialGallery] = useState(false);
   const [showSeedingGallery, setShowSeedingGallery] = useState(false);
   const [showCobbleGallery, setShowCobbleGallery] = useState(false);
   const [showMulchGallery, setShowMulchGallery] = useState(false);
   const [showTreeGallery, setShowTreeGallery] = useState(false);
   const [showPlantingGallery, setShowPlantingGallery] = useState(false);
+  const [showFallGallery, setShowFallGallery] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState("");
   const [currentImageTitle, setCurrentImageTitle] = useState("");
@@ -341,12 +344,17 @@ export default function Home() {
       { before: "images/paver7.jpg", after: "images/paver8.jpg" }
     ], extraSingles: [] },
     { id: 2, name: "Great Cuts", slug: "great-cuts", isLawn: true, mainImage: "images/lawn2.jpg", 
-      extraImages: ["images/lawn3.jpg", "images/lawn4.jpg", "images/lawn5.jpg", "images/lawn6.jpg", "images/lawn7.jpg", "images/lawn8.jpg", "images/lawn9.jpg", "images/lawn10.jpg", "images/lawn11.jpg", "images/lawn12.jpg", "images/lawn13.jpg"] }, // 11 extras = total 12
+      extraImages: ["images/lawn3.jpg", "images/lawn4.jpg", "images/lawn5.jpg", "images/lawn6.jpg", "images/lawn7.jpg", "images/lawn8.jpg", "images/lawn9.jpg", "images/lawn10.jpg", "images/lawn11.jpg", "images/lawn12.jpg", "images/lawn13.jpg"] },
     { id: 9, name: "Custom Landscaping", slug: "custom-landscaping", isCustomGallery: true, mainImage: "images/custom1.jpg", 
       extraImages: ["images/custom2.jpg", "images/custom3.jpg", "images/custom4.jpg", "images/custom5.jpg", "images/custom6.jpg", "images/custom7.jpg", "images/custom8.jpg", "images/custom9.jpg"] },
     { id: 10, name: "Road & Turnaround", slug: "road-turnaround", isRoadGallery: true, mainImage: "images/road1.jpg", 
       extraImages: ["images/road2.jpg", "images/road3.jpg", "images/road4.jpg", "images/road5.jpg", "images/road6.jpg", "images/road7.jpg", "images/road8.jpg", "images/road9.jpg"] },
-    // NEW: Material Delivery & Spreading
+    // NEW: Rock Wall / Retaining Walls
+    { id: 15, name: "Rock Wall / Retaining Walls", slug: "rock-walls", isRockGallery: true, mainImage: "images/rockwall1.jpg", 
+      extraImages: ["images/rockwall2.jpg", "images/rockwall3.jpg", "images/rockwall4.jpg", "images/rockwall5.jpg", "images/rockwall6.jpg"] },
+    // NEW: Grading
+    { id: 16, name: "Grading", slug: "grading", isGradingGallery: true, mainImage: "images/grading1.jpg", 
+      extraImages: ["images/grading2.jpg", "images/grading3.jpg", "images/grading4.jpg", "images/grading5.jpg", "images/grading6.jpg"] },
     { id: 14, name: "Material Delivery & Spreading", slug: "material-delivery", isMaterialGallery: true, mainImage: "images/material1.jpg", 
       extraImages: ["images/material2.jpg", "images/material3.jpg", "images/material4.jpg", "images/material5.jpg", "images/material6.jpg"] },
     { id: 3, name: "Bed Clean Up", slug: "bed-clean-up", pairs: [
@@ -365,12 +373,9 @@ export default function Home() {
     ], extraSingles: [] },
     { id: 13, name: "Mulching", slug: "mulching", isMulchGallery: true, mainImage: "images/mulch1.jpg", 
       extraImages: ["images/mulch2.jpg", "images/mulch3.jpg", "images/mulch4.jpg", "images/mulch5.jpg", "images/mulch6.jpg", "images/mulch7.jpg", "images/mulch8.jpg", "images/mulch9.jpg"] },
-    { id: 5, name: "Fall Clean Ups", slug: "fall-clean-ups", pairs: [
-      { before: "images/fallcleanup1.jpg", after: "images/fallcleanup2.jpg" },
-      { before: "images/fallcleanup3.jpg", after: "images/fallcleanup4.jpg" },
-      { before: "images/fallcleanup5.jpg", after: "images/fallcleanup6.jpg" },
-      { before: "images/fallcleanup7.jpg", after: "images/fallcleanup8.jpg" }
-    ], extraSingles: [] },
+    // Fall Clean Ups converted to gallery with 6 photos
+    { id: 5, name: "Fall Clean Ups", slug: "fall-clean-ups", isFallGallery: true, mainImage: "images/fall1.jpg", 
+      extraImages: ["images/fall2.jpg", "images/fall3.jpg", "images/fall4.jpg", "images/fall5.jpg", "images/fall6.jpg"] },
     { id: 6, name: "Tree Removal", slug: "tree-removal", isTreeGallery: true, mainImage: "images/treer1.jpg", 
       extraImages: ["images/treer2.jpg", "images/treer3.jpg", "images/treer4.jpg", "images/treer5.jpg", "images/treer6.jpg", "images/treer7.jpg", "images/treer8.jpg", "images/treer9.jpg"] },
     { id: 7, name: "Tree Planting", slug: "tree-planting", isPlantingGallery: true, mainImage: "images/treep1.jpg", 
@@ -579,7 +584,75 @@ export default function Home() {
             );
           }
 
-          // Material Delivery & Spreading (new)
+          // Rock Wall / Retaining Walls (new)
+          if (project.isRockGallery) {
+            const allImages = [project.mainImage, ...project.extraImages];
+            const galleryItems = allImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
+            return (
+              <div key={project.id} id={sectionId} style={{ marginBottom: "50px", scrollMarginTop: "80px" }}>
+                <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
+                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
+                  <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Durable rock & retaining walls</p>
+                </div>
+                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px" }}>
+                  <img src={project.mainImage} alt="Main Rock Wall" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
+                </div>
+                <div>
+                  <button onClick={() => setShowRockGallery(!showRockGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span>📸 More Rock Wall Photos ({project.extraImages.length})</span>
+                    <span style={{ transform: showRockGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
+                  </button>
+                  {showRockGallery && (
+                    <div style={{ marginTop: "20px" }}>
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
+                        {project.extraImages.map((img, idx) => (
+                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
+                            <img src={img} alt={`Rock Wall ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          }
+
+          // Grading (new)
+          if (project.isGradingGallery) {
+            const allImages = [project.mainImage, ...project.extraImages];
+            const galleryItems = allImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
+            return (
+              <div key={project.id} id={sectionId} style={{ marginBottom: "50px", scrollMarginTop: "80px" }}>
+                <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
+                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
+                  <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Professional grading services</p>
+                </div>
+                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px" }}>
+                  <img src={project.mainImage} alt="Main Grading" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
+                </div>
+                <div>
+                  <button onClick={() => setShowGradingGallery(!showGradingGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span>📸 More Grading Photos ({project.extraImages.length})</span>
+                    <span style={{ transform: showGradingGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
+                  </button>
+                  {showGradingGallery && (
+                    <div style={{ marginTop: "20px" }}>
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
+                        {project.extraImages.map((img, idx) => (
+                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
+                            <img src={img} alt={`Grading ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          }
+
+          // Material Delivery & Spreading
           if (project.isMaterialGallery) {
             const allImages = [project.mainImage, ...project.extraImages];
             const galleryItems = allImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
@@ -681,6 +754,40 @@ export default function Home() {
             );
           }
 
+          // Fall Clean Ups (now a gallery)
+          if (project.isFallGallery) {
+            const allImages = [project.mainImage, ...project.extraImages];
+            const galleryItems = allImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
+            return (
+              <div key={project.id} id={sectionId} style={{ marginBottom: "50px", scrollMarginTop: "80px" }}>
+                <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
+                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
+                  <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Seasonal cleanups</p>
+                </div>
+                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px" }}>
+                  <img src={project.mainImage} alt="Main Fall Cleanup" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
+                </div>
+                <div>
+                  <button onClick={() => setShowFallGallery(!showFallGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span>📸 More Fall Cleanup Photos ({project.extraImages.length})</span>
+                    <span style={{ transform: showFallGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
+                  </button>
+                  {showFallGallery && (
+                    <div style={{ marginTop: "20px" }}>
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
+                        {project.extraImages.map((img, idx) => (
+                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
+                            <img src={img} alt={`Fall ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          }
+
           // Tree Removal
           if (project.isTreeGallery) {
             const allTreeImages = [project.mainImage, ...project.extraImages];
@@ -749,7 +856,7 @@ export default function Home() {
             );
           }
 
-          // Power Washing and other slider sections
+          // Power Washing and other slider sections (only Bed Clean Up, Bush & Hedge, Brick Pavers)
           if (project.pairs) {
             const mainPair = project.pairs[0];
             const extraPairs = project.pairs.slice(1);
