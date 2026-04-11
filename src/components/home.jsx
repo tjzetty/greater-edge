@@ -352,8 +352,8 @@ export default function Home() {
       { before: "images/bedcleanup5.jpg", after: "images/bedcleanup6.jpg" },
       { before: "images/bedcleanup7.jpg", after: "images/bedcleanup8.jpg" }
     ], extraSingles: [] },
-    { id: 12, name: "Cobble Stone Beds", slug: "cobble-stone-beds", isCobbleGallery: true, mainImage: "images/cobble1.jpg", 
-      extraImages: ["images/cobble2.jpg", "images/cobble3.jpg", "images/cobble4.jpg", "images/cobble5.jpg", "images/cobble6.jpg", "images/cobble7.jpg", "images/cobble8.jpg", "images/cobble9.jpg"] },
+    { id: 12, name: "Cobble Stone Beds", slug: "cobble-stone-beds", isCobbleGallery: true, mainImage: "images/stonebed1.jpg", 
+      extraImages: ["images/stonebed2.jpg", "images/stonebed3.jpg", "images/stonebed4.jpg", "images/stonebed5.jpg", "images/stonebed6.jpg", "images/stonebed7.jpg", "images/stonebed8.jpg", "images/cobble9.jpg"] },
     { id: 4, name: "Bush & Hedge Trimming", slug: "bush-hedge-trimming", pairs: [
       { before: "images/bushtrim1.jpg", after: "images/bushtrim2.jpg" },
       { before: "images/bushtrim3.jpg", after: "images/bushtrim4.jpg" },
