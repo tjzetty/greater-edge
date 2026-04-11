@@ -62,7 +62,6 @@ export default function Home() {
     return () => window.removeEventListener("keydown", handleKey);
   }, [lightboxOpen, currentIndex, currentGallery]);
 
-  // Back to top visibility
   useEffect(() => {
     const handleScroll = () => {
       setShowBackToTop(window.scrollY > 300);
@@ -333,6 +332,7 @@ export default function Home() {
   };
 
   // ---------- PROJECTS ----------
+  // All gallery sections now have at least 8 extra images (8 extras = 9 total photos including main)
   const projects = [
     { id: 1, name: "Brick Pavers & Patios", slug: "brick-pavers", pairs: [
       { before: "images/paver1.jpg", after: "images/paver2.jpg" },
@@ -340,38 +340,46 @@ export default function Home() {
       { before: "images/paver5.jpg", after: "images/paver6.jpg" },
       { before: "images/paver7.jpg", after: "images/paver8.jpg" }
     ], extraSingles: [] },
-    { id: 2, name: "Great Cuts", slug: "great-cuts", isLawn: true, mainImage: "images/lawn2.jpg", extraImages: ["images/lawn3.jpg", "images/lawn4.jpg"] },
-    { id: 9, name: "Custom Landscaping", slug: "custom-landscaping", isCustomGallery: true, mainImage: "images/custom1.jpg", extraImages: ["images/custom2.jpg", "images/custom3.jpg", "images/custom4.jpg", "images/custom5.jpg"] },
-    { id: 10, name: "Road & Turnaround", slug: "road-turnaround", isRoadGallery: true, mainImage: "images/road1.jpg", extraImages: ["images/road2.jpg", "images/road3.jpg", "images/road4.jpg", "images/road5.jpg", "images/road6.jpg", "images/road7.jpg", "images/road8.jpg", "images/road9.jpg"] },
+    { id: 2, name: "Great Cuts", slug: "great-cuts", isLawn: true, mainImage: "images/lawn2.jpg", 
+      extraImages: ["images/lawn3.jpg", "images/lawn4.jpg", "images/lawn5.jpg", "images/lawn6.jpg", "images/lawn7.jpg", "images/lawn8.jpg", "images/lawn9.jpg", "images/lawn10.jpg"] },
+    { id: 9, name: "Custom Landscaping", slug: "custom-landscaping", isCustomGallery: true, mainImage: "images/custom1.jpg", 
+      extraImages: ["images/custom2.jpg", "images/custom3.jpg", "images/custom4.jpg", "images/custom5.jpg", "images/custom6.jpg", "images/custom7.jpg", "images/custom8.jpg", "images/custom9.jpg"] },
+    { id: 10, name: "Road & Turnaround", slug: "road-turnaround", isRoadGallery: true, mainImage: "images/road1.jpg", 
+      extraImages: ["images/road2.jpg", "images/road3.jpg", "images/road4.jpg", "images/road5.jpg", "images/road6.jpg", "images/road7.jpg", "images/road8.jpg", "images/road9.jpg"] },
     { id: 3, name: "Bed Clean Up", slug: "bed-clean-up", pairs: [
       { before: "images/bedcleanup1.jpg", after: "images/bedcleanup2.jpg" },
       { before: "images/bedcleanup3.jpg", after: "images/bedcleanup4.jpg" },
       { before: "images/bedcleanup5.jpg", after: "images/bedcleanup6.jpg" },
       { before: "images/bedcleanup7.jpg", after: "images/bedcleanup8.jpg" }
     ], extraSingles: [] },
-    { id: 12, name: "Cobble Stone Beds", slug: "cobble-stone-beds", isCobbleGallery: true, mainImage: "images/cobble1.jpg", extraImages: ["images/cobble2.jpg", "images/cobble3.jpg", "images/cobble4.jpg", "images/cobble5.jpg"] },
+    { id: 12, name: "Cobble Stone Beds", slug: "cobble-stone-beds", isCobbleGallery: true, mainImage: "images/cobble1.jpg", 
+      extraImages: ["images/cobble2.jpg", "images/cobble3.jpg", "images/cobble4.jpg", "images/cobble5.jpg", "images/cobble6.jpg", "images/cobble7.jpg", "images/cobble8.jpg", "images/cobble9.jpg"] },
     { id: 4, name: "Bush & Hedge Trimming", slug: "bush-hedge-trimming", pairs: [
       { before: "images/bushtrim1.jpg", after: "images/bushtrim2.jpg" },
       { before: "images/bushtrim3.jpg", after: "images/bushtrim4.jpg" },
       { before: "images/bushtrim5.jpg", after: "images/bushtrim6.jpg" },
       { before: "images/bushtrim7.jpg", after: "images/bushtrim8.jpg" }
     ], extraSingles: [] },
-    { id: 13, name: "Mulching", slug: "mulching", isMulchGallery: true, mainImage: "images/mulchg1.jpg", extraImages: ["images/mulchg2.jpg", "images/mulchg3.jpg", "images/mulchg4.jpg", "images/mulchg5.jpg", "images/mulchg6.jpg"] },
+    { id: 13, name: "Mulching", slug: "mulching", isMulchGallery: true, mainImage: "images/mulchg1.jpg", 
+      extraImages: ["images/mulchg2.jpg", "images/mulchg3.jpg", "images/mulchg4.jpg", "images/mulchg5.jpg", "images/mulchg6.jpg", "images/mulchg7.jpg", "images/mulchg8.jpg", "images/mulchg9.jpg"] },
     { id: 5, name: "Fall Clean Ups", slug: "fall-clean-ups", pairs: [
       { before: "images/fallcleanup1.jpg", after: "images/fallcleanup2.jpg" },
       { before: "images/fallcleanup3.jpg", after: "images/fallcleanup4.jpg" },
       { before: "images/fallcleanup5.jpg", after: "images/fallcleanup6.jpg" },
       { before: "images/fallcleanup7.jpg", after: "images/fallcleanup8.jpg" }
     ], extraSingles: [] },
-    { id: 6, name: "Tree Removal", slug: "tree-removal", isTreeGallery: true, mainImage: "images/treer1.jpg", extraImages: ["images/treer2.jpg", "images/treer3.jpg"] },
-    { id: 7, name: "Tree Planting", slug: "tree-planting", isPlantingGallery: true, mainImage: "images/treep1.jpg", extraImages: ["images/treep2.jpg", "images/treep3.jpg"] },
+    { id: 6, name: "Tree Removal", slug: "tree-removal", isTreeGallery: true, mainImage: "images/treer1.jpg", 
+      extraImages: ["images/treer2.jpg", "images/treer3.jpg", "images/treer4.jpg", "images/treer5.jpg", "images/treer6.jpg", "images/treer7.jpg", "images/treer8.jpg", "images/treer9.jpg"] },
+    { id: 7, name: "Tree Planting", slug: "tree-planting", isPlantingGallery: true, mainImage: "images/treep1.jpg", 
+      extraImages: ["images/treep2.jpg", "images/treep3.jpg", "images/treep4.jpg", "images/treep5.jpg", "images/treep6.jpg", "images/treep7.jpg", "images/treep8.jpg", "images/treep9.jpg"] },
     { id: 8, name: "Power Washing", slug: "power-washing", pairs: [
       { before: "images/powerwashing1.jpg", after: "images/powerwashing2.jpg" },
       { before: "images/powerwashing3.jpg", after: "images/powerwashing4.jpg" },
       { before: "images/powerwashing5.jpg", after: "images/powerwashing6.jpg" },
       { before: "images/powerwashing7.jpg", after: "images/powerwashing8.jpg" }
     ], extraSingles: [] },
-    { id: 11, name: "Seeding & Hydro-Seeding", slug: "seeding-hydro-seeding", isSeedingGallery: true, mainImage: "images/seeding1.jpg", extraImages: ["images/seeding2.jpg", "images/seeding3.jpg", "images/seeding4.jpg", "images/seeding5.jpg", "images/seeding6.jpg", "images/seeding7.jpg"] }
+    { id: 11, name: "Seeding & Hydro-Seeding", slug: "seeding-hydro-seeding", isSeedingGallery: true, mainImage: "images/seeding1.jpg", 
+      extraImages: ["images/seeding2.jpg", "images/seeding3.jpg", "images/seeding4.jpg", "images/seeding5.jpg", "images/seeding6.jpg", "images/seeding7.jpg", "images/seeding8.jpg", "images/seeding9.jpg"] }
   ];
 
   const navItems = projects.map(p => ({ name: p.name, slug: p.slug }));
@@ -393,14 +401,33 @@ export default function Home() {
         <p style={{ color: "#94a3b8", marginTop: "20px", fontSize: "16px" }}>See the difference we make</p>
       </div>
 
-      {/* Horizontal Navigation Bar - Larger */}
-      <div style={{
+      {/* Horizontal Navigation Bar - Thicker scrollbar */}
+      <style>{`
+        .nav-scrollbar {
+          scrollbar-width: auto;
+          scrollbar-color: #2E8B57 #1e293b;
+        }
+        .nav-scrollbar::-webkit-scrollbar {
+          height: 12px;
+        }
+        .nav-scrollbar::-webkit-scrollbar-track {
+          background: #1e293b;
+          border-radius: 10px;
+        }
+        .nav-scrollbar::-webkit-scrollbar-thumb {
+          background: #2E8B57;
+          border-radius: 10px;
+        }
+        .nav-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #236b45;
+        }
+      `}</style>
+      <div className="nav-scrollbar" style={{
         maxWidth: "1000px",
         margin: "0 auto",
         padding: "0 16px 24px 16px",
         overflowX: "auto",
         whiteSpace: "nowrap",
-        scrollbarWidth: "thin",
       }}>
         <div style={{
           display: "inline-flex",
@@ -455,24 +482,18 @@ export default function Home() {
                 </div>
                 <div>
                   <button onClick={() => setShowLawnGallery(!showLawnGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <span>📸 More Lawn Photos {project.extraImages.length > 0 ? `(${project.extraImages.length})` : "(coming soon)"}</span>
+                    <span>📸 More Lawn Photos ({project.extraImages.length})</span>
                     <span style={{ transform: showLawnGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
                   </button>
                   {showLawnGallery && (
                     <div style={{ marginTop: "20px" }}>
-                      {project.extraImages.length > 0 ? (
-                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
-                          {project.extraImages.map((img, idx) => (
-                            <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
-                              <img src={img} alt={`Lawn ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <div style={{ textAlign: "center", padding: "30px", background: "#1e293b", borderRadius: "12px", color: "#94a3b8" }}>
-                          No extra photos yet. Check back soon!
-                        </div>
-                      )}
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
+                        {project.extraImages.map((img, idx) => (
+                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
+                            <img src={img} alt={`Lawn ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -495,24 +516,18 @@ export default function Home() {
                 </div>
                 <div>
                   <button onClick={() => setShowCustomGallery(!showCustomGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <span>📸 More Custom Landscaping Photos {project.extraImages.length > 0 ? `(${project.extraImages.length})` : "(coming soon)"}</span>
+                    <span>📸 More Custom Landscaping Photos ({project.extraImages.length})</span>
                     <span style={{ transform: showCustomGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
                   </button>
                   {showCustomGallery && (
                     <div style={{ marginTop: "20px" }}>
-                      {project.extraImages.length > 0 ? (
-                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
-                          {project.extraImages.map((img, idx) => (
-                            <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
-                              <img src={img} alt={`Custom ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <div style={{ textAlign: "center", padding: "30px", background: "#1e293b", borderRadius: "12px", color: "#94a3b8" }}>
-                          No extra photos yet. Check back soon!
-                        </div>
-                      )}
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
+                        {project.extraImages.map((img, idx) => (
+                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
+                            <img src={img} alt={`Custom ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -535,24 +550,18 @@ export default function Home() {
                 </div>
                 <div>
                   <button onClick={() => setShowRoadGallery(!showRoadGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <span>📸 More Road & Turnaround Photos {project.extraImages.length > 0 ? `(${project.extraImages.length})` : "(coming soon)"}</span>
+                    <span>📸 More Road & Turnaround Photos ({project.extraImages.length})</span>
                     <span style={{ transform: showRoadGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
                   </button>
                   {showRoadGallery && (
                     <div style={{ marginTop: "20px" }}>
-                      {project.extraImages.length > 0 ? (
-                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
-                          {project.extraImages.map((img, idx) => (
-                            <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
-                              <img src={img} alt={`Road ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <div style={{ textAlign: "center", padding: "30px", background: "#1e293b", borderRadius: "12px", color: "#94a3b8" }}>
-                          No extra photos yet. Check back soon!
-                        </div>
-                      )}
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
+                        {project.extraImages.map((img, idx) => (
+                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
+                            <img src={img} alt={`Road ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -575,24 +584,18 @@ export default function Home() {
                 </div>
                 <div>
                   <button onClick={() => setShowCobbleGallery(!showCobbleGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <span>📸 More Cobble Stone Photos {project.extraImages.length > 0 ? `(${project.extraImages.length})` : "(coming soon)"}</span>
+                    <span>📸 More Cobble Stone Photos ({project.extraImages.length})</span>
                     <span style={{ transform: showCobbleGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
                   </button>
                   {showCobbleGallery && (
                     <div style={{ marginTop: "20px" }}>
-                      {project.extraImages.length > 0 ? (
-                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
-                          {project.extraImages.map((img, idx) => (
-                            <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
-                              <img src={img} alt={`Cobble ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <div style={{ textAlign: "center", padding: "30px", background: "#1e293b", borderRadius: "12px", color: "#94a3b8" }}>
-                          No extra photos yet. Check back soon!
-                        </div>
-                      )}
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
+                        {project.extraImages.map((img, idx) => (
+                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
+                            <img src={img} alt={`Cobble ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -615,24 +618,18 @@ export default function Home() {
                 </div>
                 <div>
                   <button onClick={() => setShowMulchGallery(!showMulchGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <span>📸 More Mulching Photos {project.extraImages.length > 0 ? `(${project.extraImages.length})` : "(coming soon)"}</span>
+                    <span>📸 More Mulching Photos ({project.extraImages.length})</span>
                     <span style={{ transform: showMulchGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
                   </button>
                   {showMulchGallery && (
                     <div style={{ marginTop: "20px" }}>
-                      {project.extraImages.length > 0 ? (
-                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
-                          {project.extraImages.map((img, idx) => (
-                            <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
-                              <img src={img} alt={`Mulch ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <div style={{ textAlign: "center", padding: "30px", background: "#1e293b", borderRadius: "12px", color: "#94a3b8" }}>
-                          No extra photos yet. Check back soon!
-                        </div>
-                      )}
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
+                        {project.extraImages.map((img, idx) => (
+                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
+                            <img src={img} alt={`Mulch ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -655,24 +652,18 @@ export default function Home() {
                 </div>
                 <div>
                   <button onClick={() => setShowTreeGallery(!showTreeGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <span>📸 More Tree Removal Photos {project.extraImages.length > 0 ? `(${project.extraImages.length})` : "(coming soon)"}</span>
+                    <span>📸 More Tree Removal Photos ({project.extraImages.length})</span>
                     <span style={{ transform: showTreeGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
                   </button>
                   {showTreeGallery && (
                     <div style={{ marginTop: "20px" }}>
-                      {project.extraImages.length > 0 ? (
-                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
-                          {project.extraImages.map((img, idx) => (
-                            <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
-                              <img src={img} alt={`Tree ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <div style={{ textAlign: "center", padding: "30px", background: "#1e293b", borderRadius: "12px", color: "#94a3b8" }}>
-                          No extra photos yet. Check back soon!
-                        </div>
-                      )}
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
+                        {project.extraImages.map((img, idx) => (
+                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
+                            <img src={img} alt={`Tree ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -695,24 +686,18 @@ export default function Home() {
                 </div>
                 <div>
                   <button onClick={() => setShowPlantingGallery(!showPlantingGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <span>📸 More Tree Planting Photos {project.extraImages.length > 0 ? `(${project.extraImages.length})` : "(coming soon)"}</span>
+                    <span>📸 More Tree Planting Photos ({project.extraImages.length})</span>
                     <span style={{ transform: showPlantingGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
                   </button>
                   {showPlantingGallery && (
                     <div style={{ marginTop: "20px" }}>
-                      {project.extraImages.length > 0 ? (
-                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
-                          {project.extraImages.map((img, idx) => (
-                            <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
-                              <img src={img} alt={`Planting ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <div style={{ textAlign: "center", padding: "30px", background: "#1e293b", borderRadius: "12px", color: "#94a3b8" }}>
-                          No extra photos yet. Check back soon!
-                        </div>
-                      )}
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
+                        {project.extraImages.map((img, idx) => (
+                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
+                            <img src={img} alt={`Planting ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -789,24 +774,18 @@ export default function Home() {
                 </div>
                 <div>
                   <button onClick={() => setShowSeedingGallery(!showSeedingGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <span>📸 More Seeding & Hydro‑Seeding Photos {project.extraImages.length > 0 ? `(${project.extraImages.length})` : "(coming soon)"}</span>
+                    <span>📸 More Seeding & Hydro‑Seeding Photos ({project.extraImages.length})</span>
                     <span style={{ transform: showSeedingGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
                   </button>
                   {showSeedingGallery && (
                     <div style={{ marginTop: "20px" }}>
-                      {project.extraImages.length > 0 ? (
-                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
-                          {project.extraImages.map((img, idx) => (
-                            <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
-                              <img src={img} alt={`Seeding ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <div style={{ textAlign: "center", padding: "30px", background: "#1e293b", borderRadius: "12px", color: "#94a3b8" }}>
-                          No extra photos yet. Check back soon!
-                        </div>
-                      )}
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
+                        {project.extraImages.map((img, idx) => (
+                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
+                            <img src={img} alt={`Seeding ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>
