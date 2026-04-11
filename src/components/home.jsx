@@ -6,6 +6,7 @@ export default function Home() {
   const [showLawnGallery, setShowLawnGallery] = useState(false);
   const [showCustomGallery, setShowCustomGallery] = useState(false);
   const [showRoadGallery, setShowRoadGallery] = useState(false);
+  const [showSeedingGallery, setShowSeedingGallery] = useState(false);
   const [showTreeGallery, setShowTreeGallery] = useState(false);
   const [showPlantingGallery, setShowPlantingGallery] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -313,10 +314,10 @@ export default function Home() {
       { before: "images/paver7.jpg", after: "images/paver8.jpg" }
     ], extraSingles: [] },
     { id: 2, name: "Great Cuts", isLawn: true, mainImage: "images/lawn2.jpg", extraImages: ["images/lawn3.jpg", "images/lawn4.jpg"] },
-    // NEW: Custom Landscaping (gallery only)
     { id: 9, name: "Custom Landscaping", isCustomGallery: true, mainImage: "images/custom1.jpg", extraImages: [] },
-    // NEW: Road & Turnaround (gallery only)
-    { id: 10, name: "Road & Turnaround", isRoadGallery: true, mainImage: "images/road1.jpg", extraImages: [extraImages: ["images/road2.jpg", "images/road3.jpg", "images/road4.jpg"] },
+    { id: 10, name: "Road & Turnaround", isRoadGallery: true, mainImage: "images/road1.jpg", extraImages: [] },
+    // NEW: Seeding & Hydro-Seeding (gallery only)
+    { id: 11, name: "Seeding & Hydro-Seeding", isSeedingGallery: true, mainImage: "images/seeding1.jpg", extraImages: [] },
     { id: 3, name: "Bed Clean Up", pairs: [
       { before: "images/bedcleanup1.jpg", after: "images/bedcleanup2.jpg" },
       { before: "images/bedcleanup3.jpg", after: "images/bedcleanup4.jpg" },
@@ -403,7 +404,7 @@ export default function Home() {
             );
           }
 
-          // Custom Landscaping section (gallery)
+          // Custom Landscaping section
           if (project.isCustomGallery) {
             const allImages = [project.mainImage, ...project.extraImages];
             const galleryItems = allImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
@@ -443,7 +444,7 @@ export default function Home() {
             );
           }
 
-          // Road & Turnaround section (gallery)
+          // Road & Turnaround section
           if (project.isRoadGallery) {
             const allImages = [project.mainImage, ...project.extraImages];
             const galleryItems = allImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
@@ -468,6 +469,46 @@ export default function Home() {
                           {project.extraImages.map((img, idx) => (
                             <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
                               <img src={img} alt={`Road ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div style={{ textAlign: "center", padding: "30px", background: "#1e293b", borderRadius: "12px", color: "#94a3b8" }}>
+                          No extra photos yet. Check back soon!
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          }
+
+          // Seeding & Hydro-Seeding section (new)
+          if (project.isSeedingGallery) {
+            const allImages = [project.mainImage, ...project.extraImages];
+            const galleryItems = allImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
+            return (
+              <div key={project.id} style={{ marginBottom: "100px" }}>
+                <div style={{ marginBottom: "30px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
+                  <h3 style={{ fontSize: "28px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
+                  <p style={{ color: "#94a3b8", fontSize: "14px", marginTop: "8px" }}>Professional seeding & hydro‑seeding</p>
+                </div>
+                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "30px" }}>
+                  <img src={project.mainImage} alt="Main Seeding" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
+                </div>
+                <div>
+                  <button onClick={() => setShowSeedingGallery(!showSeedingGallery)} style={{ width: "100%", padding: "16px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "15px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span>📸 More Seeding & Hydro‑Seeding Photos {project.extraImages.length > 0 ? `(${project.extraImages.length})` : "(coming soon)"}</span>
+                    <span style={{ transform: showSeedingGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "18px" }}>▼</span>
+                  </button>
+                  {showSeedingGallery && (
+                    <div style={{ marginTop: "25px" }}>
+                      {project.extraImages.length > 0 ? (
+                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "20px" }}>
+                          {project.extraImages.map((img, idx) => (
+                            <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
+                              <img src={img} alt={`Seeding ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
                             </div>
                           ))}
                         </div>
