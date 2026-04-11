@@ -305,7 +305,7 @@ export default function Home() {
     );
   };
 
-  // ---------- PROJECTS ----------
+  // ---------- PROJECTS (reordered: Seeding & Hydro-Seeding moved to bottom) ----------
   const projects = [
     { id: 1, name: "Brick Pavers & Patios", pairs: [
       { before: "images/paver1.jpg", after: "images/paver2.jpg" },
@@ -314,9 +314,8 @@ export default function Home() {
       { before: "images/paver7.jpg", after: "images/paver8.jpg" }
     ], extraSingles: [] },
     { id: 2, name: "Great Cuts", isLawn: true, mainImage: "images/lawn2.jpg", extraImages: ["images/lawn3.jpg", "images/lawn4.jpg"] },
-    { id: 9, name: "Custom Landscaping", isCustomGallery: true, mainImage: "images/custom1.jpg", extraImages: [] },
-    { id: 10, name: "Road & Turnaround", isRoadGallery: true, mainImage: "images/road1.jpg", extraImages: [] },
-    { id: 11, name: "Seeding & Hydro-Seeding", isSeedingGallery: true, mainImage: "images/seeding1.jpg", extraImages: [] },
+    { id: 9, name: "Custom Landscaping", isCustomGallery: true, mainImage: "images/custom1.jpg", extraImages: ["images/custom2.jpg", "images/custom3.jpg", "images/custom4.jpg", "images/custom5.jpg"] },
+    { id: 10, name: "Road & Turnaround", isRoadGallery: true, mainImage: "images/road1.jpg", extraImages: ["images/road2.jpg", "images/road3.jpg", "images/road4.jpg", "images/road5.jpg"] },
     { id: 3, name: "Bed Clean Up", pairs: [
       { before: "images/bedcleanup1.jpg", after: "images/bedcleanup2.jpg" },
       { before: "images/bedcleanup3.jpg", after: "images/bedcleanup4.jpg" },
@@ -342,7 +341,9 @@ export default function Home() {
       { before: "images/powerwashing3.jpg", after: "images/powerwashing4.jpg" },
       { before: "images/powerwashing5.jpg", after: "images/powerwashing6.jpg" },
       { before: "images/powerwashing7.jpg", after: "images/powerwashing8.jpg" }
-    ], extraSingles: [] }
+    ], extraSingles: [] },
+    // Seeding & Hydro-Seeding moved to bottom
+    { id: 11, name: "Seeding & Hydro-Seeding", isSeedingGallery: true, mainImage: "images/seeding1.jpg", extraImages: [] }
   ];
 
   return (
@@ -483,46 +484,6 @@ export default function Home() {
             );
           }
 
-          // Seeding & Hydro-Seeding
-          if (project.isSeedingGallery) {
-            const allImages = [project.mainImage, ...project.extraImages];
-            const galleryItems = allImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
-            return (
-              <div key={project.id} style={{ marginBottom: "50px" }}>
-                <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
-                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
-                  <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Professional seeding & hydro‑seeding</p>
-                </div>
-                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px" }}>
-                  <img src={project.mainImage} alt="Main Seeding" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
-                </div>
-                <div>
-                  <button onClick={() => setShowSeedingGallery(!showSeedingGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <span>📸 More Seeding & Hydro‑Seeding Photos {project.extraImages.length > 0 ? `(${project.extraImages.length})` : "(coming soon)"}</span>
-                    <span style={{ transform: showSeedingGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
-                  </button>
-                  {showSeedingGallery && (
-                    <div style={{ marginTop: "20px" }}>
-                      {project.extraImages.length > 0 ? (
-                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
-                          {project.extraImages.map((img, idx) => (
-                            <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
-                              <img src={img} alt={`Seeding ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <div style={{ textAlign: "center", padding: "30px", background: "#1e293b", borderRadius: "12px", color: "#94a3b8" }}>
-                          No extra photos yet. Check back soon!
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-              </div>
-            );
-          }
-
           // Tree Removal
           if (project.isTreeGallery) {
             const allTreeImages = [project.mainImage, ...project.extraImages];
@@ -588,6 +549,46 @@ export default function Home() {
                           {project.extraImages.map((img, idx) => (
                             <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
                               <img src={img} alt={`Planting ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div style={{ textAlign: "center", padding: "30px", background: "#1e293b", borderRadius: "12px", color: "#94a3b8" }}>
+                          No extra photos yet. Check back soon!
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          }
+
+          // Seeding & Hydro-Seeding (now at the bottom)
+          if (project.isSeedingGallery) {
+            const allImages = [project.mainImage, ...project.extraImages];
+            const galleryItems = allImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
+            return (
+              <div key={project.id} style={{ marginBottom: "50px" }}>
+                <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
+                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
+                  <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Professional seeding & hydro‑seeding</p>
+                </div>
+                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px" }}>
+                  <img src={project.mainImage} alt="Main Seeding" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
+                </div>
+                <div>
+                  <button onClick={() => setShowSeedingGallery(!showSeedingGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span>📸 More Seeding & Hydro‑Seeding Photos {project.extraImages.length > 0 ? `(${project.extraImages.length})` : "(coming soon)"}</span>
+                    <span style={{ transform: showSeedingGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
+                  </button>
+                  {showSeedingGallery && (
+                    <div style={{ marginTop: "20px" }}>
+                      {project.extraImages.length > 0 ? (
+                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
+                          {project.extraImages.map((img, idx) => (
+                            <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
+                              <img src={img} alt={`Seeding ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
                             </div>
                           ))}
                         </div>
