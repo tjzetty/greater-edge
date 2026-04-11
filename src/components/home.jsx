@@ -7,6 +7,8 @@ export default function Home() {
   const [showCustomGallery, setShowCustomGallery] = useState(false);
   const [showRoadGallery, setShowRoadGallery] = useState(false);
   const [showSeedingGallery, setShowSeedingGallery] = useState(false);
+  const [showCobbleGallery, setShowCobbleGallery] = useState(false);
+  const [showMulchGallery, setShowMulchGallery] = useState(false);
   const [showTreeGallery, setShowTreeGallery] = useState(false);
   const [showPlantingGallery, setShowPlantingGallery] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -315,7 +317,6 @@ export default function Home() {
     ], extraSingles: [] },
     { id: 2, name: "Great Cuts", isLawn: true, mainImage: "images/lawn2.jpg", extraImages: ["images/lawn3.jpg", "images/lawn4.jpg"] },
     { id: 9, name: "Custom Landscaping", isCustomGallery: true, mainImage: "images/custom1.jpg", extraImages: ["images/custom2.jpg", "images/custom3.jpg", "images/custom4.jpg", "images/custom5.jpg"] },
-    // Road & Turnaround – 9 photos total (main + 8 extras)
     { id: 10, name: "Road & Turnaround", isRoadGallery: true, mainImage: "images/road1.jpg", extraImages: ["images/road2.jpg", "images/road3.jpg", "images/road4.jpg", "images/road5.jpg", "images/road6.jpg", "images/road7.jpg", "images/road8.jpg", "images/road9.jpg"] },
     { id: 3, name: "Bed Clean Up", pairs: [
       { before: "images/bedcleanup1.jpg", after: "images/bedcleanup2.jpg" },
@@ -323,12 +324,16 @@ export default function Home() {
       { before: "images/bedcleanup5.jpg", after: "images/bedcleanup6.jpg" },
       { before: "images/bedcleanup7.jpg", after: "images/bedcleanup8.jpg" }
     ], extraSingles: [] },
+    // NEW: Cobble Stone Beds (gallery)
+    { id: 12, name: "Cobble Stone Beds", isCobbleGallery: true, mainImage: "images/cobble1.jpg", extraImages: ["images/cobble2.jpg", "images/cobble3.jpg", "images/cobble4.jpg", "images/cobble5.jpg"] },
     { id: 4, name: "Bush & Hedge Trimming", pairs: [
       { before: "images/bushtrim1.jpg", after: "images/bushtrim2.jpg" },
       { before: "images/bushtrim3.jpg", after: "images/bushtrim4.jpg" },
       { before: "images/bushtrim5.jpg", after: "images/bushtrim6.jpg" },
       { before: "images/bushtrim7.jpg", after: "images/bushtrim8.jpg" }
     ], extraSingles: [] },
+    // NEW: Mulching (gallery)
+    { id: 13, name: "Mulching", isMulchGallery: true, mainImage: "images/mulchg1.jpg", extraImages: ["images/mulchg2.jpg", "images/mulchg3.jpg", "images/mulchg4.jpg", "images/mulchg5.jpg", "images/mulchg6.jpg"] },
     { id: 5, name: "Fall Clean Ups", pairs: [
       { before: "images/fallcleanup1.jpg", after: "images/fallcleanup2.jpg" },
       { before: "images/fallcleanup3.jpg", after: "images/fallcleanup4.jpg" },
@@ -343,7 +348,6 @@ export default function Home() {
       { before: "images/powerwashing5.jpg", after: "images/powerwashing6.jpg" },
       { before: "images/powerwashing7.jpg", after: "images/powerwashing8.jpg" }
     ], extraSingles: [] },
-    // Seeding & Hydro-Seeding – 7 photos total (main + 6 extras)
     { id: 11, name: "Seeding & Hydro-Seeding", isSeedingGallery: true, mainImage: "images/seeding1.jpg", extraImages: ["images/seeding2.jpg", "images/seeding3.jpg", "images/seeding4.jpg", "images/seeding5.jpg", "images/seeding6.jpg", "images/seeding7.jpg"] }
   ];
 
@@ -470,6 +474,86 @@ export default function Home() {
                           {project.extraImages.map((img, idx) => (
                             <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
                               <img src={img} alt={`Road ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div style={{ textAlign: "center", padding: "30px", background: "#1e293b", borderRadius: "12px", color: "#94a3b8" }}>
+                          No extra photos yet. Check back soon!
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          }
+
+          // Cobble Stone Beds (new)
+          if (project.isCobbleGallery) {
+            const allImages = [project.mainImage, ...project.extraImages];
+            const galleryItems = allImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
+            return (
+              <div key={project.id} style={{ marginBottom: "50px" }}>
+                <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
+                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
+                  <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Elegant cobble stone beds</p>
+                </div>
+                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px" }}>
+                  <img src={project.mainImage} alt="Main Cobble" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
+                </div>
+                <div>
+                  <button onClick={() => setShowCobbleGallery(!showCobbleGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span>📸 More Cobble Stone Photos {project.extraImages.length > 0 ? `(${project.extraImages.length})` : "(coming soon)"}</span>
+                    <span style={{ transform: showCobbleGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
+                  </button>
+                  {showCobbleGallery && (
+                    <div style={{ marginTop: "20px" }}>
+                      {project.extraImages.length > 0 ? (
+                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
+                          {project.extraImages.map((img, idx) => (
+                            <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
+                              <img src={img} alt={`Cobble ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div style={{ textAlign: "center", padding: "30px", background: "#1e293b", borderRadius: "12px", color: "#94a3b8" }}>
+                          No extra photos yet. Check back soon!
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          }
+
+          // Mulching (new)
+          if (project.isMulchGallery) {
+            const allImages = [project.mainImage, ...project.extraImages];
+            const galleryItems = allImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
+            return (
+              <div key={project.id} style={{ marginBottom: "50px" }}>
+                <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
+                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
+                  <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Quality mulching services</p>
+                </div>
+                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px" }}>
+                  <img src={project.mainImage} alt="Main Mulch" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
+                </div>
+                <div>
+                  <button onClick={() => setShowMulchGallery(!showMulchGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span>📸 More Mulching Photos {project.extraImages.length > 0 ? `(${project.extraImages.length})` : "(coming soon)"}</span>
+                    <span style={{ transform: showMulchGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
+                  </button>
+                  {showMulchGallery && (
+                    <div style={{ marginTop: "20px" }}>
+                      {project.extraImages.length > 0 ? (
+                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
+                          {project.extraImages.map((img, idx) => (
+                            <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
+                              <img src={img} alt={`Mulch ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
                             </div>
                           ))}
                         </div>
