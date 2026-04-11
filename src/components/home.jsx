@@ -1,4 +1,4 @@
-import { useState } from "preact/hooks";
+import { useState, useEffect } from "preact/hooks";
 
 export default function Home() {
   const [showMore, setShowMore] = useState({});
@@ -49,15 +49,26 @@ export default function Home() {
     }
   };
 
-  if (typeof window !== "undefined") {
-    window.onkeydown = (e) => {
+  useEffect(() => {
+    const handleKey = (e) => {
       if (lightboxOpen) {
         if (e.key === "ArrowRight") nextImage();
         if (e.key === "ArrowLeft") prevImage();
         if (e.key === "Escape") closeLightbox();
       }
     };
-  }
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [lightboxOpen, currentIndex, currentGallery]);
+
+  const scrollToSection = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const yOffset = -80; // sticky header height
+      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
+  };
 
   // ========== ORIGINAL SLIDER ==========
   const OriginalSlider = ({ before, after, sliderId }) => {
@@ -309,47 +320,48 @@ export default function Home() {
 
   // ---------- PROJECTS ----------
   const projects = [
-    { id: 1, name: "Brick Pavers & Patios", pairs: [
+    { id: 1, name: "Brick Pavers & Patios", slug: "brick-pavers", pairs: [
       { before: "images/paver1.jpg", after: "images/paver2.jpg" },
       { before: "images/paver3.jpg", after: "images/paver4.jpg" },
       { before: "images/paver5.jpg", after: "images/paver6.jpg" },
       { before: "images/paver7.jpg", after: "images/paver8.jpg" }
     ], extraSingles: [] },
-    { id: 2, name: "Great Cuts", isLawn: true, mainImage: "images/lawn2.jpg", extraImages: ["images/lawn3.jpg", "images/lawn4.jpg"] },
-    { id: 9, name: "Custom Landscaping", isCustomGallery: true, mainImage: "images/custom1.jpg", extraImages: ["images/custom2.jpg", "images/custom3.jpg", "images/custom4.jpg", "images/custom5.jpg"] },
-    { id: 10, name: "Road & Turnaround", isRoadGallery: true, mainImage: "images/road1.jpg", extraImages: ["images/road2.jpg", "images/road3.jpg", "images/road4.jpg", "images/road5.jpg", "images/road6.jpg", "images/road7.jpg", "images/road8.jpg", "images/road9.jpg"] },
-    { id: 3, name: "Bed Clean Up", pairs: [
+    { id: 2, name: "Great Cuts", slug: "great-cuts", isLawn: true, mainImage: "images/lawn2.jpg", extraImages: ["images/lawn3.jpg", "images/lawn4.jpg"] },
+    { id: 9, name: "Custom Landscaping", slug: "custom-landscaping", isCustomGallery: true, mainImage: "images/custom1.jpg", extraImages: ["images/custom2.jpg", "images/custom3.jpg", "images/custom4.jpg", "images/custom5.jpg"] },
+    { id: 10, name: "Road & Turnaround", slug: "road-turnaround", isRoadGallery: true, mainImage: "images/road1.jpg", extraImages: ["images/road2.jpg", "images/road3.jpg", "images/road4.jpg", "images/road5.jpg", "images/road6.jpg", "images/road7.jpg", "images/road8.jpg", "images/road9.jpg"] },
+    { id: 3, name: "Bed Clean Up", slug: "bed-clean-up", pairs: [
       { before: "images/bedcleanup1.jpg", after: "images/bedcleanup2.jpg" },
       { before: "images/bedcleanup3.jpg", after: "images/bedcleanup4.jpg" },
       { before: "images/bedcleanup5.jpg", after: "images/bedcleanup6.jpg" },
       { before: "images/bedcleanup7.jpg", after: "images/bedcleanup8.jpg" }
     ], extraSingles: [] },
-    // NEW: Cobble Stone Beds (gallery)
-    { id: 12, name: "Cobble Stone Beds", isCobbleGallery: true, mainImage: "images/cobble1.jpg", extraImages: ["images/cobble2.jpg", "images/cobble3.jpg", "images/cobble4.jpg", "images/cobble5.jpg"] },
-    { id: 4, name: "Bush & Hedge Trimming", pairs: [
+    { id: 12, name: "Cobble Stone Beds", slug: "cobble-stone-beds", isCobbleGallery: true, mainImage: "images/cobble1.jpg", extraImages: ["images/cobble2.jpg", "images/cobble3.jpg", "images/cobble4.jpg", "images/cobble5.jpg"] },
+    { id: 4, name: "Bush & Hedge Trimming", slug: "bush-hedge-trimming", pairs: [
       { before: "images/bushtrim1.jpg", after: "images/bushtrim2.jpg" },
       { before: "images/bushtrim3.jpg", after: "images/bushtrim4.jpg" },
       { before: "images/bushtrim5.jpg", after: "images/bushtrim6.jpg" },
       { before: "images/bushtrim7.jpg", after: "images/bushtrim8.jpg" }
     ], extraSingles: [] },
-    // NEW: Mulching (gallery)
-    { id: 13, name: "Mulching", isMulchGallery: true, mainImage: "images/mulchg1.jpg", extraImages: ["images/mulchg2.jpg", "images/mulchg3.jpg", "images/mulchg4.jpg", "images/mulchg5.jpg", "images/mulchg6.jpg"] },
-    { id: 5, name: "Fall Clean Ups", pairs: [
+    { id: 13, name: "Mulching", slug: "mulching", isMulchGallery: true, mainImage: "images/mulchg1.jpg", extraImages: ["images/mulchg2.jpg", "images/mulchg3.jpg", "images/mulchg4.jpg", "images/mulchg5.jpg", "images/mulchg6.jpg"] },
+    { id: 5, name: "Fall Clean Ups", slug: "fall-clean-ups", pairs: [
       { before: "images/fallcleanup1.jpg", after: "images/fallcleanup2.jpg" },
       { before: "images/fallcleanup3.jpg", after: "images/fallcleanup4.jpg" },
       { before: "images/fallcleanup5.jpg", after: "images/fallcleanup6.jpg" },
       { before: "images/fallcleanup7.jpg", after: "images/fallcleanup8.jpg" }
     ], extraSingles: [] },
-    { id: 6, name: "Tree Removal", isTreeGallery: true, mainImage: "images/treer1.jpg", extraImages: ["images/treer2.jpg", "images/treer3.jpg"] },
-    { id: 7, name: "Tree Planting", isPlantingGallery: true, mainImage: "images/treep1.jpg", extraImages: ["images/treep2.jpg", "images/treep3.jpg"] },
-    { id: 8, name: "Power Washing", pairs: [
+    { id: 6, name: "Tree Removal", slug: "tree-removal", isTreeGallery: true, mainImage: "images/treer1.jpg", extraImages: ["images/treer2.jpg", "images/treer3.jpg"] },
+    { id: 7, name: "Tree Planting", slug: "tree-planting", isPlantingGallery: true, mainImage: "images/treep1.jpg", extraImages: ["images/treep2.jpg", "images/treep3.jpg"] },
+    { id: 8, name: "Power Washing", slug: "power-washing", pairs: [
       { before: "images/powerwashing1.jpg", after: "images/powerwashing2.jpg" },
       { before: "images/powerwashing3.jpg", after: "images/powerwashing4.jpg" },
       { before: "images/powerwashing5.jpg", after: "images/powerwashing6.jpg" },
       { before: "images/powerwashing7.jpg", after: "images/powerwashing8.jpg" }
     ], extraSingles: [] },
-    { id: 11, name: "Seeding & Hydro-Seeding", isSeedingGallery: true, mainImage: "images/seeding1.jpg", extraImages: ["images/seeding2.jpg", "images/seeding3.jpg", "images/seeding4.jpg", "images/seeding5.jpg", "images/seeding6.jpg", "images/seeding7.jpg"] }
+    { id: 11, name: "Seeding & Hydro-Seeding", slug: "seeding-hydro-seeding", isSeedingGallery: true, mainImage: "images/seeding1.jpg", extraImages: ["images/seeding2.jpg", "images/seeding3.jpg", "images/seeding4.jpg", "images/seeding5.jpg", "images/seeding6.jpg", "images/seeding7.jpg"] }
   ];
+
+  // Navigation bar items (order matches projects)
+  const navItems = projects.map(p => ({ name: p.name, slug: p.slug }));
 
   return (
     <div style={{ fontFamily: "'Inter', sans-serif", background: "#0a0f1a", minHeight: "100vh" }}>
@@ -361,20 +373,66 @@ export default function Home() {
         <a href="/contact" style={{ background: "#2E8B57", color: "white", padding: "14px 42px", borderRadius: "50px", textDecoration: "none", fontWeight: "700", fontSize: "18px", display: "inline-block" }}>Free Estimate →</a>
       </div>
 
+      {/* Our Work Heading */}
       <div style={{ textAlign: "center", padding: "70px 20px 30px" }}>
         <h2 style={{ fontSize: "36px", fontWeight: "700", color: "white", margin: 0 }}>Our Work</h2>
         <div style={{ width: "60px", height: "4px", background: "#2E8B57", margin: "20px auto 0", borderRadius: "2px" }}></div>
         <p style={{ color: "#94a3b8", marginTop: "20px", fontSize: "16px" }}>See the difference we make</p>
       </div>
 
+      {/* Horizontal Navigation Bar */}
+      <div style={{
+        maxWidth: "1000px",
+        margin: "0 auto",
+        padding: "0 16px 20px 16px",
+        overflowX: "auto",
+        whiteSpace: "nowrap",
+        scrollbarWidth: "thin",
+      }}>
+        <div style={{
+          display: "inline-flex",
+          gap: "12px",
+          background: "#1e293b",
+          padding: "12px 20px",
+          borderRadius: "60px",
+          boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+        }}>
+          {navItems.map(item => (
+            <button
+              key={item.slug}
+              onClick={() => scrollToSection(`section-${item.slug}`)}
+              style={{
+                background: "transparent",
+                border: "none",
+                color: "#cbd5e1",
+                fontSize: "14px",
+                fontWeight: "500",
+                padding: "6px 16px",
+                borderRadius: "40px",
+                cursor: "pointer",
+                transition: "all 0.2s",
+                fontFamily: "inherit",
+                whiteSpace: "nowrap",
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = "#2E8B57"; e.currentTarget.style.color = "white"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#cbd5e1"; }}
+            >
+              {item.name}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Projects */}
       <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "20px 16px 80px" }}>
         {projects.map(project => {
+          const sectionId = `section-${project.slug}`;
           // Lawn section
           if (project.isLawn) {
             const allLawnImages = [project.mainImage, ...project.extraImages];
             const galleryItems = allLawnImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
             return (
-              <div key={project.id} style={{ marginBottom: "50px" }}>
+              <div key={project.id} id={sectionId} style={{ marginBottom: "50px", scrollMarginTop: "80px" }}>
                 <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
                   <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
                   <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Beautiful, healthy lawns</p>
@@ -414,7 +472,7 @@ export default function Home() {
             const allImages = [project.mainImage, ...project.extraImages];
             const galleryItems = allImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
             return (
-              <div key={project.id} style={{ marginBottom: "50px" }}>
+              <div key={project.id} id={sectionId} style={{ marginBottom: "50px", scrollMarginTop: "80px" }}>
                 <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
                   <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
                   <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Creative landscaping designs</p>
@@ -454,7 +512,7 @@ export default function Home() {
             const allImages = [project.mainImage, ...project.extraImages];
             const galleryItems = allImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
             return (
-              <div key={project.id} style={{ marginBottom: "50px" }}>
+              <div key={project.id} id={sectionId} style={{ marginBottom: "50px", scrollMarginTop: "80px" }}>
                 <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
                   <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
                   <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Driveways & road enhancements</p>
@@ -489,12 +547,12 @@ export default function Home() {
             );
           }
 
-          // Cobble Stone Beds (new)
+          // Cobble Stone Beds
           if (project.isCobbleGallery) {
             const allImages = [project.mainImage, ...project.extraImages];
             const galleryItems = allImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
             return (
-              <div key={project.id} style={{ marginBottom: "50px" }}>
+              <div key={project.id} id={sectionId} style={{ marginBottom: "50px", scrollMarginTop: "80px" }}>
                 <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
                   <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
                   <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Elegant cobble stone beds</p>
@@ -529,12 +587,12 @@ export default function Home() {
             );
           }
 
-          // Mulching (new)
+          // Mulching
           if (project.isMulchGallery) {
             const allImages = [project.mainImage, ...project.extraImages];
             const galleryItems = allImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
             return (
-              <div key={project.id} style={{ marginBottom: "50px" }}>
+              <div key={project.id} id={sectionId} style={{ marginBottom: "50px", scrollMarginTop: "80px" }}>
                 <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
                   <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
                   <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Quality mulching services</p>
@@ -574,7 +632,7 @@ export default function Home() {
             const allTreeImages = [project.mainImage, ...project.extraImages];
             const galleryItems = allTreeImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
             return (
-              <div key={project.id} style={{ marginBottom: "50px" }}>
+              <div key={project.id} id={sectionId} style={{ marginBottom: "50px", scrollMarginTop: "80px" }}>
                 <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
                   <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
                   <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Professional tree removal</p>
@@ -614,7 +672,7 @@ export default function Home() {
             const allPlantingImages = [project.mainImage, ...project.extraImages];
             const galleryItems = allPlantingImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
             return (
-              <div key={project.id} style={{ marginBottom: "50px" }}>
+              <div key={project.id} id={sectionId} style={{ marginBottom: "50px", scrollMarginTop: "80px" }}>
                 <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
                   <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
                   <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Professional tree planting</p>
@@ -657,7 +715,7 @@ export default function Home() {
             const singlesGallery = extraSingles.map((src, idx) => ({ src, title: `${project.name} - Extra Photo ${idx + 1}` }));
 
             return (
-              <div key={project.id} style={{ marginBottom: "50px" }}>
+              <div key={project.id} id={sectionId} style={{ marginBottom: "50px", scrollMarginTop: "80px" }}>
                 <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
                   <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
                   <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Before & After Transformations</p>
@@ -708,7 +766,7 @@ export default function Home() {
             const allImages = [project.mainImage, ...project.extraImages];
             const galleryItems = allImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
             return (
-              <div key={project.id} style={{ marginBottom: "50px" }}>
+              <div key={project.id} id={sectionId} style={{ marginBottom: "50px", scrollMarginTop: "80px" }}>
                 <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
                   <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
                   <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Professional seeding & hydro‑seeding</p>
