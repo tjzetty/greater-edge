@@ -316,7 +316,7 @@ export default function Home() {
     // NEW: Custom Landscaping (gallery only)
     { id: 9, name: "Custom Landscaping", isCustomGallery: true, mainImage: "images/custom1.jpg", extraImages: [] },
     // NEW: Road & Turnaround (gallery only)
-    { id: 10, name: "Road & Turnaround", isRoadGallery: true, mainImage: "images/road1.jpg", extraImages: [] },
+    { id: 10, name: "Road & Turnaround", isRoadGallery: true, mainImage: "images/road1.jpg", extraImages: [extraImages: ["images/road2.jpg", "images/road3.jpg", "images/road4.jpg"] },
     { id: 3, name: "Bed Clean Up", pairs: [
       { before: "images/bedcleanup1.jpg", after: "images/bedcleanup2.jpg" },
       { before: "images/bedcleanup3.jpg", after: "images/bedcleanup4.jpg" },
