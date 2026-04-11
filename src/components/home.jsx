@@ -57,7 +57,7 @@ export default function Home() {
     };
   }
 
-  // ========== ORIGINAL SLIDER (no blur, object-fit: cover) ==========
+  // ========== ORIGINAL SLIDER ==========
   const OriginalSlider = ({ before, after, sliderId }) => {
     const [pos, setPos] = useState(50);
     return (
@@ -115,7 +115,7 @@ export default function Home() {
     );
   };
 
-  // ========== NEW BLUR SLIDER (no black bars, no zoom) ==========
+  // ========== BLUR SLIDER ==========
   const BlurSlider = ({ before, after, sliderId }) => {
     const [pos, setPos] = useState(50);
     return (
@@ -316,7 +316,6 @@ export default function Home() {
     { id: 2, name: "Great Cuts", isLawn: true, mainImage: "images/lawn2.jpg", extraImages: ["images/lawn3.jpg", "images/lawn4.jpg"] },
     { id: 9, name: "Custom Landscaping", isCustomGallery: true, mainImage: "images/custom1.jpg", extraImages: [] },
     { id: 10, name: "Road & Turnaround", isRoadGallery: true, mainImage: "images/road1.jpg", extraImages: [] },
-    // NEW: Seeding & Hydro-Seeding (gallery only)
     { id: 11, name: "Seeding & Hydro-Seeding", isSeedingGallery: true, mainImage: "images/seeding1.jpg", extraImages: [] },
     { id: 3, name: "Bed Clean Up", pairs: [
       { before: "images/bedcleanup1.jpg", after: "images/bedcleanup2.jpg" },
@@ -362,30 +361,30 @@ export default function Home() {
         <p style={{ color: "#94a3b8", marginTop: "20px", fontSize: "16px" }}>See the difference we make</p>
       </div>
 
-      <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "20px 16px 100px" }}>
+      <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "20px 16px 80px" }}>
         {projects.map(project => {
           // Lawn section
           if (project.isLawn) {
             const allLawnImages = [project.mainImage, ...project.extraImages];
             const galleryItems = allLawnImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
             return (
-              <div key={project.id} style={{ marginBottom: "100px" }}>
-                <div style={{ marginBottom: "30px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
-                  <h3 style={{ fontSize: "28px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
-                  <p style={{ color: "#94a3b8", fontSize: "14px", marginTop: "8px" }}>Beautiful, healthy lawns</p>
+              <div key={project.id} style={{ marginBottom: "50px" }}>
+                <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
+                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
+                  <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Beautiful, healthy lawns</p>
                 </div>
-                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "30px" }}>
+                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px" }}>
                   <img src={project.mainImage} alt="Main Lawn" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
                 </div>
                 <div>
-                  <button onClick={() => setShowLawnGallery(!showLawnGallery)} style={{ width: "100%", padding: "16px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "15px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <button onClick={() => setShowLawnGallery(!showLawnGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <span>📸 More Lawn Photos {project.extraImages.length > 0 ? `(${project.extraImages.length})` : "(coming soon)"}</span>
-                    <span style={{ transform: showLawnGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "18px" }}>▼</span>
+                    <span style={{ transform: showLawnGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
                   </button>
                   {showLawnGallery && (
-                    <div style={{ marginTop: "25px" }}>
+                    <div style={{ marginTop: "20px" }}>
                       {project.extraImages.length > 0 ? (
-                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "20px" }}>
+                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
                           {project.extraImages.map((img, idx) => (
                             <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
                               <img src={img} alt={`Lawn ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
@@ -404,28 +403,28 @@ export default function Home() {
             );
           }
 
-          // Custom Landscaping section
+          // Custom Landscaping
           if (project.isCustomGallery) {
             const allImages = [project.mainImage, ...project.extraImages];
             const galleryItems = allImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
             return (
-              <div key={project.id} style={{ marginBottom: "100px" }}>
-                <div style={{ marginBottom: "30px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
-                  <h3 style={{ fontSize: "28px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
-                  <p style={{ color: "#94a3b8", fontSize: "14px", marginTop: "8px" }}>Creative landscaping designs</p>
+              <div key={project.id} style={{ marginBottom: "50px" }}>
+                <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
+                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
+                  <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Creative landscaping designs</p>
                 </div>
-                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "30px" }}>
+                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px" }}>
                   <img src={project.mainImage} alt="Main Custom" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
                 </div>
                 <div>
-                  <button onClick={() => setShowCustomGallery(!showCustomGallery)} style={{ width: "100%", padding: "16px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "15px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <button onClick={() => setShowCustomGallery(!showCustomGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <span>📸 More Custom Landscaping Photos {project.extraImages.length > 0 ? `(${project.extraImages.length})` : "(coming soon)"}</span>
-                    <span style={{ transform: showCustomGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "18px" }}>▼</span>
+                    <span style={{ transform: showCustomGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
                   </button>
                   {showCustomGallery && (
-                    <div style={{ marginTop: "25px" }}>
+                    <div style={{ marginTop: "20px" }}>
                       {project.extraImages.length > 0 ? (
-                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "20px" }}>
+                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
                           {project.extraImages.map((img, idx) => (
                             <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
                               <img src={img} alt={`Custom ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
@@ -444,28 +443,28 @@ export default function Home() {
             );
           }
 
-          // Road & Turnaround section
+          // Road & Turnaround
           if (project.isRoadGallery) {
             const allImages = [project.mainImage, ...project.extraImages];
             const galleryItems = allImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
             return (
-              <div key={project.id} style={{ marginBottom: "100px" }}>
-                <div style={{ marginBottom: "30px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
-                  <h3 style={{ fontSize: "28px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
-                  <p style={{ color: "#94a3b8", fontSize: "14px", marginTop: "8px" }}>Driveways & road enhancements</p>
+              <div key={project.id} style={{ marginBottom: "50px" }}>
+                <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
+                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
+                  <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Driveways & road enhancements</p>
                 </div>
-                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "30px" }}>
+                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px" }}>
                   <img src={project.mainImage} alt="Main Road" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
                 </div>
                 <div>
-                  <button onClick={() => setShowRoadGallery(!showRoadGallery)} style={{ width: "100%", padding: "16px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "15px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <button onClick={() => setShowRoadGallery(!showRoadGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <span>📸 More Road & Turnaround Photos {project.extraImages.length > 0 ? `(${project.extraImages.length})` : "(coming soon)"}</span>
-                    <span style={{ transform: showRoadGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "18px" }}>▼</span>
+                    <span style={{ transform: showRoadGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
                   </button>
                   {showRoadGallery && (
-                    <div style={{ marginTop: "25px" }}>
+                    <div style={{ marginTop: "20px" }}>
                       {project.extraImages.length > 0 ? (
-                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "20px" }}>
+                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
                           {project.extraImages.map((img, idx) => (
                             <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
                               <img src={img} alt={`Road ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
@@ -484,28 +483,28 @@ export default function Home() {
             );
           }
 
-          // Seeding & Hydro-Seeding section (new)
+          // Seeding & Hydro-Seeding
           if (project.isSeedingGallery) {
             const allImages = [project.mainImage, ...project.extraImages];
             const galleryItems = allImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
             return (
-              <div key={project.id} style={{ marginBottom: "100px" }}>
-                <div style={{ marginBottom: "30px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
-                  <h3 style={{ fontSize: "28px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
-                  <p style={{ color: "#94a3b8", fontSize: "14px", marginTop: "8px" }}>Professional seeding & hydro‑seeding</p>
+              <div key={project.id} style={{ marginBottom: "50px" }}>
+                <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
+                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
+                  <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Professional seeding & hydro‑seeding</p>
                 </div>
-                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "30px" }}>
+                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px" }}>
                   <img src={project.mainImage} alt="Main Seeding" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
                 </div>
                 <div>
-                  <button onClick={() => setShowSeedingGallery(!showSeedingGallery)} style={{ width: "100%", padding: "16px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "15px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <button onClick={() => setShowSeedingGallery(!showSeedingGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <span>📸 More Seeding & Hydro‑Seeding Photos {project.extraImages.length > 0 ? `(${project.extraImages.length})` : "(coming soon)"}</span>
-                    <span style={{ transform: showSeedingGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "18px" }}>▼</span>
+                    <span style={{ transform: showSeedingGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
                   </button>
                   {showSeedingGallery && (
-                    <div style={{ marginTop: "25px" }}>
+                    <div style={{ marginTop: "20px" }}>
                       {project.extraImages.length > 0 ? (
-                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "20px" }}>
+                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
                           {project.extraImages.map((img, idx) => (
                             <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
                               <img src={img} alt={`Seeding ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
@@ -524,28 +523,28 @@ export default function Home() {
             );
           }
 
-          // Tree Removal section
+          // Tree Removal
           if (project.isTreeGallery) {
             const allTreeImages = [project.mainImage, ...project.extraImages];
             const galleryItems = allTreeImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
             return (
-              <div key={project.id} style={{ marginBottom: "100px" }}>
-                <div style={{ marginBottom: "30px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
-                  <h3 style={{ fontSize: "28px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
-                  <p style={{ color: "#94a3b8", fontSize: "14px", marginTop: "8px" }}>Professional tree removal</p>
+              <div key={project.id} style={{ marginBottom: "50px" }}>
+                <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
+                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
+                  <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Professional tree removal</p>
                 </div>
-                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "30px" }}>
+                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px" }}>
                   <img src={project.mainImage} alt="Main Tree Removal" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
                 </div>
                 <div>
-                  <button onClick={() => setShowTreeGallery(!showTreeGallery)} style={{ width: "100%", padding: "16px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "15px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <button onClick={() => setShowTreeGallery(!showTreeGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <span>📸 More Tree Removal Photos {project.extraImages.length > 0 ? `(${project.extraImages.length})` : "(coming soon)"}</span>
-                    <span style={{ transform: showTreeGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "18px" }}>▼</span>
+                    <span style={{ transform: showTreeGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
                   </button>
                   {showTreeGallery && (
-                    <div style={{ marginTop: "25px" }}>
+                    <div style={{ marginTop: "20px" }}>
                       {project.extraImages.length > 0 ? (
-                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "20px" }}>
+                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
                           {project.extraImages.map((img, idx) => (
                             <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
                               <img src={img} alt={`Tree ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
@@ -564,28 +563,28 @@ export default function Home() {
             );
           }
 
-          // Tree Planting section
+          // Tree Planting
           if (project.isPlantingGallery) {
             const allPlantingImages = [project.mainImage, ...project.extraImages];
             const galleryItems = allPlantingImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
             return (
-              <div key={project.id} style={{ marginBottom: "100px" }}>
-                <div style={{ marginBottom: "30px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
-                  <h3 style={{ fontSize: "28px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
-                  <p style={{ color: "#94a3b8", fontSize: "14px", marginTop: "8px" }}>Professional tree planting</p>
+              <div key={project.id} style={{ marginBottom: "50px" }}>
+                <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
+                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
+                  <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Professional tree planting</p>
                 </div>
-                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "30px" }}>
+                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px" }}>
                   <img src={project.mainImage} alt="Main Tree Planting" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
                 </div>
                 <div>
-                  <button onClick={() => setShowPlantingGallery(!showPlantingGallery)} style={{ width: "100%", padding: "16px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "15px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <button onClick={() => setShowPlantingGallery(!showPlantingGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <span>📸 More Tree Planting Photos {project.extraImages.length > 0 ? `(${project.extraImages.length})` : "(coming soon)"}</span>
-                    <span style={{ transform: showPlantingGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "18px" }}>▼</span>
+                    <span style={{ transform: showPlantingGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
                   </button>
                   {showPlantingGallery && (
-                    <div style={{ marginTop: "25px" }}>
+                    <div style={{ marginTop: "20px" }}>
                       {project.extraImages.length > 0 ? (
-                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "20px" }}>
+                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
                           {project.extraImages.map((img, idx) => (
                             <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
                               <img src={img} alt={`Planting ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
@@ -611,20 +610,20 @@ export default function Home() {
           const singlesGallery = extraSingles.map((src, idx) => ({ src, title: `${project.name} - Extra Photo ${idx + 1}` }));
 
           return (
-            <div key={project.id} style={{ marginBottom: "100px" }}>
-              <div style={{ marginBottom: "30px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
-                <h3 style={{ fontSize: "28px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
-                <p style={{ color: "#94a3b8", fontSize: "14px", marginTop: "8px" }}>Before & After Transformations</p>
+            <div key={project.id} style={{ marginBottom: "50px" }}>
+              <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
+                <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
+                <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Before & After Transformations</p>
               </div>
               {getSlider(project.id, mainPair.before, mainPair.after, `${project.id}_main`)}
               {extraPairs.length > 0 && (
-                <div style={{ marginTop: "50px" }}>
-                  <button onClick={() => setShowMore(prev => ({ ...prev, [project.id]: !prev[project.id] }))} style={{ width: "100%", padding: "16px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "15px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div style={{ marginTop: "40px" }}>
+                  <button onClick={() => setShowMore(prev => ({ ...prev, [project.id]: !prev[project.id] }))} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <span>📸 More Before & After Photos ({extraPairs.length})</span>
-                    <span style={{ transform: showMore[project.id] ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "18px" }}>▼</span>
+                    <span style={{ transform: showMore[project.id] ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
                   </button>
                   {showMore[project.id] && (
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "20px", marginTop: "25px" }}>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "16px", marginTop: "20px" }}>
                       {extraPairs.map((pair, idx) => (
                         <SmallPair key={idx} before={pair.before} after={pair.after} index={idx + 2} projectName={project.name} />
                       ))}
@@ -632,15 +631,15 @@ export default function Home() {
                   )}
                 </div>
               )}
-              <div style={{ marginTop: extraPairs.length > 0 ? "40px" : "50px" }}>
-                <button onClick={() => setShowExtraSingles(prev => ({ ...prev, [project.id]: !prev[project.id] }))} style={{ width: "100%", padding: "16px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "15px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div style={{ marginTop: extraPairs.length > 0 ? "30px" : "40px" }}>
+                <button onClick={() => setShowExtraSingles(prev => ({ ...prev, [project.id]: !prev[project.id] }))} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span>🖼️ Additional Project Photos {extraSingles.length > 0 ? `(${extraSingles.length})` : "(coming soon)"}</span>
-                  <span style={{ transform: showExtraSingles[project.id] ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "18px" }}>▼</span>
+                  <span style={{ transform: showExtraSingles[project.id] ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
                 </button>
                 {showExtraSingles[project.id] && (
-                  <div style={{ marginTop: "25px" }}>
+                  <div style={{ marginTop: "20px" }}>
                     {extraSingles.length > 0 ? (
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "20px" }}>
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
                         {extraSingles.map((src, idx) => (
                           <ExtraSingleImage key={idx} src={src} index={idx + 1} projectName={project.name} gallery={singlesGallery} />
                         ))}
