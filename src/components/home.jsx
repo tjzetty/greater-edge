@@ -351,16 +351,16 @@ export default function Home() {
       { before: "images/bedcleanup5.jpg", after: "images/bedcleanup6.jpg" },
       { before: "images/bedcleanup7.jpg", after: "images/bedcleanup8.jpg" }
     ], extraSingles: [] },
-    { id: 12, name: "Cobble Stone Beds", slug: "cobble-stone-beds", isCobbleGallery: true, mainImage: "images/cobble1.jpg", 
-      extraImages: ["images/cobble2.jpg", "images/cobble3.jpg", "images/cobble4.jpg", "images/cobble5.jpg", "images/cobble6.jpg", "images/cobble7.jpg", "images/cobble8.jpg", "images/cobble9.jpg"] },
+    { id: 12, name: "Cobble Stone Beds", slug: "cobble-stone-beds", isCobbleGallery: true, mainImage: "images/stonebed1.jpg", 
+      extraImages: ["images/stonebed2.jpg", "images/stonebed3.jpg", "images/stonebed4.jpg", "images/stonebed5.jpg", "images/stonebed6.jpg", "images/stonebed7.jpg", "images/stonebed8.jpg", "images/stonebed9.jpg"] },
     { id: 4, name: "Bush & Hedge Trimming", slug: "bush-hedge-trimming", pairs: [
       { before: "images/bushtrim1.jpg", after: "images/bushtrim2.jpg" },
       { before: "images/bushtrim3.jpg", after: "images/bushtrim4.jpg" },
       { before: "images/bushtrim5.jpg", after: "images/bushtrim6.jpg" },
       { before: "images/bushtrim7.jpg", after: "images/bushtrim8.jpg" }
     ], extraSingles: [] },
-    { id: 13, name: "Mulching", slug: "mulching", isMulchGallery: true, mainImage: "images/mulchg1.jpg", 
-      extraImages: ["images/mulchg2.jpg", "images/mulchg3.jpg", "images/mulchg4.jpg", "images/mulchg5.jpg", "images/mulchg6.jpg", "images/mulchg7.jpg", "images/mulchg8.jpg", "images/mulchg9.jpg"] },
+    { id: 13, name: "Mulching", slug: "mulching", isMulchGallery: true, mainImage: "images/mulch1.jpg", 
+      extraImages: ["images/mulch2.jpg", "images/mulch3.jpg", "images/mulch4.jpg", "images/mulch5.jpg", "images/mulch6.jpg", "images/mulch7.jpg", "images/mulch8.jpg", "images/mulch9.jpg"] },
     { id: 5, name: "Fall Clean Ups", slug: "fall-clean-ups", pairs: [
       { before: "images/fallcleanup1.jpg", after: "images/fallcleanup2.jpg" },
       { before: "images/fallcleanup3.jpg", after: "images/fallcleanup4.jpg" },
@@ -400,14 +400,14 @@ export default function Home() {
         <p style={{ color: "#94a3b8", marginTop: "20px", fontSize: "16px" }}>See the difference we make</p>
       </div>
 
-      {/* Horizontal Navigation Bar - Larger font, thicker scrollbar */}
+      {/* Horizontal Navigation Bar - Thicker scrollbar (20px) */}
       <style>{`
         .nav-scrollbar {
           scrollbar-width: auto;
           scrollbar-color: #2E8B57 #1e293b;
         }
         .nav-scrollbar::-webkit-scrollbar {
-          height: 12px;
+          height: 20px;
         }
         .nav-scrollbar::-webkit-scrollbar-track {
           background: #1e293b;
