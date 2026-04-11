@@ -6,6 +6,7 @@ export default function Home() {
   const [showLawnGallery, setShowLawnGallery] = useState(false);
   const [showCustomGallery, setShowCustomGallery] = useState(false);
   const [showRoadGallery, setShowRoadGallery] = useState(false);
+  const [showMaterialGallery, setShowMaterialGallery] = useState(false);
   const [showSeedingGallery, setShowSeedingGallery] = useState(false);
   const [showCobbleGallery, setShowCobbleGallery] = useState(false);
   const [showMulchGallery, setShowMulchGallery] = useState(false);
@@ -340,11 +341,14 @@ export default function Home() {
       { before: "images/paver7.jpg", after: "images/paver8.jpg" }
     ], extraSingles: [] },
     { id: 2, name: "Great Cuts", slug: "great-cuts", isLawn: true, mainImage: "images/lawn2.jpg", 
-      extraImages: ["images/lawn3.jpg", "images/lawn4.jpg", "images/lawn5.jpg", "images/lawn6.jpg", "images/lawn7.jpg", "images/lawn8.jpg", "images/lawn9.jpg", "images/lawn10.jpg"] },
+      extraImages: ["images/lawn3.jpg", "images/lawn4.jpg", "images/lawn5.jpg", "images/lawn6.jpg", "images/lawn7.jpg", "images/lawn8.jpg", "images/lawn9.jpg", "images/lawn10.jpg", "images/lawn11.jpg", "images/lawn12.jpg", "images/lawn13.jpg"] }, // 11 extras = total 12
     { id: 9, name: "Custom Landscaping", slug: "custom-landscaping", isCustomGallery: true, mainImage: "images/custom1.jpg", 
       extraImages: ["images/custom2.jpg", "images/custom3.jpg", "images/custom4.jpg", "images/custom5.jpg", "images/custom6.jpg", "images/custom7.jpg", "images/custom8.jpg", "images/custom9.jpg"] },
     { id: 10, name: "Road & Turnaround", slug: "road-turnaround", isRoadGallery: true, mainImage: "images/road1.jpg", 
       extraImages: ["images/road2.jpg", "images/road3.jpg", "images/road4.jpg", "images/road5.jpg", "images/road6.jpg", "images/road7.jpg", "images/road8.jpg", "images/road9.jpg"] },
+    // NEW: Material Delivery & Spreading
+    { id: 14, name: "Material Delivery & Spreading", slug: "material-delivery", isMaterialGallery: true, mainImage: "images/material1.jpg", 
+      extraImages: ["images/material2.jpg", "images/material3.jpg", "images/material4.jpg", "images/material5.jpg", "images/material6.jpg"] },
     { id: 3, name: "Bed Clean Up", slug: "bed-clean-up", pairs: [
       { before: "images/bedcleanup1.jpg", after: "images/bedcleanup2.jpg" },
       { before: "images/bedcleanup3.jpg", after: "images/bedcleanup4.jpg" },
@@ -565,6 +569,40 @@ export default function Home() {
                         {project.extraImages.map((img, idx) => (
                           <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
                             <img src={img} alt={`Road ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          }
+
+          // Material Delivery & Spreading (new)
+          if (project.isMaterialGallery) {
+            const allImages = [project.mainImage, ...project.extraImages];
+            const galleryItems = allImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
+            return (
+              <div key={project.id} id={sectionId} style={{ marginBottom: "50px", scrollMarginTop: "80px" }}>
+                <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
+                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
+                  <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Reliable material delivery & spreading</p>
+                </div>
+                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px" }}>
+                  <img src={project.mainImage} alt="Main Material" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
+                </div>
+                <div>
+                  <button onClick={() => setShowMaterialGallery(!showMaterialGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span>📸 More Material Photos ({project.extraImages.length})</span>
+                    <span style={{ transform: showMaterialGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
+                  </button>
+                  {showMaterialGallery && (
+                    <div style={{ marginTop: "20px" }}>
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
+                        {project.extraImages.map((img, idx) => (
+                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
+                            <img src={img} alt={`Material ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
                           </div>
                         ))}
                       </div>
