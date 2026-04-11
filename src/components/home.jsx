@@ -16,6 +16,7 @@ export default function Home() {
   const [currentImageTitle, setCurrentImageTitle] = useState("");
   const [currentGallery, setCurrentGallery] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [showBackToTop, setShowBackToTop] = useState(false);
 
   const openLightbox = (image, title, gallery, index) => {
     setCurrentImage(image);
@@ -61,13 +62,26 @@ export default function Home() {
     return () => window.removeEventListener("keydown", handleKey);
   }, [lightboxOpen, currentIndex, currentGallery]);
 
+  // Back to top visibility
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowBackToTop(window.scrollY > 300);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
     if (element) {
-      const yOffset = -80; // sticky header height
+      const yOffset = -80;
       const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
       window.scrollTo({ top: y, behavior: "smooth" });
     }
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   // ========== ORIGINAL SLIDER ==========
@@ -360,7 +374,6 @@ export default function Home() {
     { id: 11, name: "Seeding & Hydro-Seeding", slug: "seeding-hydro-seeding", isSeedingGallery: true, mainImage: "images/seeding1.jpg", extraImages: ["images/seeding2.jpg", "images/seeding3.jpg", "images/seeding4.jpg", "images/seeding5.jpg", "images/seeding6.jpg", "images/seeding7.jpg"] }
   ];
 
-  // Navigation bar items (order matches projects)
   const navItems = projects.map(p => ({ name: p.name, slug: p.slug }));
 
   return (
@@ -380,20 +393,20 @@ export default function Home() {
         <p style={{ color: "#94a3b8", marginTop: "20px", fontSize: "16px" }}>See the difference we make</p>
       </div>
 
-      {/* Horizontal Navigation Bar */}
+      {/* Horizontal Navigation Bar - Larger */}
       <div style={{
         maxWidth: "1000px",
         margin: "0 auto",
-        padding: "0 16px 20px 16px",
+        padding: "0 16px 24px 16px",
         overflowX: "auto",
         whiteSpace: "nowrap",
         scrollbarWidth: "thin",
       }}>
         <div style={{
           display: "inline-flex",
-          gap: "12px",
+          gap: "16px",
           background: "#1e293b",
-          padding: "12px 20px",
+          padding: "16px 24px",
           borderRadius: "60px",
           boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
         }}>
@@ -405,9 +418,9 @@ export default function Home() {
                 background: "transparent",
                 border: "none",
                 color: "#cbd5e1",
-                fontSize: "14px",
-                fontWeight: "500",
-                padding: "6px 16px",
+                fontSize: "16px",
+                fontWeight: "600",
+                padding: "8px 20px",
                 borderRadius: "40px",
                 cursor: "pointer",
                 transition: "all 0.2s",
@@ -761,7 +774,7 @@ export default function Home() {
             );
           }
 
-          // Seeding & Hydro-Seeding (gallery, at the bottom)
+          // Seeding & Hydro-Seeding
           if (project.isSeedingGallery) {
             const allImages = [project.mainImage, ...project.extraImages];
             const galleryItems = allImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
@@ -805,11 +818,43 @@ export default function Home() {
         })}
       </div>
 
+      {/* Footer */}
       <div style={{ background: "#020617", color: "#64748b", padding: "45px 20px", textAlign: "center", fontSize: "13px", borderTop: "1px solid #1e293b" }}>
         <p>© 2026 Greater Edge Landscaping LLC. All rights reserved.</p>
         <p style={{ marginTop: "12px", fontSize: "12px" }}>Family Owned & Operated</p>
       </div>
 
+      {/* Back to Top Button */}
+      {showBackToTop && (
+        <button
+          onClick={scrollToTop}
+          style={{
+            position: "fixed",
+            bottom: "30px",
+            right: "30px",
+            background: "#2E8B57",
+            color: "white",
+            border: "none",
+            borderRadius: "50%",
+            width: "50px",
+            height: "50px",
+            fontSize: "24px",
+            cursor: "pointer",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+            transition: "all 0.2s",
+            zIndex: 100,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.background = "#236b45"}
+          onMouseLeave={(e) => e.currentTarget.style.background = "#2E8B57"}
+        >
+          ↑
+        </button>
+      )}
+
+      {/* Lightbox Modal */}
       {lightboxOpen && (
         <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", background: "rgba(0,0,0,0.95)", zIndex: 2000, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
           <button onClick={closeLightbox} style={{ position: "absolute", top: "20px", right: "20px", background: "rgba(255,255,255,0.2)", border: "none", color: "white", fontSize: "30px", width: "50px", height: "50px", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(10px)", zIndex: 2001 }}>✕</button>
