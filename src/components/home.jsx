@@ -332,7 +332,6 @@ export default function Home() {
   };
 
   // ---------- PROJECTS ----------
-  // All gallery sections now have at least 8 extra images (8 extras = 9 total photos including main)
   const projects = [
     { id: 1, name: "Brick Pavers & Patios", slug: "brick-pavers", pairs: [
       { before: "images/paver1.jpg", after: "images/paver2.jpg" },
@@ -352,8 +351,8 @@ export default function Home() {
       { before: "images/bedcleanup5.jpg", after: "images/bedcleanup6.jpg" },
       { before: "images/bedcleanup7.jpg", after: "images/bedcleanup8.jpg" }
     ], extraSingles: [] },
-    { id: 12, name: "Cobble Stone Beds", slug: "cobble-stone-beds", isCobbleGallery: true, mainImage: "images/stonebed1.jpg", 
-      extraImages: ["images/stonebed2.jpg", "images/stonebed3.jpg", "images/stonebed4.jpg", "images/stonebed5.jpg", "images/stonebed6.jpg", "images/stonebed7.jpg", "images/stonebed8.jpg", "images/cobble9.jpg"] },
+    { id: 12, name: "Cobble Stone Beds", slug: "cobble-stone-beds", isCobbleGallery: true, mainImage: "images/cobble1.jpg", 
+      extraImages: ["images/cobble2.jpg", "images/cobble3.jpg", "images/cobble4.jpg", "images/cobble5.jpg", "images/cobble6.jpg", "images/cobble7.jpg", "images/cobble8.jpg", "images/cobble9.jpg"] },
     { id: 4, name: "Bush & Hedge Trimming", slug: "bush-hedge-trimming", pairs: [
       { before: "images/bushtrim1.jpg", after: "images/bushtrim2.jpg" },
       { before: "images/bushtrim3.jpg", after: "images/bushtrim4.jpg" },
@@ -401,7 +400,7 @@ export default function Home() {
         <p style={{ color: "#94a3b8", marginTop: "20px", fontSize: "16px" }}>See the difference we make</p>
       </div>
 
-      {/* Horizontal Navigation Bar - Thicker scrollbar */}
+      {/* Horizontal Navigation Bar - Larger font, thicker scrollbar */}
       <style>{`
         .nav-scrollbar {
           scrollbar-width: auto;
@@ -420,6 +419,12 @@ export default function Home() {
         }
         .nav-scrollbar::-webkit-scrollbar-thumb:hover {
           background: #236b45;
+        }
+        @media (max-width: 768px) {
+          .nav-button {
+            font-size: 16px !important;
+            padding: 8px 16px !important;
+          }
         }
       `}</style>
       <div className="nav-scrollbar" style={{
@@ -441,11 +446,12 @@ export default function Home() {
             <button
               key={item.slug}
               onClick={() => scrollToSection(`section-${item.slug}`)}
+              className="nav-button"
               style={{
                 background: "transparent",
                 border: "none",
                 color: "#cbd5e1",
-                fontSize: "16px",
+                fontSize: "18px",
                 fontWeight: "600",
                 padding: "8px 20px",
                 borderRadius: "40px",
@@ -803,7 +809,7 @@ export default function Home() {
         <p style={{ marginTop: "12px", fontSize: "12px" }}>Family Owned & Operated</p>
       </div>
 
-      {/* Back to Top Button */}
+      {/* Back to Top Button - Larger */}
       {showBackToTop && (
         <button
           onClick={scrollToTop}
@@ -815,9 +821,9 @@ export default function Home() {
             color: "white",
             border: "none",
             borderRadius: "50%",
-            width: "50px",
-            height: "50px",
-            fontSize: "24px",
+            width: "60px",
+            height: "60px",
+            fontSize: "32px",
             cursor: "pointer",
             boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
             transition: "all 0.2s",
@@ -833,12 +839,28 @@ export default function Home() {
         </button>
       )}
 
-      {/* Lightbox Modal */}
+      {/* Lightbox Modal - Larger X button on mobile */}
+      <style>{`
+        @media (max-width: 768px) {
+          .lightbox-close {
+            width: 60px !important;
+            height: 60px !important;
+            font-size: 36px !important;
+            top: 16px !important;
+            right: 16px !important;
+          }
+          .lightbox-arrow {
+            width: 60px !important;
+            height: 60px !important;
+            font-size: 48px !important;
+          }
+        }
+      `}</style>
       {lightboxOpen && (
         <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", background: "rgba(0,0,0,0.95)", zIndex: 2000, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
-          <button onClick={closeLightbox} style={{ position: "absolute", top: "20px", right: "20px", background: "rgba(255,255,255,0.2)", border: "none", color: "white", fontSize: "30px", width: "50px", height: "50px", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(10px)", zIndex: 2001 }}>✕</button>
-          {currentIndex > 0 && <button onClick={prevImage} style={{ position: "absolute", left: "20px", top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.2)", border: "none", color: "white", fontSize: "40px", width: "60px", height: "60px", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(10px)", zIndex: 2001 }}>◀</button>}
-          {currentIndex < currentGallery.length - 1 && <button onClick={nextImage} style={{ position: "absolute", right: "20px", top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.2)", border: "none", color: "white", fontSize: "40px", width: "60px", height: "60px", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(10px)", zIndex: 2001 }}>▶</button>}
+          <button onClick={closeLightbox} className="lightbox-close" style={{ position: "absolute", top: "20px", right: "20px", background: "rgba(255,255,255,0.2)", border: "none", color: "white", fontSize: "30px", width: "50px", height: "50px", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(10px)", zIndex: 2001 }}>✕</button>
+          {currentIndex > 0 && <button onClick={prevImage} className="lightbox-arrow" style={{ position: "absolute", left: "20px", top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.2)", border: "none", color: "white", fontSize: "40px", width: "60px", height: "60px", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(10px)", zIndex: 2001 }}>◀</button>}
+          {currentIndex < currentGallery.length - 1 && <button onClick={nextImage} className="lightbox-arrow" style={{ position: "absolute", right: "20px", top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.2)", border: "none", color: "white", fontSize: "40px", width: "60px", height: "60px", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(10px)", zIndex: 2001 }}>▶</button>}
           <img src={currentImage} alt={currentImageTitle} style={{ maxWidth: "90%", maxHeight: "80%", objectFit: "contain", borderRadius: "8px" }} />
           <div style={{ position: "absolute", bottom: "30px", left: 0, right: 0, textAlign: "center", color: "white", fontSize: "16px", background: "rgba(0,0,0,0.5)", padding: "10px", margin: "0 auto", width: "fit-content", borderRadius: "30px" }}>{currentImageTitle} ({currentIndex + 1} / {currentGallery.length})</div>
         </div>
