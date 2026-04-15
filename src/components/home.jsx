@@ -23,7 +23,6 @@ export default function Home() {
   const [pillOpen, setPillOpen] = useState(false);
   const [currentSection, setCurrentSection] = useState("");
 
-  // Lightbox functions
   const openLightbox = (image, title, gallery, index) => {
     setCurrentImage(image);
     setCurrentImageTitle(title);
@@ -68,7 +67,6 @@ export default function Home() {
     return () => window.removeEventListener("keydown", handleKey);
   }, [lightboxOpen, currentIndex, currentGallery]);
 
-  // Scroll listeners for back-to-top and current section
   useEffect(() => {
     const handleScroll = () => {
       setShowBackToTop(window.scrollY > 300);
@@ -308,7 +306,6 @@ export default function Home() {
   };
 
   const getSlider = (projectId, before, after, sliderId) => {
-    // Brick Pavers (id=1) uses OriginalSlider (no blur), Bed Clean Up (3) and Fall Clean Ups (5) also use OriginalSlider
     if (projectId === 1 || projectId === 3 || projectId === 5) {
       return <OriginalSlider before={before} after={after} sliderId={sliderId} />;
     }
@@ -323,7 +320,7 @@ export default function Home() {
     return (
       <div style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", border: "1px solid #334155", boxShadow: "0 8px 20px rgba(0,0,0,0.2)" }}>
         <div style={{ padding: "8px", background: "#0f172a", borderBottom: "1px solid #334155", textAlign: "center" }}>
-          <p style={{ color: "#2E8B57", fontSize: "11px", fontWeight: "600", margin: 0 }}>Project {index}</p>
+          <p style={{ color: "#4ade80", fontSize: "11px", fontWeight: "600", margin: 0 }}>Project {index}</p>
         </div>
         <div style={{ display: "flex", gap: "4px", padding: "12px" }}>
           <div style={{ flex: 1, textAlign: "center", cursor: "pointer" }}>
@@ -393,7 +390,7 @@ export default function Home() {
       { before: "images/fallcleanup3.jpg", after: "images/fallcleanup4.jpg" },
       { before: "images/fallcleanup5.jpg", after: "images/fallcleanup6.jpg" },
       { before: "images/fallcleanup7.jpg", after: "images/fallcleanup8.jpg" }
-    ], extraSingles: ["images/fall9.jpg", "images/fall10.jpg", "images/fall11.jpg", "images/fall12.jpg", "images/fall13.jpg", "images/fall14.jpg"] }, // 6 extra
+    ], extraSingles: ["images/fall9.jpg", "images/fall10.jpg", "images/fall11.jpg", "images/fall12.jpg", "images/fall13.jpg", "images/fall14.jpg"] },
     { id: 6, name: "Tree Removal", slug: "tree-removal", isTreeGallery: true, mainImage: "images/treer1.jpg", 
       extraImages: ["images/treer2.jpg"] },
     { id: 7, name: "Tree Planting", slug: "tree-planting", isPlantingGallery: true, mainImage: "images/treep1.jpg", 
@@ -414,20 +411,61 @@ export default function Home() {
     return item ? item.name : "Menu";
   };
 
+  // Helper to render any gallery section
+  const renderGallery = (project, showState, setShowState) => {
+    const allImages = [project.mainImage, ...project.extraImages];
+    const galleryItems = allImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
+    return (
+      <div key={project.id} id={`section-${project.slug}`} style={{ marginBottom: "50px", scrollMarginTop: "80px" }}>
+        <div style={{ marginBottom: "20px", borderLeft: "5px solid #4ade80", paddingLeft: "18px" }}>
+          <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0, letterSpacing: "-0.3px" }}>{project.name}</h3>
+          <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>{project.subtitle || "Gallery"}</p>
+        </div>
+        <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px", border: "1px solid #334155", boxShadow: "0 8px 20px rgba(0,0,0,0.2)" }}>
+          <img src={project.mainImage} alt="Main" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
+        </div>
+        <div>
+          <button onClick={() => setShowState(!showState)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#4ade80", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", transition: "all 0.2s" }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = "#4ade80"; e.currentTarget.style.color = "#0f172a"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = "#1e293b"; e.currentTarget.style.color = "#4ade80"; }}>
+            <span>📸 More Photos ({project.extraImages.length})</span>
+            <span style={{ transform: showState ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
+          </button>
+          {showState && (
+            <div style={{ marginTop: "20px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
+                {project.extraImages.map((img, idx) => (
+                  <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", border: "1px solid #334155", boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>
+                    <img src={img} alt={`Extra ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
+                  </div>
+                ))}
+              </div>
+              <button onClick={() => setShowState(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px", transition: "all 0.2s" }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = "#4ade80"; e.currentTarget.style.color = "#0f172a"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = "#1e293b"; e.currentTarget.style.color = "#94a3b8"; }}>
+                ▲ Collapse
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div style={{ fontFamily: "'Inter', sans-serif", background: "#0a0f1a", minHeight: "100vh" }}>
       {/* Hero Section */}
       <div style={{ background: "linear-gradient(135deg, #0a0f1a 0%, #0f172a 100%)", padding: "100px 20px", textAlign: "center" }}>
         <img src="images/logo.jpg" alt="Greater Edge Landscaping" style={{ width: "100%", maxWidth: "500px", height: "auto", marginBottom: "30px", borderRadius: "24px", boxShadow: "0 30px 50px rgba(0,0,0,0.3)" }} />
-        <h1 style={{ fontSize: "52px", fontWeight: "800", color: "white", marginBottom: "16px" }}>Greater Edge <span style={{ color: "#2E8B57" }}>Landscaping</span></h1>
+        <h1 style={{ fontSize: "52px", fontWeight: "800", color: "white", marginBottom: "16px" }}>Greater Edge <span style={{ color: "#4ade80" }}>Landscaping</span></h1>
         <p style={{ fontSize: "22px", color: "#94a3b8", marginBottom: "32px" }}>Family Owned & Operated</p>
-        <a href="/contact" style={{ background: "linear-gradient(135deg, #2E8B57 0%, #236b45 100%)", color: "white", padding: "14px 42px", borderRadius: "50px", textDecoration: "none", fontWeight: "700", fontSize: "18px", display: "inline-block", boxShadow: "0 4px 15px rgba(46,139,86,0.3)", transition: "transform 0.2s" }} onMouseEnter={(e) => e.currentTarget.style.transform = "translateY(-2px)"} onMouseLeave={(e) => e.currentTarget.style.transform = "translateY(0)"}>Free Estimate →</a>
+        <a href="/contact" style={{ background: "linear-gradient(135deg, #4ade80 0%, #22c55e 100%)", color: "#0f172a", padding: "14px 42px", borderRadius: "50px", textDecoration: "none", fontWeight: "700", fontSize: "18px", display: "inline-block", boxShadow: "0 4px 15px rgba(74,222,128,0.3)", transition: "transform 0.2s" }} onMouseEnter={(e) => e.currentTarget.style.transform = "translateY(-2px)"} onMouseLeave={(e) => e.currentTarget.style.transform = "translateY(0)"}>Free Estimate →</a>
       </div>
 
       {/* Our Work Heading */}
       <div style={{ textAlign: "center", padding: "70px 20px 30px" }}>
         <h2 style={{ fontSize: "36px", fontWeight: "700", color: "white", margin: 0, letterSpacing: "-0.5px" }}>Our Work</h2>
-        <div style={{ width: "60px", height: "4px", background: "#2E8B57", margin: "20px auto 0", borderRadius: "2px" }}></div>
+        <div style={{ width: "60px", height: "4px", background: "#4ade80", margin: "20px auto 0", borderRadius: "2px" }}></div>
         <p style={{ color: "#94a3b8", marginTop: "20px", fontSize: "16px" }}>See the difference we make</p>
       </div>
 
@@ -435,7 +473,7 @@ export default function Home() {
       <style>{`
         .nav-scrollbar {
           scrollbar-width: auto;
-          scrollbar-color: #2E8B57 #1e293b;
+          scrollbar-color: #4ade80 #1e293b;
         }
         .nav-scrollbar::-webkit-scrollbar {
           height: 20px;
@@ -445,11 +483,11 @@ export default function Home() {
           border-radius: 10px;
         }
         .nav-scrollbar::-webkit-scrollbar-thumb {
-          background: #2E8B57;
+          background: #4ade80;
           border-radius: 10px;
         }
         .nav-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: #236b45;
+          background: #22c55e;
         }
         @media (max-width: 768px) {
           .nav-button {
@@ -492,7 +530,7 @@ export default function Home() {
                 fontFamily: "inherit",
                 whiteSpace: "nowrap",
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = "#2E8B57"; e.currentTarget.style.color = "white"; }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = "#4ade80"; e.currentTarget.style.color = "#0f172a"; }}
               onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#cbd5e1"; }}
             >
               {item.name}
@@ -504,39 +542,78 @@ export default function Home() {
       {/* Projects */}
       <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "20px 16px 80px" }}>
         {projects.map(project => {
-          const sectionId = `section-${project.slug}`;
+          // Gallery sections
+          if (project.isLawn) return renderGallery({ ...project, subtitle: "Beautiful, healthy lawns" }, showLawnGallery, setShowLawnGallery);
+          if (project.isCustomGallery) return renderGallery({ ...project, subtitle: "Creative landscaping designs" }, showCustomGallery, setShowCustomGallery);
+          if (project.isRoadGallery) return renderGallery({ ...project, subtitle: "Driveways & road enhancements" }, showRoadGallery, setShowRoadGallery);
+          if (project.isRockGallery) return renderGallery({ ...project, subtitle: "Durable rock & retaining walls" }, showRockGallery, setShowRockGallery);
+          if (project.isGradingGallery) return renderGallery({ ...project, subtitle: "Professional grading services" }, showGradingGallery, setShowGradingGallery);
+          if (project.isMaterialGallery) return renderGallery({ ...project, subtitle: "Reliable material delivery & spreading" }, showMaterialGallery, setShowMaterialGallery);
+          if (project.isCobbleGallery) return renderGallery({ ...project, subtitle: "Elegant cobble stone beds" }, showCobbleGallery, setShowCobbleGallery);
+          if (project.isMulchGallery) return renderGallery({ ...project, subtitle: "Quality mulching services" }, showMulchGallery, setShowMulchGallery);
+          if (project.isTreeGallery) return renderGallery({ ...project, subtitle: "Professional tree removal" }, showTreeGallery, setShowTreeGallery);
+          if (project.isPlantingGallery) return renderGallery({ ...project, subtitle: "Professional tree planting" }, showPlantingGallery, setShowPlantingGallery);
+          if (project.isSeedingGallery) return renderGallery({ ...project, subtitle: "Professional seeding & hydro‑seeding" }, showSeedingGallery, setShowSeedingGallery);
 
-          // ----- GALLERY SECTIONS (Lawn, Custom, Road, Rock, Grading, Material, Cobble, Mulch, Tree Removal, Tree Planting, Seeding) -----
-          if (project.isLawn) {
-            const allImages = [project.mainImage, ...project.extraImages];
-            const galleryItems = allImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
+          // Slider sections (Brick Pavers, Bed Clean Up, Bush & Hedge, Fall Clean Ups, Power Washing)
+          if (project.pairs) {
+            const mainPair = project.pairs[0];
+            const extraPairs = project.pairs.slice(1);
+            const extraSingles = project.extraSingles || [];
+            const singlesGallery = extraSingles.map((src, idx) => ({ src, title: `${project.name} - Extra Photo ${idx + 1}` }));
             return (
-              <div key={project.id} id={sectionId} style={{ marginBottom: "50px", scrollMarginTop: "80px" }}>
-                <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
+              <div key={project.id} id={`section-${project.slug}`} style={{ marginBottom: "50px", scrollMarginTop: "80px" }}>
+                <div style={{ marginBottom: "20px", borderLeft: "5px solid #4ade80", paddingLeft: "18px" }}>
                   <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0, letterSpacing: "-0.3px" }}>{project.name}</h3>
-                  <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Beautiful, healthy lawns</p>
+                  <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Before & After Transformations</p>
                 </div>
-                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px", border: "1px solid #334155", boxShadow: "0 8px 20px rgba(0,0,0,0.2)" }}>
-                  <img src={project.mainImage} alt="Main" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
-                </div>
-                <div>
-                  <button onClick={() => setShowLawnGallery(!showLawnGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", transition: "all 0.2s" }}
-                    onMouseEnter={(e) => { e.currentTarget.style.background = "#2E8B57"; e.currentTarget.style.color = "white"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.background = "#1e293b"; e.currentTarget.style.color = "#2E8B57"; }}>
-                    <span>📸 More Photos ({project.extraImages.length})</span>
-                    <span style={{ transform: showLawnGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
-                  </button>
-                  {showLawnGallery && (
-                    <div style={{ marginTop: "20px" }}>
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
-                        {project.extraImages.map((img, idx) => (
-                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", border: "1px solid #334155", boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>
-                            <img src={img} alt={`Extra ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
-                          </div>
-                        ))}
+                {getSlider(project.id, mainPair.before, mainPair.after, `${project.id}_main`)}
+                {extraPairs.length > 0 && (
+                  <div style={{ marginTop: "40px" }}>
+                    <button onClick={() => setShowMore(prev => ({ ...prev, [project.id]: !prev[project.id] }))} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#4ade80", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", transition: "all 0.2s" }}
+                      onMouseEnter={(e) => { e.currentTarget.style.background = "#4ade80"; e.currentTarget.style.color = "#0f172a"; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.background = "#1e293b"; e.currentTarget.style.color = "#4ade80"; }}>
+                      <span>📸 More Before & After Photos ({extraPairs.length})</span>
+                      <span style={{ transform: showMore[project.id] ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
+                    </button>
+                    {showMore[project.id] && (
+                      <div style={{ marginTop: "20px" }}>
+                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "16px" }}>
+                          {extraPairs.map((pair, idx) => (
+                            <SmallPair key={idx} before={pair.before} after={pair.after} index={idx + 2} projectName={project.name} />
+                          ))}
+                        </div>
+                        <button onClick={() => setShowMore(prev => ({ ...prev, [project.id]: false }))} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px", transition: "all 0.2s" }}
+                          onMouseEnter={(e) => { e.currentTarget.style.background = "#4ade80"; e.currentTarget.style.color = "#0f172a"; }}
+                          onMouseLeave={(e) => { e.currentTarget.style.background = "#1e293b"; e.currentTarget.style.color = "#94a3b8"; }}>
+                          ▲ Collapse
+                        </button>
                       </div>
-                      <button onClick={() => setShowLawnGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px", transition: "all 0.2s" }}
-                        onMouseEnter={(e) => { e.currentTarget.style.background = "#2E8B57"; e.currentTarget.style.color = "white"; }}
+                    )}
+                  </div>
+                )}
+                <div style={{ marginTop: extraPairs.length > 0 ? "40px" : "50px" }}>
+                  <button onClick={() => setShowExtraSingles(prev => ({ ...prev, [project.id]: !prev[project.id] }))} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#4ade80", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", transition: "all 0.2s" }}
+                    onMouseEnter={(e) => { e.currentTarget.style.background = "#4ade80"; e.currentTarget.style.color = "#0f172a"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.background = "#1e293b"; e.currentTarget.style.color = "#4ade80"; }}>
+                    <span>🖼️ Additional Project Photos {extraSingles.length > 0 ? `(${extraSingles.length})` : "(coming soon)"}</span>
+                    <span style={{ transform: showExtraSingles[project.id] ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
+                  </button>
+                  {showExtraSingles[project.id] && (
+                    <div style={{ marginTop: "20px" }}>
+                      {extraSingles.length > 0 ? (
+                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
+                          {extraSingles.map((src, idx) => (
+                            <ExtraSingleImage key={idx} src={src} index={idx + 1} projectName={project.name} gallery={singlesGallery} />
+                          ))}
+                        </div>
+                      ) : (
+                        <div style={{ textAlign: "center", padding: "30px", background: "#1e293b", borderRadius: "12px", color: "#94a3b8" }}>
+                          No extra photos yet. Check back soon!
+                        </div>
+                      )}
+                      <button onClick={() => setShowExtraSingles(prev => ({ ...prev, [project.id]: false }))} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px", transition: "all 0.2s" }}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = "#4ade80"; e.currentTarget.style.color = "#0f172a"; }}
                         onMouseLeave={(e) => { e.currentTarget.style.background = "#1e293b"; e.currentTarget.style.color = "#94a3b8"; }}>
                         ▲ Collapse
                       </button>
@@ -546,17 +623,142 @@ export default function Home() {
               </div>
             );
           }
-
-          // Similar blocks for isCustomGallery, isRoadGallery, isRockGallery, isGradingGallery, isMaterialGallery, isCobbleGallery, isMulchGallery, isTreeGallery, isPlantingGallery, isSeedingGallery
-          // (I'll keep them compact but they are identical in structure to the above, just with different subtitles)
-          // For brevity, I'll include only the first gallery type and then the slider sections. 
-          // Since you already have working code, I will ensure the rest is included without repetition.
-          // To avoid a massive message, I will assume you trust that the full file is correct and provide the key fixes:
-          // - Fall Clean Ups now has extraSingles array with 6 placeholders.
-          // - All JSX is properly closed.
-          // I will now output the complete file (excluding the repetitive gallery blocks that are already correct in your previous version).
+          return null;
         })}
       </div>
+
+      {/* Footer */}
+      <div style={{ background: "#020617", color: "#64748b", padding: "45px 20px", textAlign: "center", fontSize: "13px", borderTop: "1px solid #1e293b", position: "relative" }}>
+        <p>© 2026 Greater Edge Landscaping LLC. All rights reserved.</p>
+        <p style={{ marginTop: "12px", fontSize: "12px" }}>Family Owned & Operated</p>
+      </div>
+
+      {/* Back to Top Button */}
+      {showBackToTop && (
+        <button
+          onClick={scrollToTop}
+          style={{
+            position: "fixed",
+            bottom: "30px",
+            right: "30px",
+            background: "linear-gradient(135deg, #4ade80 0%, #22c55e 100%)",
+            color: "#0f172a",
+            border: "none",
+            borderRadius: "50%",
+            width: "60px",
+            height: "60px",
+            fontSize: "32px",
+            cursor: "pointer",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+            transition: "all 0.2s",
+            zIndex: 100,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.05)"}
+          onMouseLeave={(e) => e.currentTarget.style.transform = "scale(1)"}
+        >
+          ↑
+        </button>
+      )}
+
+      {/* Floating Navigation Pill */}
+      <div style={{ position: "fixed", bottom: "30px", left: "30px", zIndex: 100 }}>
+        <button
+          onClick={() => setPillOpen(!pillOpen)}
+          style={{
+            background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
+            border: "1px solid #334155",
+            borderRadius: "40px",
+            padding: "10px 20px",
+            color: "white",
+            fontSize: "14px",
+            fontWeight: "500",
+            cursor: "pointer",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+            transition: "all 0.2s",
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            backdropFilter: "blur(8px)",
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.background = "#4ade80"}
+          onMouseLeave={(e) => e.currentTarget.style.background = "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)"}
+        >
+          <span>📍</span>
+          <span>{getCurrentSectionName()}</span>
+          <span style={{ transform: pillOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s" }}>▼</span>
+        </button>
+        {pillOpen && (
+          <div style={{
+            position: "absolute",
+            bottom: "calc(100% + 10px)",
+            left: "0",
+            background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
+            border: "1px solid #334155",
+            borderRadius: "20px",
+            padding: "10px 0",
+            minWidth: "200px",
+            boxShadow: "0 8px 20px rgba(0,0,0,0.3)",
+            backdropFilter: "blur(8px)",
+            maxHeight: "400px",
+            overflowY: "auto",
+          }}>
+            {navItems.map(item => (
+              <button
+                key={item.slug}
+                onClick={() => scrollToSection(item.slug)}
+                style={{
+                  display: "block",
+                  width: "100%",
+                  textAlign: "left",
+                  padding: "10px 20px",
+                  background: "transparent",
+                  border: "none",
+                  color: currentSection === item.slug ? "#4ade80" : "#cbd5e1",
+                  fontSize: "14px",
+                  fontWeight: "500",
+                  cursor: "pointer",
+                  transition: "all 0.2s",
+                  fontFamily: "inherit",
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = "#4ade80"; e.currentTarget.style.color = "#0f172a"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = currentSection === item.slug ? "#4ade80" : "#cbd5e1"; }}
+              >
+                {item.name}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Lightbox Modal */}
+      <style>{`
+        @media (max-width: 768px) {
+          .lightbox-close {
+            width: 60px !important;
+            height: 60px !important;
+            font-size: 36px !important;
+            top: 16px !important;
+            right: 16px !important;
+          }
+          .lightbox-arrow {
+            width: 60px !important;
+            height: 60px !important;
+            font-size: 48px !important;
+          }
+        }
+      `}</style>
+      {lightboxOpen && (
+        <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", background: "rgba(0,0,0,0.95)", zIndex: 2000, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
+          <button onClick={closeLightbox} className="lightbox-close" style={{ position: "absolute", top: "20px", right: "20px", background: "rgba(255,255,255,0.2)", border: "none", color: "white", fontSize: "30px", width: "50px", height: "50px", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(10px)", zIndex: 2001 }}>✕</button>
+          {currentIndex > 0 && <button onClick={prevImage} className="lightbox-arrow" style={{ position: "absolute", left: "20px", top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.2)", border: "none", color: "white", fontSize: "40px", width: "60px", height: "60px", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(10px)", zIndex: 2001 }}>◀</button>}
+          {currentIndex < currentGallery.length - 1 && <button onClick={nextImage} className="lightbox-arrow" style={{ position: "absolute", right: "20px", top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.2)", border: "none", color: "white", fontSize: "40px", width: "60px", height: "60px", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(10px)", zIndex: 2001 }}>▶</button>}
+          <img src={currentImage} alt={currentImageTitle} style={{ maxWidth: "90%", maxHeight: "80%", objectFit: "contain", borderRadius: "8px" }} />
+          <div style={{ position: "absolute", bottom: "30px", left: 0, right: 0, textAlign: "center", color: "white", fontSize: "16px", background: "rgba(0,0,0,0.5)", padding: "10px", margin: "0 auto", width: "fit-content", borderRadius: "30px" }}>{currentImageTitle} ({currentIndex + 1} / {currentGallery.length})</div>
+        </div>
+      )}
     </div>
   );
 }
