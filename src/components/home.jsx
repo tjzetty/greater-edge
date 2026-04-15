@@ -20,7 +20,11 @@ export default function Home() {
   const [currentGallery, setCurrentGallery] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showBackToTop, setShowBackToTop] = useState(false);
+  // Pill menu state
+  const [pillOpen, setPillOpen] = useState(false);
+  const [currentSection, setCurrentSection] = useState("");
 
+  // ---------- Lightbox Functions ----------
   const openLightbox = (image, title, gallery, index) => {
     setCurrentImage(image);
     setCurrentImageTitle(title);
@@ -65,20 +69,34 @@ export default function Home() {
     return () => window.removeEventListener("keydown", handleKey);
   }, [lightboxOpen, currentIndex, currentGallery]);
 
+  // ---------- Scroll Listeners ----------
   useEffect(() => {
     const handleScroll = () => {
       setShowBackToTop(window.scrollY > 300);
+      // Determine current section for pill
+      const sections = document.querySelectorAll("[id^='section-']");
+      let current = "";
+      for (let i = 0; i < sections.length; i++) {
+        const rect = sections[i].getBoundingClientRect();
+        if (rect.top <= 150 && rect.bottom >= 150) {
+          current = sections[i].getAttribute("id")?.replace("section-", "");
+          break;
+        }
+      }
+      setCurrentSection(current || "");
     };
     window.addEventListener("scroll", handleScroll);
+    handleScroll(); // initial
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollToSection = (id) => {
-    const element = document.getElementById(id);
+    const element = document.getElementById(`section-${id}`);
     if (element) {
       const yOffset = -80;
       const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
       window.scrollTo({ top: y, behavior: "smooth" });
+      setPillOpen(false);
     }
   };
 
@@ -86,7 +104,7 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // ========== ORIGINAL SLIDER ==========
+  // ---------- Slider Components ----------
   const OriginalSlider = ({ before, after, sliderId }) => {
     const [pos, setPos] = useState(50);
     return (
@@ -144,7 +162,6 @@ export default function Home() {
     );
   };
 
-  // ========== BLUR SLIDER ==========
   const BlurSlider = ({ before, after, sliderId }) => {
     const [pos, setPos] = useState(50);
     return (
@@ -293,7 +310,8 @@ export default function Home() {
   };
 
   const getSlider = (projectId, before, after, sliderId) => {
-    if (projectId === 3 || projectId === 5) {
+    // Brick Pavers (id=1) uses OriginalSlider (no blur), Bed Clean Up (3) and Fall Clean Ups (5) also use OriginalSlider
+    if (projectId === 1 || projectId === 3 || projectId === 5) {
       return <OriginalSlider before={before} after={after} sliderId={sliderId} />;
     }
     return <BlurSlider before={before} after={after} sliderId={sliderId} />;
@@ -305,7 +323,7 @@ export default function Home() {
       { src: after, title: `${projectName} - After ${index}` }
     ];
     return (
-      <div style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden" }}>
+      <div style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", border: "1px solid #334155", boxShadow: "0 8px 20px rgba(0,0,0,0.2)" }}>
         <div style={{ padding: "8px", background: "#0f172a", borderBottom: "1px solid #334155", textAlign: "center" }}>
           <p style={{ color: "#2E8B57", fontSize: "11px", fontWeight: "600", margin: 0 }}>Project {index}</p>
         </div>
@@ -327,7 +345,9 @@ export default function Home() {
 
   const ExtraSingleImage = ({ src, index, projectName, gallery }) => {
     return (
-      <div style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}
+      <div style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", border: "1px solid #334155", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", transition: "transform 0.2s" }}
+        onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.02)"}
+        onMouseLeave={(e) => e.currentTarget.style.transform = "scale(1)"}
         onClick={() => openLightbox(src, `${projectName} - Extra Photo ${index}`, gallery, index - 1)}>
         <img src={src} alt={`${projectName} extra ${index}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
       </div>
@@ -370,7 +390,6 @@ export default function Home() {
     ], extraSingles: ["images/bushtrim9.jpg", "images/bushtrim10.jpg", "images/bushtrim11.jpg"] },
     { id: 13, name: "Mulching", slug: "mulching", isMulchGallery: true, mainImage: "images/mulch1.jpg", 
       extraImages: ["images/mulch2.jpg", "images/mulch3.jpg", "images/mulch4.jpg", "images/mulch5.jpg"] },
-    // Fall Clean Ups – restored to original slider (using fallcleanup1-8.jpg)
     { id: 5, name: "Fall Clean Ups", slug: "fall-clean-ups", pairs: [
       { before: "images/fallcleanup1.jpg", after: "images/fallcleanup2.jpg" },
       { before: "images/fallcleanup3.jpg", after: "images/fallcleanup4.jpg" },
@@ -393,6 +412,12 @@ export default function Home() {
 
   const navItems = projects.map(p => ({ name: p.name, slug: p.slug }));
 
+  // Helper to get display name from slug
+  const getCurrentSectionName = () => {
+    const item = navItems.find(i => i.slug === currentSection);
+    return item ? item.name : "Menu";
+  };
+
   return (
     <div style={{ fontFamily: "'Inter', sans-serif", background: "#0a0f1a", minHeight: "100vh" }}>
       {/* Hero Section */}
@@ -400,12 +425,12 @@ export default function Home() {
         <img src="images/logo.jpg" alt="Greater Edge Landscaping" style={{ width: "100%", maxWidth: "500px", height: "auto", marginBottom: "30px", borderRadius: "24px", boxShadow: "0 30px 50px rgba(0,0,0,0.3)" }} />
         <h1 style={{ fontSize: "52px", fontWeight: "800", color: "white", marginBottom: "16px" }}>Greater Edge <span style={{ color: "#2E8B57" }}>Landscaping</span></h1>
         <p style={{ fontSize: "22px", color: "#94a3b8", marginBottom: "32px" }}>Family Owned & Operated</p>
-        <a href="/contact" style={{ background: "#2E8B57", color: "white", padding: "14px 42px", borderRadius: "50px", textDecoration: "none", fontWeight: "700", fontSize: "18px", display: "inline-block" }}>Free Estimate →</a>
+        <a href="/contact" style={{ background: "linear-gradient(135deg, #2E8B57 0%, #236b45 100%)", color: "white", padding: "14px 42px", borderRadius: "50px", textDecoration: "none", fontWeight: "700", fontSize: "18px", display: "inline-block", boxShadow: "0 4px 15px rgba(46,139,86,0.3)", transition: "transform 0.2s" }} onMouseEnter={(e) => e.currentTarget.style.transform = "translateY(-2px)"} onMouseLeave={(e) => e.currentTarget.style.transform = "translateY(0)"}>Free Estimate →</a>
       </div>
 
       {/* Our Work Heading */}
       <div style={{ textAlign: "center", padding: "70px 20px 30px" }}>
-        <h2 style={{ fontSize: "36px", fontWeight: "700", color: "white", margin: 0 }}>Our Work</h2>
+        <h2 style={{ fontSize: "36px", fontWeight: "700", color: "white", margin: 0, letterSpacing: "-0.5px" }}>Our Work</h2>
         <div style={{ width: "60px", height: "4px", background: "#2E8B57", margin: "20px auto 0", borderRadius: "2px" }}></div>
         <p style={{ color: "#94a3b8", marginTop: "20px", fontSize: "16px" }}>See the difference we make</p>
       </div>
@@ -447,15 +472,16 @@ export default function Home() {
         <div style={{
           display: "inline-flex",
           gap: "16px",
-          background: "#1e293b",
+          background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
           padding: "16px 24px",
           borderRadius: "60px",
           boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+          border: "1px solid #334155",
         }}>
           {navItems.map(item => (
             <button
               key={item.slug}
-              onClick={() => scrollToSection(`section-${item.slug}`)}
+              onClick={() => scrollToSection(item.slug)}
               className="nav-button"
               style={{
                 background: "transparent",
@@ -491,14 +517,16 @@ export default function Home() {
             return (
               <div key={project.id} id={sectionId} style={{ marginBottom: "50px", scrollMarginTop: "80px" }}>
                 <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
-                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
+                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0, letterSpacing: "-0.3px" }}>{project.name}</h3>
                   <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Beautiful, healthy lawns</p>
                 </div>
-                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px" }}>
+                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px", border: "1px solid #334155", boxShadow: "0 8px 20px rgba(0,0,0,0.2)" }}>
                   <img src={project.mainImage} alt="Main Lawn" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
                 </div>
                 <div>
-                  <button onClick={() => setShowLawnGallery(!showLawnGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <button onClick={() => setShowLawnGallery(!showLawnGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", transition: "all 0.2s" }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = "#2E8B57", e.currentTarget.style.color = "white"}
+                    onMouseLeave={(e) => e.currentTarget.style.background = "#1e293b", e.currentTarget.style.color = "#2E8B57"}>
                     <span>📸 More Lawn Photos ({project.extraImages.length})</span>
                     <span style={{ transform: showLawnGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
                   </button>
@@ -506,12 +534,14 @@ export default function Home() {
                     <div style={{ marginTop: "20px" }}>
                       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
                         {project.extraImages.map((img, idx) => (
-                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
+                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", border: "1px solid #334155", boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>
                             <img src={img} alt={`Lawn ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
                           </div>
                         ))}
                       </div>
-                      <button onClick={() => setShowLawnGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px" }}>
+                      <button onClick={() => setShowLawnGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px", transition: "all 0.2s" }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = "#2E8B57", e.currentTarget.style.color = "white"}
+                        onMouseLeave={(e) => e.currentTarget.style.background = "#1e293b", e.currentTarget.style.color = "#94a3b8"}>
                         ▲ Collapse
                       </button>
                     </div>
@@ -528,14 +558,16 @@ export default function Home() {
             return (
               <div key={project.id} id={sectionId} style={{ marginBottom: "50px", scrollMarginTop: "80px" }}>
                 <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
-                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
+                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0, letterSpacing: "-0.3px" }}>{project.name}</h3>
                   <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Creative landscaping designs</p>
                 </div>
-                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px" }}>
+                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px", border: "1px solid #334155", boxShadow: "0 8px 20px rgba(0,0,0,0.2)" }}>
                   <img src={project.mainImage} alt="Main Custom" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
                 </div>
                 <div>
-                  <button onClick={() => setShowCustomGallery(!showCustomGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <button onClick={() => setShowCustomGallery(!showCustomGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", transition: "all 0.2s" }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = "#2E8B57", e.currentTarget.style.color = "white"}
+                    onMouseLeave={(e) => e.currentTarget.style.background = "#1e293b", e.currentTarget.style.color = "#2E8B57"}>
                     <span>📸 More Custom Landscaping Photos ({project.extraImages.length})</span>
                     <span style={{ transform: showCustomGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
                   </button>
@@ -543,12 +575,14 @@ export default function Home() {
                     <div style={{ marginTop: "20px" }}>
                       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
                         {project.extraImages.map((img, idx) => (
-                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
+                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", border: "1px solid #334155", boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>
                             <img src={img} alt={`Custom ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
                           </div>
                         ))}
                       </div>
-                      <button onClick={() => setShowCustomGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px" }}>
+                      <button onClick={() => setShowCustomGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px", transition: "all 0.2s" }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = "#2E8B57", e.currentTarget.style.color = "white"}
+                        onMouseLeave={(e) => e.currentTarget.style.background = "#1e293b", e.currentTarget.style.color = "#94a3b8"}>
                         ▲ Collapse
                       </button>
                     </div>
@@ -565,14 +599,16 @@ export default function Home() {
             return (
               <div key={project.id} id={sectionId} style={{ marginBottom: "50px", scrollMarginTop: "80px" }}>
                 <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
-                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
+                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0, letterSpacing: "-0.3px" }}>{project.name}</h3>
                   <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Driveways & road enhancements</p>
                 </div>
-                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px" }}>
+                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px", border: "1px solid #334155", boxShadow: "0 8px 20px rgba(0,0,0,0.2)" }}>
                   <img src={project.mainImage} alt="Main Road" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
                 </div>
                 <div>
-                  <button onClick={() => setShowRoadGallery(!showRoadGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <button onClick={() => setShowRoadGallery(!showRoadGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", transition: "all 0.2s" }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = "#2E8B57", e.currentTarget.style.color = "white"}
+                    onMouseLeave={(e) => e.currentTarget.style.background = "#1e293b", e.currentTarget.style.color = "#2E8B57"}>
                     <span>📸 More Road & Turnaround Photos ({project.extraImages.length})</span>
                     <span style={{ transform: showRoadGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
                   </button>
@@ -580,12 +616,14 @@ export default function Home() {
                     <div style={{ marginTop: "20px" }}>
                       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
                         {project.extraImages.map((img, idx) => (
-                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
+                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", border: "1px solid #334155", boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>
                             <img src={img} alt={`Road ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
                           </div>
                         ))}
                       </div>
-                      <button onClick={() => setShowRoadGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px" }}>
+                      <button onClick={() => setShowRoadGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px", transition: "all 0.2s" }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = "#2E8B57", e.currentTarget.style.color = "white"}
+                        onMouseLeave={(e) => e.currentTarget.style.background = "#1e293b", e.currentTarget.style.color = "#94a3b8"}>
                         ▲ Collapse
                       </button>
                     </div>
@@ -602,14 +640,16 @@ export default function Home() {
             return (
               <div key={project.id} id={sectionId} style={{ marginBottom: "50px", scrollMarginTop: "80px" }}>
                 <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
-                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
+                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0, letterSpacing: "-0.3px" }}>{project.name}</h3>
                   <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Durable rock & retaining walls</p>
                 </div>
-                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px" }}>
+                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px", border: "1px solid #334155", boxShadow: "0 8px 20px rgba(0,0,0,0.2)" }}>
                   <img src={project.mainImage} alt="Main Rock Wall" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
                 </div>
                 <div>
-                  <button onClick={() => setShowRockGallery(!showRockGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <button onClick={() => setShowRockGallery(!showRockGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", transition: "all 0.2s" }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = "#2E8B57", e.currentTarget.style.color = "white"}
+                    onMouseLeave={(e) => e.currentTarget.style.background = "#1e293b", e.currentTarget.style.color = "#2E8B57"}>
                     <span>📸 More Rock Wall Photos ({project.extraImages.length})</span>
                     <span style={{ transform: showRockGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
                   </button>
@@ -617,12 +657,14 @@ export default function Home() {
                     <div style={{ marginTop: "20px" }}>
                       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
                         {project.extraImages.map((img, idx) => (
-                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
+                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", border: "1px solid #334155", boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>
                             <img src={img} alt={`Rock Wall ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
                           </div>
                         ))}
                       </div>
-                      <button onClick={() => setShowRockGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px" }}>
+                      <button onClick={() => setShowRockGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px", transition: "all 0.2s" }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = "#2E8B57", e.currentTarget.style.color = "white"}
+                        onMouseLeave={(e) => e.currentTarget.style.background = "#1e293b", e.currentTarget.style.color = "#94a3b8"}>
                         ▲ Collapse
                       </button>
                     </div>
@@ -639,14 +681,16 @@ export default function Home() {
             return (
               <div key={project.id} id={sectionId} style={{ marginBottom: "50px", scrollMarginTop: "80px" }}>
                 <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
-                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
+                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0, letterSpacing: "-0.3px" }}>{project.name}</h3>
                   <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Professional grading services</p>
                 </div>
-                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px" }}>
+                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px", border: "1px solid #334155", boxShadow: "0 8px 20px rgba(0,0,0,0.2)" }}>
                   <img src={project.mainImage} alt="Main Grading" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
                 </div>
                 <div>
-                  <button onClick={() => setShowGradingGallery(!showGradingGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <button onClick={() => setShowGradingGallery(!showGradingGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", transition: "all 0.2s" }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = "#2E8B57", e.currentTarget.style.color = "white"}
+                    onMouseLeave={(e) => e.currentTarget.style.background = "#1e293b", e.currentTarget.style.color = "#2E8B57"}>
                     <span>📸 More Grading Photos ({project.extraImages.length})</span>
                     <span style={{ transform: showGradingGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
                   </button>
@@ -654,12 +698,14 @@ export default function Home() {
                     <div style={{ marginTop: "20px" }}>
                       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
                         {project.extraImages.map((img, idx) => (
-                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
+                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", border: "1px solid #334155", boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>
                             <img src={img} alt={`Grading ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
                           </div>
                         ))}
                       </div>
-                      <button onClick={() => setShowGradingGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px" }}>
+                      <button onClick={() => setShowGradingGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px", transition: "all 0.2s" }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = "#2E8B57", e.currentTarget.style.color = "white"}
+                        onMouseLeave={(e) => e.currentTarget.style.background = "#1e293b", e.currentTarget.style.color = "#94a3b8"}>
                         ▲ Collapse
                       </button>
                     </div>
@@ -676,14 +722,16 @@ export default function Home() {
             return (
               <div key={project.id} id={sectionId} style={{ marginBottom: "50px", scrollMarginTop: "80px" }}>
                 <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
-                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
+                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0, letterSpacing: "-0.3px" }}>{project.name}</h3>
                   <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Reliable material delivery & spreading</p>
                 </div>
-                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px" }}>
+                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px", border: "1px solid #334155", boxShadow: "0 8px 20px rgba(0,0,0,0.2)" }}>
                   <img src={project.mainImage} alt="Main Material" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
                 </div>
                 <div>
-                  <button onClick={() => setShowMaterialGallery(!showMaterialGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <button onClick={() => setShowMaterialGallery(!showMaterialGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", transition: "all 0.2s" }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = "#2E8B57", e.currentTarget.style.color = "white"}
+                    onMouseLeave={(e) => e.currentTarget.style.background = "#1e293b", e.currentTarget.style.color = "#2E8B57"}>
                     <span>📸 More Material Photos ({project.extraImages.length})</span>
                     <span style={{ transform: showMaterialGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
                   </button>
@@ -691,12 +739,14 @@ export default function Home() {
                     <div style={{ marginTop: "20px" }}>
                       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
                         {project.extraImages.map((img, idx) => (
-                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
+                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", border: "1px solid #334155", boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>
                             <img src={img} alt={`Material ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
                           </div>
                         ))}
                       </div>
-                      <button onClick={() => setShowMaterialGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px" }}>
+                      <button onClick={() => setShowMaterialGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px", transition: "all 0.2s" }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = "#2E8B57", e.currentTarget.style.color = "white"}
+                        onMouseLeave={(e) => e.currentTarget.style.background = "#1e293b", e.currentTarget.style.color = "#94a3b8"}>
                         ▲ Collapse
                       </button>
                     </div>
@@ -713,14 +763,16 @@ export default function Home() {
             return (
               <div key={project.id} id={sectionId} style={{ marginBottom: "50px", scrollMarginTop: "80px" }}>
                 <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
-                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
+                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0, letterSpacing: "-0.3px" }}>{project.name}</h3>
                   <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Elegant cobble stone beds</p>
                 </div>
-                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px" }}>
+                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px", border: "1px solid #334155", boxShadow: "0 8px 20px rgba(0,0,0,0.2)" }}>
                   <img src={project.mainImage} alt="Main Cobble" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
                 </div>
                 <div>
-                  <button onClick={() => setShowCobbleGallery(!showCobbleGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <button onClick={() => setShowCobbleGallery(!showCobbleGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", transition: "all 0.2s" }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = "#2E8B57", e.currentTarget.style.color = "white"}
+                    onMouseLeave={(e) => e.currentTarget.style.background = "#1e293b", e.currentTarget.style.color = "#2E8B57"}>
                     <span>📸 More Cobble Stone Photos ({project.extraImages.length})</span>
                     <span style={{ transform: showCobbleGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
                   </button>
@@ -728,12 +780,14 @@ export default function Home() {
                     <div style={{ marginTop: "20px" }}>
                       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
                         {project.extraImages.map((img, idx) => (
-                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
+                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", border: "1px solid #334155", boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>
                             <img src={img} alt={`Cobble ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
                           </div>
                         ))}
                       </div>
-                      <button onClick={() => setShowCobbleGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px" }}>
+                      <button onClick={() => setShowCobbleGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px", transition: "all 0.2s" }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = "#2E8B57", e.currentTarget.style.color = "white"}
+                        onMouseLeave={(e) => e.currentTarget.style.background = "#1e293b", e.currentTarget.style.color = "#94a3b8"}>
                         ▲ Collapse
                       </button>
                     </div>
@@ -750,14 +804,16 @@ export default function Home() {
             return (
               <div key={project.id} id={sectionId} style={{ marginBottom: "50px", scrollMarginTop: "80px" }}>
                 <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
-                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
+                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0, letterSpacing: "-0.3px" }}>{project.name}</h3>
                   <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Quality mulching services</p>
                 </div>
-                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px" }}>
+                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px", border: "1px solid #334155", boxShadow: "0 8px 20px rgba(0,0,0,0.2)" }}>
                   <img src={project.mainImage} alt="Main Mulch" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
                 </div>
                 <div>
-                  <button onClick={() => setShowMulchGallery(!showMulchGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <button onClick={() => setShowMulchGallery(!showMulchGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", transition: "all 0.2s" }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = "#2E8B57", e.currentTarget.style.color = "white"}
+                    onMouseLeave={(e) => e.currentTarget.style.background = "#1e293b", e.currentTarget.style.color = "#2E8B57"}>
                     <span>📸 More Mulching Photos ({project.extraImages.length})</span>
                     <span style={{ transform: showMulchGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
                   </button>
@@ -765,12 +821,14 @@ export default function Home() {
                     <div style={{ marginTop: "20px" }}>
                       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
                         {project.extraImages.map((img, idx) => (
-                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
+                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", border: "1px solid #334155", boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>
                             <img src={img} alt={`Mulch ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
                           </div>
                         ))}
                       </div>
-                      <button onClick={() => setShowMulchGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px" }}>
+                      <button onClick={() => setShowMulchGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px", transition: "all 0.2s" }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = "#2E8B57", e.currentTarget.style.color = "white"}
+                        onMouseLeave={(e) => e.currentTarget.style.background = "#1e293b", e.currentTarget.style.color = "#94a3b8"}>
                         ▲ Collapse
                       </button>
                     </div>
@@ -787,14 +845,16 @@ export default function Home() {
             return (
               <div key={project.id} id={sectionId} style={{ marginBottom: "50px", scrollMarginTop: "80px" }}>
                 <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
-                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
+                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0, letterSpacing: "-0.3px" }}>{project.name}</h3>
                   <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Professional tree removal</p>
                 </div>
-                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px" }}>
+                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px", border: "1px solid #334155", boxShadow: "0 8px 20px rgba(0,0,0,0.2)" }}>
                   <img src={project.mainImage} alt="Main Tree Removal" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
                 </div>
                 <div>
-                  <button onClick={() => setShowTreeGallery(!showTreeGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <button onClick={() => setShowTreeGallery(!showTreeGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", transition: "all 0.2s" }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = "#2E8B57", e.currentTarget.style.color = "white"}
+                    onMouseLeave={(e) => e.currentTarget.style.background = "#1e293b", e.currentTarget.style.color = "#2E8B57"}>
                     <span>📸 More Tree Removal Photos ({project.extraImages.length})</span>
                     <span style={{ transform: showTreeGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
                   </button>
@@ -802,12 +862,14 @@ export default function Home() {
                     <div style={{ marginTop: "20px" }}>
                       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
                         {project.extraImages.map((img, idx) => (
-                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
+                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", border: "1px solid #334155", boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>
                             <img src={img} alt={`Tree ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
                           </div>
                         ))}
                       </div>
-                      <button onClick={() => setShowTreeGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px" }}>
+                      <button onClick={() => setShowTreeGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px", transition: "all 0.2s" }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = "#2E8B57", e.currentTarget.style.color = "white"}
+                        onMouseLeave={(e) => e.currentTarget.style.background = "#1e293b", e.currentTarget.style.color = "#94a3b8"}>
                         ▲ Collapse
                       </button>
                     </div>
@@ -824,14 +886,16 @@ export default function Home() {
             return (
               <div key={project.id} id={sectionId} style={{ marginBottom: "50px", scrollMarginTop: "80px" }}>
                 <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
-                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
+                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0, letterSpacing: "-0.3px" }}>{project.name}</h3>
                   <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Professional tree planting</p>
                 </div>
-                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px" }}>
+                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px", border: "1px solid #334155", boxShadow: "0 8px 20px rgba(0,0,0,0.2)" }}>
                   <img src={project.mainImage} alt="Main Tree Planting" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
                 </div>
                 <div>
-                  <button onClick={() => setShowPlantingGallery(!showPlantingGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <button onClick={() => setShowPlantingGallery(!showPlantingGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", transition: "all 0.2s" }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = "#2E8B57", e.currentTarget.style.color = "white"}
+                    onMouseLeave={(e) => e.currentTarget.style.background = "#1e293b", e.currentTarget.style.color = "#2E8B57"}>
                     <span>📸 More Tree Planting Photos ({project.extraImages.length})</span>
                     <span style={{ transform: showPlantingGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
                   </button>
@@ -839,12 +903,14 @@ export default function Home() {
                     <div style={{ marginTop: "20px" }}>
                       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
                         {project.extraImages.map((img, idx) => (
-                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
+                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", border: "1px solid #334155", boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>
                             <img src={img} alt={`Planting ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
                           </div>
                         ))}
                       </div>
-                      <button onClick={() => setShowPlantingGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px" }}>
+                      <button onClick={() => setShowPlantingGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px", transition: "all 0.2s" }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = "#2E8B57", e.currentTarget.style.color = "white"}
+                        onMouseLeave={(e) => e.currentTarget.style.background = "#1e293b", e.currentTarget.style.color = "#94a3b8"}>
                         ▲ Collapse
                       </button>
                     </div>
@@ -864,13 +930,15 @@ export default function Home() {
             return (
               <div key={project.id} id={sectionId} style={{ marginBottom: "50px", scrollMarginTop: "80px" }}>
                 <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
-                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
+                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0, letterSpacing: "-0.3px" }}>{project.name}</h3>
                   <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Before & After Transformations</p>
                 </div>
                 {getSlider(project.id, mainPair.before, mainPair.after, `${project.id}_main`)}
                 {extraPairs.length > 0 && (
                   <div style={{ marginTop: "40px" }}>
-                    <button onClick={() => setShowMore(prev => ({ ...prev, [project.id]: !prev[project.id] }))} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <button onClick={() => setShowMore(prev => ({ ...prev, [project.id]: !prev[project.id] }))} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", transition: "all 0.2s" }}
+                      onMouseEnter={(e) => e.currentTarget.style.background = "#2E8B57", e.currentTarget.style.color = "white"}
+                      onMouseLeave={(e) => e.currentTarget.style.background = "#1e293b", e.currentTarget.style.color = "#2E8B57"}>
                       <span>📸 More Before & After Photos ({extraPairs.length})</span>
                       <span style={{ transform: showMore[project.id] ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
                     </button>
@@ -881,7 +949,9 @@ export default function Home() {
                             <SmallPair key={idx} before={pair.before} after={pair.after} index={idx + 2} projectName={project.name} />
                           ))}
                         </div>
-                        <button onClick={() => setShowMore(prev => ({ ...prev, [project.id]: false }))} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px" }}>
+                        <button onClick={() => setShowMore(prev => ({ ...prev, [project.id]: false }))} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px", transition: "all 0.2s" }}
+                          onMouseEnter={(e) => e.currentTarget.style.background = "#2E8B57", e.currentTarget.style.color = "white"}
+                          onMouseLeave={(e) => e.currentTarget.style.background = "#1e293b", e.currentTarget.style.color = "#94a3b8"}>
                           ▲ Collapse
                         </button>
                       </div>
@@ -889,7 +959,9 @@ export default function Home() {
                   </div>
                 )}
                 <div style={{ marginTop: extraPairs.length > 0 ? "40px" : "50px" }}>
-                  <button onClick={() => setShowExtraSingles(prev => ({ ...prev, [project.id]: !prev[project.id] }))} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <button onClick={() => setShowExtraSingles(prev => ({ ...prev, [project.id]: !prev[project.id] }))} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", transition: "all 0.2s" }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = "#2E8B57", e.currentTarget.style.color = "white"}
+                    onMouseLeave={(e) => e.currentTarget.style.background = "#1e293b", e.currentTarget.style.color = "#2E8B57"}>
                     <span>🖼️ Additional Project Photos {extraSingles.length > 0 ? `(${extraSingles.length})` : "(coming soon)"}</span>
                     <span style={{ transform: showExtraSingles[project.id] ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
                   </button>
@@ -906,7 +978,9 @@ export default function Home() {
                           No extra photos yet. Check back soon!
                         </div>
                       )}
-                      <button onClick={() => setShowExtraSingles(prev => ({ ...prev, [project.id]: false }))} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px" }}>
+                      <button onClick={() => setShowExtraSingles(prev => ({ ...prev, [project.id]: false }))} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px", transition: "all 0.2s" }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = "#2E8B57", e.currentTarget.style.color = "white"}
+                        onMouseLeave={(e) => e.currentTarget.style.background = "#1e293b", e.currentTarget.style.color = "#94a3b8"}>
                         ▲ Collapse
                       </button>
                     </div>
@@ -923,14 +997,16 @@ export default function Home() {
             return (
               <div key={project.id} id={sectionId} style={{ marginBottom: "50px", scrollMarginTop: "80px" }}>
                 <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
-                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
+                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0, letterSpacing: "-0.3px" }}>{project.name}</h3>
                   <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Professional seeding & hydro‑seeding</p>
                 </div>
-                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px" }}>
+                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px", border: "1px solid #334155", boxShadow: "0 8px 20px rgba(0,0,0,0.2)" }}>
                   <img src={project.mainImage} alt="Main Seeding" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
                 </div>
                 <div>
-                  <button onClick={() => setShowSeedingGallery(!showSeedingGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <button onClick={() => setShowSeedingGallery(!showSeedingGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", transition: "all 0.2s" }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = "#2E8B57", e.currentTarget.style.color = "white"}
+                    onMouseLeave={(e) => e.currentTarget.style.background = "#1e293b", e.currentTarget.style.color = "#2E8B57"}>
                     <span>📸 More Seeding & Hydro‑Seeding Photos ({project.extraImages.length})</span>
                     <span style={{ transform: showSeedingGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
                   </button>
@@ -938,12 +1014,14 @@ export default function Home() {
                     <div style={{ marginTop: "20px" }}>
                       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
                         {project.extraImages.map((img, idx) => (
-                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
+                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", border: "1px solid #334155", boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>
                             <img src={img} alt={`Seeding ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
                           </div>
                         ))}
                       </div>
-                      <button onClick={() => setShowSeedingGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px" }}>
+                      <button onClick={() => setShowSeedingGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px", transition: "all 0.2s" }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = "#2E8B57", e.currentTarget.style.color = "white"}
+                        onMouseLeave={(e) => e.currentTarget.style.background = "#1e293b", e.currentTarget.style.color = "#94a3b8"}>
                         ▲ Collapse
                       </button>
                     </div>
@@ -958,7 +1036,7 @@ export default function Home() {
       </div>
 
       {/* Footer */}
-      <div style={{ background: "#020617", color: "#64748b", padding: "45px 20px", textAlign: "center", fontSize: "13px", borderTop: "1px solid #1e293b" }}>
+      <div style={{ background: "#020617", color: "#64748b", padding: "45px 20px", textAlign: "center", fontSize: "13px", borderTop: "1px solid #1e293b", position: "relative" }}>
         <p>© 2026 Greater Edge Landscaping LLC. All rights reserved.</p>
         <p style={{ marginTop: "12px", fontSize: "12px" }}>Family Owned & Operated</p>
       </div>
@@ -971,7 +1049,7 @@ export default function Home() {
             position: "fixed",
             bottom: "30px",
             right: "30px",
-            background: "#2E8B57",
+            background: "linear-gradient(135deg, #2E8B57 0%, #236b45 100%)",
             color: "white",
             border: "none",
             borderRadius: "50%",
@@ -986,12 +1064,87 @@ export default function Home() {
             alignItems: "center",
             justifyContent: "center",
           }}
-          onMouseEnter={(e) => e.currentTarget.style.background = "#236b45"}
-          onMouseLeave={(e) => e.currentTarget.style.background = "#2E8B57"}
+          onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.05)"}
+          onMouseLeave={(e) => e.currentTarget.style.transform = "scale(1)"}
         >
           ↑
         </button>
       )}
+
+      {/* Floating Navigation Pill */}
+      <div style={{
+        position: "fixed",
+        bottom: "30px",
+        left: "30px",
+        zIndex: 100,
+      }}>
+        <button
+          onClick={() => setPillOpen(!pillOpen)}
+          style={{
+            background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
+            border: "1px solid #334155",
+            borderRadius: "40px",
+            padding: "10px 20px",
+            color: "white",
+            fontSize: "14px",
+            fontWeight: "500",
+            cursor: "pointer",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+            transition: "all 0.2s",
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            backdropFilter: "blur(8px)",
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.background = "#2E8B57"}
+          onMouseLeave={(e) => e.currentTarget.style.background = "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)"}
+        >
+          <span>📍</span>
+          <span>{getCurrentSectionName()}</span>
+          <span style={{ transform: pillOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s" }}>▼</span>
+        </button>
+        {pillOpen && (
+          <div style={{
+            position: "absolute",
+            bottom: "calc(100% + 10px)",
+            left: "0",
+            background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
+            border: "1px solid #334155",
+            borderRadius: "20px",
+            padding: "10px 0",
+            minWidth: "200px",
+            boxShadow: "0 8px 20px rgba(0,0,0,0.3)",
+            backdropFilter: "blur(8px)",
+            maxHeight: "400px",
+            overflowY: "auto",
+          }}>
+            {navItems.map(item => (
+              <button
+                key={item.slug}
+                onClick={() => scrollToSection(item.slug)}
+                style={{
+                  display: "block",
+                  width: "100%",
+                  textAlign: "left",
+                  padding: "10px 20px",
+                  background: "transparent",
+                  border: "none",
+                  color: currentSection === item.slug ? "#2E8B57" : "#cbd5e1",
+                  fontSize: "14px",
+                  fontWeight: "500",
+                  cursor: "pointer",
+                  transition: "all 0.2s",
+                  fontFamily: "inherit",
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.background = "#2E8B57", e.currentTarget.style.color = "white"}
+                onMouseLeave={(e) => e.currentTarget.style.background = "transparent", e.currentTarget.style.color = currentSection === item.slug ? "#2E8B57" : "#cbd5e1"}
+              >
+                {item.name}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
 
       {/* Lightbox Modal */}
       <style>{`
