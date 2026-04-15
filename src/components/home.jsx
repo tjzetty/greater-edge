@@ -335,51 +335,48 @@ export default function Home() {
     );
   };
 
-  // ---------- PROJECTS ----------
+  // ---------- PROJECTS (UPDATED COUNTS) ----------
   const projects = [
     { id: 1, name: "Brick Pavers & Patios", slug: "brick-pavers", pairs: [
       { before: "images/paver1.jpg", after: "images/paver2.jpg" },
       { before: "images/paver3.jpg", after: "images/paver4.jpg" },
       { before: "images/paver5.jpg", after: "images/paver6.jpg" },
       { before: "images/paver7.jpg", after: "images/paver8.jpg" }
-    ], extraSingles: [] },
+    ], extraSingles: ["images/paver9.jpg", "images/paver10.jpg", "images/paver11.jpg"] },
     { id: 2, name: "Great Cuts", slug: "great-cuts", isLawn: true, mainImage: "images/lawn2.jpg", 
       extraImages: ["images/lawn3.jpg", "images/lawn4.jpg", "images/lawn5.jpg", "images/lawn6.jpg", "images/lawn7.jpg", "images/lawn8.jpg", "images/lawn9.jpg", "images/lawn10.jpg", "images/lawn11.jpg", "images/lawn12.jpg", "images/lawn13.jpg"] },
     { id: 9, name: "Custom Landscaping", slug: "custom-landscaping", isCustomGallery: true, mainImage: "images/custom1.jpg", 
-      extraImages: ["images/custom2.jpg", "images/custom3.jpg", "images/custom4.jpg", "images/custom5.jpg", "images/custom6.jpg", "images/custom7.jpg", "images/custom8.jpg", "images/custom9.jpg"] },
+      extraImages: ["images/custom2.jpg", "images/custom3.jpg"] }, // only 3 total (main + 2 extras)
     { id: 10, name: "Road & Turnaround", slug: "road-turnaround", isRoadGallery: true, mainImage: "images/road1.jpg", 
       extraImages: ["images/road2.jpg", "images/road3.jpg", "images/road4.jpg", "images/road5.jpg", "images/road6.jpg", "images/road7.jpg", "images/road8.jpg", "images/road9.jpg"] },
-    // NEW: Rock Wall / Retaining Walls
     { id: 15, name: "Rock Wall / Retaining Walls", slug: "rock-walls", isRockGallery: true, mainImage: "images/rockwall1.jpg", 
       extraImages: ["images/rockwall2.jpg", "images/rockwall3.jpg", "images/rockwall4.jpg", "images/rockwall5.jpg", "images/rockwall6.jpg"] },
-    // NEW: Grading
     { id: 16, name: "Grading", slug: "grading", isGradingGallery: true, mainImage: "images/grading1.jpg", 
       extraImages: ["images/grading2.jpg", "images/grading3.jpg", "images/grading4.jpg", "images/grading5.jpg", "images/grading6.jpg"] },
     { id: 14, name: "Material Delivery & Spreading", slug: "material-delivery", isMaterialGallery: true, mainImage: "images/material1.jpg", 
-      extraImages: ["images/material2.jpg", "images/material3.jpg", "images/material4.jpg", "images/material5.jpg", "images/material6.jpg"] },
+      extraImages: ["images/material2.jpg", "images/material3.jpg"] }, // only 3 total (main + 2 extras)
     { id: 3, name: "Bed Clean Up", slug: "bed-clean-up", pairs: [
       { before: "images/bedcleanup1.jpg", after: "images/bedcleanup2.jpg" },
       { before: "images/bedcleanup3.jpg", after: "images/bedcleanup4.jpg" },
       { before: "images/bedcleanup5.jpg", after: "images/bedcleanup6.jpg" },
       { before: "images/bedcleanup7.jpg", after: "images/bedcleanup8.jpg" }
-    ], extraSingles: [] },
+    ], extraSingles: ["images/bedcleanup9.jpg", "images/bedcleanup10.jpg", "images/bedcleanup11.jpg"] },
     { id: 12, name: "Cobble Stone Beds", slug: "cobble-stone-beds", isCobbleGallery: true, mainImage: "images/stonebed1.jpg", 
-      extraImages: ["images/stonebed2.jpg", "images/stonebed3.jpg", "images/stonebed4.jpg", "images/stonebed5.jpg", "images/stonebed6.jpg", "images/stonebed7.jpg", "images/stonebed8.jpg", "images/stonebed9.jpg"] },
+      extraImages: ["images/stonebed2.jpg", "images/stonebed3.jpg", "images/stonebed4.jpg", "images/stonebed5.jpg"] }, // only 5 total (main + 4 extras)
     { id: 4, name: "Bush & Hedge Trimming", slug: "bush-hedge-trimming", pairs: [
       { before: "images/bushtrim1.jpg", after: "images/bushtrim2.jpg" },
       { before: "images/bushtrim3.jpg", after: "images/bushtrim4.jpg" },
       { before: "images/bushtrim5.jpg", after: "images/bushtrim6.jpg" },
       { before: "images/bushtrim7.jpg", after: "images/bushtrim8.jpg" }
-    ], extraSingles: [] },
+    ], extraSingles: ["images/bushtrim9.jpg", "images/bushtrim10.jpg", "images/bushtrim11.jpg"] },
     { id: 13, name: "Mulching", slug: "mulching", isMulchGallery: true, mainImage: "images/mulch1.jpg", 
-      extraImages: ["images/mulch2.jpg", "images/mulch3.jpg", "images/mulch4.jpg", "images/mulch5.jpg", "images/mulch6.jpg", "images/mulch7.jpg", "images/mulch8.jpg", "images/mulch9.jpg"] },
-    // Fall Clean Ups converted to gallery with 6 photos
+      extraImages: ["images/mulch2.jpg", "images/mulch3.jpg", "images/mulch4.jpg", "images/mulch5.jpg"] }, // only 5 total (main + 4 extras)
     { id: 5, name: "Fall Clean Ups", slug: "fall-clean-ups", isFallGallery: true, mainImage: "images/fall1.jpg", 
-      extraImages: ["images/fall2.jpg", "images/fall3.jpg", "images/fall4.jpg", "images/fall5.jpg", "images/fall6.jpg"] },
+      extraImages: ["images/fall2.jpg", "images/fall3.jpg", "images/fall4.jpg", "images/fall5.jpg", "images/fall6.jpg"] }, // 6 total
     { id: 6, name: "Tree Removal", slug: "tree-removal", isTreeGallery: true, mainImage: "images/treer1.jpg", 
-      extraImages: ["images/treer2.jpg", "images/treer3.jpg", "images/treer4.jpg", "images/treer5.jpg", "images/treer6.jpg", "images/treer7.jpg", "images/treer8.jpg", "images/treer9.jpg"] },
+      extraImages: ["images/treer2.jpg"] }, // only 2 total (main + 1 extra)
     { id: 7, name: "Tree Planting", slug: "tree-planting", isPlantingGallery: true, mainImage: "images/treep1.jpg", 
-      extraImages: ["images/treep2.jpg", "images/treep3.jpg", "images/treep4.jpg", "images/treep5.jpg", "images/treep6.jpg", "images/treep7.jpg", "images/treep8.jpg", "images/treep9.jpg"] },
+      extraImages: ["images/treep2.jpg", "images/treep3.jpg", "images/treep4.jpg", "images/treep5.jpg"] }, // only 5 total (main + 4 extras)
     { id: 8, name: "Power Washing", slug: "power-washing", pairs: [
       { before: "images/powerwashing1.jpg", after: "images/powerwashing2.jpg" },
       { before: "images/powerwashing3.jpg", after: "images/powerwashing4.jpg" },
@@ -409,7 +406,7 @@ export default function Home() {
         <p style={{ color: "#94a3b8", marginTop: "20px", fontSize: "16px" }}>See the difference we make</p>
       </div>
 
-      {/* Horizontal Navigation Bar - Thicker scrollbar (20px) */}
+      {/* Horizontal Navigation Bar */}
       <style>{`
         .nav-scrollbar {
           scrollbar-width: auto;
@@ -584,7 +581,7 @@ export default function Home() {
             );
           }
 
-          // Rock Wall / Retaining Walls (new)
+          // Rock Wall / Retaining Walls
           if (project.isRockGallery) {
             const allImages = [project.mainImage, ...project.extraImages];
             const galleryItems = allImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
@@ -618,7 +615,7 @@ export default function Home() {
             );
           }
 
-          // Grading (new)
+          // Grading
           if (project.isGradingGallery) {
             const allImages = [project.mainImage, ...project.extraImages];
             const galleryItems = allImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
@@ -754,7 +751,7 @@ export default function Home() {
             );
           }
 
-          // Fall Clean Ups (now a gallery)
+          // Fall Clean Ups
           if (project.isFallGallery) {
             const allImages = [project.mainImage, ...project.extraImages];
             const galleryItems = allImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
@@ -856,7 +853,7 @@ export default function Home() {
             );
           }
 
-          // Power Washing and other slider sections (only Bed Clean Up, Bush & Hedge, Brick Pavers)
+          // Power Washing and other slider sections (Bed Clean Up, Bush & Hedge, Brick Pavers)
           if (project.pairs) {
             const mainPair = project.pairs[0];
             const extraPairs = project.pairs.slice(1);
@@ -954,7 +951,7 @@ export default function Home() {
         <p style={{ marginTop: "12px", fontSize: "12px" }}>Family Owned & Operated</p>
       </div>
 
-      {/* Back to Top Button - Larger */}
+      {/* Back to Top Button */}
       {showBackToTop && (
         <button
           onClick={scrollToTop}
@@ -984,7 +981,7 @@ export default function Home() {
         </button>
       )}
 
-      {/* Lightbox Modal - Larger X button on mobile */}
+      {/* Lightbox Modal */}
       <style>{`
         @media (max-width: 768px) {
           .lightbox-close {
