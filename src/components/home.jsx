@@ -379,7 +379,7 @@ export default function Home() {
       { before: "images/paver3.jpg", after: "images/paver4.jpg" },
       { before: "images/paver5.jpg", after: "images/paver6.jpg" },
       { before: "images/paver7.jpg", after: "images/paver8.jpg" }
-    ], extraSingles: ["images/paver9.jpg", "images/paver10.jpg", "images/paver11.jpg"] },
+    ], extraSingles: ["images/paver10.jpg", "images/paver11.jpg", "images/paver12.jpg", "images/paver13.jpg", "images/paver14.jpg", "images/paver15.jpg", "images/paver16.jpg", "images/paver17.jpg", "images/paver18.jpg"] },
     { id: 2, name: "Great Cuts", slug: "great-cuts", isLawn: true, mainImage: "images/lawn2.jpg", 
       extraImages: ["images/lawn3.jpg", "images/lawn4.jpg", "images/lawn5.jpg", "images/lawn6.jpg", "images/lawn7.jpg", "images/lawn8.jpg", "images/lawn9.jpg", "images/lawn10.jpg", "images/lawn11.jpg", "images/lawn12.jpg", "images/lawn13.jpg"] },
     { id: 9, name: "Custom Landscaping", slug: "custom-landscaping", isCustomGallery: true, mainImage: "images/custom1.jpg", 
@@ -664,6 +664,7 @@ export default function Home() {
       {showBackToTop && (
         <button
           onClick={scrollToTop}
+          className="back-to-top"
           style={{
             position: "fixed",
             bottom: "30px",
@@ -696,6 +697,7 @@ export default function Home() {
           onClick={() => setPillOpen(!pillOpen)}
           onMouseEnter={handlePillMouseEnter}
           onMouseLeave={handlePillMouseLeave}
+          className="pill-button"
           style={{
             background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
             border: "1px solid #334155",
@@ -764,7 +766,7 @@ export default function Home() {
         )}
       </div>
 
-      {/* Lightbox Modal */}
+      {/* Lightbox Modal & responsive overrides */}
       <style>{`
         @media (max-width: 768px) {
           .lightbox-close {
