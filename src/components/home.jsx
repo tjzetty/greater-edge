@@ -103,7 +103,7 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Pill hover logic – close after 3 seconds on mouse leave
+  // Pill hover logic
   const handlePillMouseEnter = () => {
     if (pillTimeoutRef.current) clearTimeout(pillTimeoutRef.current);
     setPillOpen(true);
@@ -111,7 +111,7 @@ export default function Home() {
   const handlePillMouseLeave = () => {
     pillTimeoutRef.current = setTimeout(() => {
       setPillOpen(false);
-    }, 3000);
+    }, 300);
   };
   const handleMenuMouseEnter = () => {
     if (pillTimeoutRef.current) clearTimeout(pillTimeoutRef.current);
@@ -120,7 +120,7 @@ export default function Home() {
   const handleMenuMouseLeave = () => {
     pillTimeoutRef.current = setTimeout(() => {
       setPillOpen(false);
-    }, 3000);
+    }, 300);
   };
 
   // ---------- Slider Components ----------
@@ -379,7 +379,11 @@ export default function Home() {
       { before: "images/paver3.jpg", after: "images/paver4.jpg" },
       { before: "images/paver5.jpg", after: "images/paver6.jpg" },
       { before: "images/paver7.jpg", after: "images/paver8.jpg" }
-    ], extraSingles: ["images/paver10.jpg", "images/paver11.jpg", "images/paver12.jpg", "images/paver13.jpg", "images/paver14.jpg", "images/paver15.jpg", "images/paver16.jpg", "images/paver17.jpg", "images/paver18.jpg"] },
+    ], extraSingles: [
+      "images/paver9.jpg", "images/paver10.jpg", "images/paver11.jpg", "images/paver12.jpg",
+      "images/paver13.jpg", "images/paver14.jpg", "images/paver15.jpg", "images/paver16.jpg",
+      "images/paver17.jpg", "images/paver18.jpg"
+    ] },
     { id: 2, name: "Great Cuts", slug: "great-cuts", isLawn: true, mainImage: "images/lawn2.jpg", 
       extraImages: ["images/lawn3.jpg", "images/lawn4.jpg", "images/lawn5.jpg", "images/lawn6.jpg", "images/lawn7.jpg", "images/lawn8.jpg", "images/lawn9.jpg", "images/lawn10.jpg", "images/lawn11.jpg", "images/lawn12.jpg", "images/lawn13.jpg"] },
     { id: 9, name: "Custom Landscaping", slug: "custom-landscaping", isCustomGallery: true, mainImage: "images/custom1.jpg", 
@@ -389,7 +393,11 @@ export default function Home() {
     { id: 15, name: "Rock Wall / Retaining Walls", slug: "rock-walls", isRockGallery: true, mainImage: "images/rockwall1.jpg", 
       extraImages: ["images/rockwall2.jpg", "images/rockwall3.jpg", "images/rockwall4.jpg", "images/rockwall5.jpg", "images/rockwall6.jpg"] },
     { id: 16, name: "Grading", slug: "grading", isGradingGallery: true, mainImage: "images/grading1.jpg", 
-      extraImages: ["images/grading2.jpg", "images/grading3.jpg", "images/grading4.jpg", "images/grading5.jpg", "images/grading6.jpg"] },
+      extraImages: [
+        "images/grading2.jpg", "images/grading3.jpg", "images/grading4.jpg", "images/grading5.jpg",
+        "images/grading6.jpg", "images/grading7.jpg", "images/grading8.jpg", "images/grading9.jpg",
+        "images/grading10.jpg", "images/grading11.jpg"
+      ] },
     { id: 14, name: "Material Delivery & Spreading", slug: "material-delivery", isMaterialGallery: true, mainImage: "images/material1.jpg", 
       extraImages: ["images/material2.jpg", "images/material3.jpg"] },
     { id: 3, name: "Bed Clean Up", slug: "bed-clean-up", pairs: [
@@ -414,9 +422,9 @@ export default function Home() {
       { before: "images/fallcleanup5.jpg", after: "images/fallcleanup6.jpg" },
       { before: "images/fallcleanup7.jpg", after: "images/fallcleanup8.jpg" }
     ], extraSingles: [
-      "images/fallcleanup13.jpg", "images/fallcleanup14.jpg", "images/fallcleanup15.jpg",
-      "images/fallcleanup16.jpg", "images/fallcleanup17.jpg", "images/fallcleanup18.jpg",
-      "images/fallcleanup19.jpg"
+      "images/fallcleanup9.jpg", "images/fallcleanup10.jpg", "images/fallcleanup11.jpg", "images/fallcleanup12.jpg",
+      "images/fallcleanup13.jpg", "images/fallcleanup14.jpg", "images/fallcleanup15.jpg", "images/fallcleanup16.jpg",
+      "images/fallcleanup17.jpg", "images/fallcleanup18.jpg", "images/fallcleanup19.jpg", "images/fallcleanup20.jpg"
     ] },
     { id: 6, name: "Tree Removal", slug: "tree-removal", isTreeGallery: true, mainImage: "images/treer1.jpg", 
       extraImages: ["images/treer2.jpg"] },
@@ -664,7 +672,6 @@ export default function Home() {
       {showBackToTop && (
         <button
           onClick={scrollToTop}
-          className="back-to-top"
           style={{
             position: "fixed",
             bottom: "30px",
@@ -691,13 +698,12 @@ export default function Home() {
         </button>
       )}
 
-      {/* Floating Navigation Pill - 3s timeout on leave */}
+      {/* Floating Navigation Pill */}
       <div style={{ position: "fixed", bottom: "30px", left: "30px", zIndex: 100 }}>
         <button
           onClick={() => setPillOpen(!pillOpen)}
           onMouseEnter={handlePillMouseEnter}
           onMouseLeave={handlePillMouseLeave}
-          className="pill-button"
           style={{
             background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
             border: "1px solid #334155",
@@ -766,7 +772,7 @@ export default function Home() {
         )}
       </div>
 
-      {/* Lightbox Modal & responsive overrides */}
+      {/* Lightbox Modal */}
       <style>{`
         @media (max-width: 768px) {
           .lightbox-close {
