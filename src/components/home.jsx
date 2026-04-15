@@ -346,7 +346,7 @@ export default function Home() {
     { id: 2, name: "Great Cuts", slug: "great-cuts", isLawn: true, mainImage: "images/lawn2.jpg", 
       extraImages: ["images/lawn3.jpg", "images/lawn4.jpg", "images/lawn5.jpg", "images/lawn6.jpg", "images/lawn7.jpg", "images/lawn8.jpg", "images/lawn9.jpg", "images/lawn10.jpg", "images/lawn11.jpg", "images/lawn12.jpg", "images/lawn13.jpg"] },
     { id: 9, name: "Custom Landscaping", slug: "custom-landscaping", isCustomGallery: true, mainImage: "images/custom1.jpg", 
-      extraImages: ["images/custom2.jpg", "images/custom3.jpg"] }, // only 3 total (main + 2 extras)
+      extraImages: ["images/custom2.jpg", "images/custom3.jpg"] },
     { id: 10, name: "Road & Turnaround", slug: "road-turnaround", isRoadGallery: true, mainImage: "images/road1.jpg", 
       extraImages: ["images/road2.jpg", "images/road3.jpg", "images/road4.jpg", "images/road5.jpg", "images/road6.jpg", "images/road7.jpg", "images/road8.jpg", "images/road9.jpg"] },
     { id: 15, name: "Rock Wall / Retaining Walls", slug: "rock-walls", isRockGallery: true, mainImage: "images/rockwall1.jpg", 
@@ -354,7 +354,7 @@ export default function Home() {
     { id: 16, name: "Grading", slug: "grading", isGradingGallery: true, mainImage: "images/grading1.jpg", 
       extraImages: ["images/grading2.jpg", "images/grading3.jpg", "images/grading4.jpg", "images/grading5.jpg", "images/grading6.jpg"] },
     { id: 14, name: "Material Delivery & Spreading", slug: "material-delivery", isMaterialGallery: true, mainImage: "images/material1.jpg", 
-      extraImages: ["images/material2.jpg", "images/material3.jpg"] }, // only 3 total (main + 2 extras)
+      extraImages: ["images/material2.jpg", "images/material3.jpg"] },
     { id: 3, name: "Bed Clean Up", slug: "bed-clean-up", pairs: [
       { before: "images/bedcleanup1.jpg", after: "images/bedcleanup2.jpg" },
       { before: "images/bedcleanup3.jpg", after: "images/bedcleanup4.jpg" },
@@ -362,7 +362,7 @@ export default function Home() {
       { before: "images/bedcleanup7.jpg", after: "images/bedcleanup8.jpg" }
     ], extraSingles: ["images/bedcleanup9.jpg", "images/bedcleanup10.jpg", "images/bedcleanup11.jpg"] },
     { id: 12, name: "Cobble Stone Beds", slug: "cobble-stone-beds", isCobbleGallery: true, mainImage: "images/stonebed1.jpg", 
-      extraImages: ["images/stonebed2.jpg", "images/stonebed3.jpg", "images/stonebed4.jpg", "images/stonebed5.jpg"] }, // only 5 total (main + 4 extras)
+      extraImages: ["images/stonebed2.jpg", "images/stonebed3.jpg", "images/stonebed4.jpg", "images/stonebed5.jpg"] },
     { id: 4, name: "Bush & Hedge Trimming", slug: "bush-hedge-trimming", pairs: [
       { before: "images/bushtrim1.jpg", after: "images/bushtrim2.jpg" },
       { before: "images/bushtrim3.jpg", after: "images/bushtrim4.jpg" },
@@ -370,13 +370,13 @@ export default function Home() {
       { before: "images/bushtrim7.jpg", after: "images/bushtrim8.jpg" }
     ], extraSingles: ["images/bushtrim9.jpg", "images/bushtrim10.jpg", "images/bushtrim11.jpg"] },
     { id: 13, name: "Mulching", slug: "mulching", isMulchGallery: true, mainImage: "images/mulch1.jpg", 
-      extraImages: ["images/mulch2.jpg", "images/mulch3.jpg", "images/mulch4.jpg", "images/mulch5.jpg"] }, // only 5 total (main + 4 extras)
+      extraImages: ["images/mulch2.jpg", "images/mulch3.jpg", "images/mulch4.jpg", "images/mulch5.jpg"] },
     { id: 5, name: "Fall Clean Ups", slug: "fall-clean-ups", isFallGallery: true, mainImage: "images/fall1.jpg", 
-      extraImages: ["images/fall2.jpg", "images/fall3.jpg", "images/fall4.jpg", "images/fall5.jpg", "images/fall6.jpg"] }, // 6 total
+      extraImages: ["images/fall2.jpg", "images/fall3.jpg", "images/fall4.jpg", "images/fall5.jpg", "images/fall6.jpg"] },
     { id: 6, name: "Tree Removal", slug: "tree-removal", isTreeGallery: true, mainImage: "images/treer1.jpg", 
-      extraImages: ["images/treer2.jpg"] }, // only 2 total (main + 1 extra)
+      extraImages: ["images/treer2.jpg"] },
     { id: 7, name: "Tree Planting", slug: "tree-planting", isPlantingGallery: true, mainImage: "images/treep1.jpg", 
-      extraImages: ["images/treep2.jpg", "images/treep3.jpg", "images/treep4.jpg", "images/treep5.jpg"] }, // only 5 total (main + 4 extras)
+      extraImages: ["images/treep2.jpg", "images/treep3.jpg", "images/treep4.jpg", "images/treep5.jpg"] },
     { id: 8, name: "Power Washing", slug: "power-washing", pairs: [
       { before: "images/powerwashing1.jpg", after: "images/powerwashing2.jpg" },
       { before: "images/powerwashing3.jpg", after: "images/powerwashing4.jpg" },
@@ -479,6 +479,7 @@ export default function Home() {
       <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "20px 16px 80px" }}>
         {projects.map(project => {
           const sectionId = `section-${project.slug}`;
+          
           // Lawn section
           if (project.isLawn) {
             const allLawnImages = [project.mainImage, ...project.extraImages];
@@ -506,6 +507,9 @@ export default function Home() {
                           </div>
                         ))}
                       </div>
+                      <button onClick={() => setShowLawnGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px" }}>
+                        ▲ Collapse
+                      </button>
                     </div>
                   )}
                 </div>
@@ -540,6 +544,9 @@ export default function Home() {
                           </div>
                         ))}
                       </div>
+                      <button onClick={() => setShowCustomGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px" }}>
+                        ▲ Collapse
+                      </button>
                     </div>
                   )}
                 </div>
@@ -574,6 +581,9 @@ export default function Home() {
                           </div>
                         ))}
                       </div>
+                      <button onClick={() => setShowRoadGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px" }}>
+                        ▲ Collapse
+                      </button>
                     </div>
                   )}
                 </div>
@@ -608,6 +618,9 @@ export default function Home() {
                           </div>
                         ))}
                       </div>
+                      <button onClick={() => setShowRockGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px" }}>
+                        ▲ Collapse
+                      </button>
                     </div>
                   )}
                 </div>
@@ -642,6 +655,9 @@ export default function Home() {
                           </div>
                         ))}
                       </div>
+                      <button onClick={() => setShowGradingGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px" }}>
+                        ▲ Collapse
+                      </button>
                     </div>
                   )}
                 </div>
@@ -676,6 +692,9 @@ export default function Home() {
                           </div>
                         ))}
                       </div>
+                      <button onClick={() => setShowMaterialGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px" }}>
+                        ▲ Collapse
+                      </button>
                     </div>
                   )}
                 </div>
@@ -710,6 +729,9 @@ export default function Home() {
                           </div>
                         ))}
                       </div>
+                      <button onClick={() => setShowCobbleGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px" }}>
+                        ▲ Collapse
+                      </button>
                     </div>
                   )}
                 </div>
@@ -744,6 +766,9 @@ export default function Home() {
                           </div>
                         ))}
                       </div>
+                      <button onClick={() => setShowMulchGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px" }}>
+                        ▲ Collapse
+                      </button>
                     </div>
                   )}
                 </div>
@@ -778,6 +803,9 @@ export default function Home() {
                           </div>
                         ))}
                       </div>
+                      <button onClick={() => setShowFallGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px" }}>
+                        ▲ Collapse
+                      </button>
                     </div>
                   )}
                 </div>
@@ -812,6 +840,9 @@ export default function Home() {
                           </div>
                         ))}
                       </div>
+                      <button onClick={() => setShowTreeGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px" }}>
+                        ▲ Collapse
+                      </button>
                     </div>
                   )}
                 </div>
@@ -846,6 +877,9 @@ export default function Home() {
                           </div>
                         ))}
                       </div>
+                      <button onClick={() => setShowPlantingGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px" }}>
+                        ▲ Collapse
+                      </button>
                     </div>
                   )}
                 </div>
@@ -874,15 +908,20 @@ export default function Home() {
                       <span style={{ transform: showMore[project.id] ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
                     </button>
                     {showMore[project.id] && (
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "16px", marginTop: "20px" }}>
-                        {extraPairs.map((pair, idx) => (
-                          <SmallPair key={idx} before={pair.before} after={pair.after} index={idx + 2} projectName={project.name} />
-                        ))}
+                      <div style={{ marginTop: "20px" }}>
+                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "16px" }}>
+                          {extraPairs.map((pair, idx) => (
+                            <SmallPair key={idx} before={pair.before} after={pair.after} index={idx + 2} projectName={project.name} />
+                          ))}
+                        </div>
+                        <button onClick={() => setShowMore(prev => ({ ...prev, [project.id]: false }))} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px" }}>
+                          ▲ Collapse
+                        </button>
                       </div>
                     )}
                   </div>
                 )}
-                <div style={{ marginTop: extraPairs.length > 0 ? "30px" : "40px" }}>
+                <div style={{ marginTop: extraPairs.length > 0 ? "40px" : "50px" }}>
                   <button onClick={() => setShowExtraSingles(prev => ({ ...prev, [project.id]: !prev[project.id] }))} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <span>🖼️ Additional Project Photos {extraSingles.length > 0 ? `(${extraSingles.length})` : "(coming soon)"}</span>
                     <span style={{ transform: showExtraSingles[project.id] ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
@@ -900,6 +939,9 @@ export default function Home() {
                           No extra photos yet. Check back soon!
                         </div>
                       )}
+                      <button onClick={() => setShowExtraSingles(prev => ({ ...prev, [project.id]: false }))} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px" }}>
+                        ▲ Collapse
+                      </button>
                     </div>
                   )}
                 </div>
@@ -934,6 +976,9 @@ export default function Home() {
                           </div>
                         ))}
                       </div>
+                      <button onClick={() => setShowSeedingGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px" }}>
+                        ▲ Collapse
+                      </button>
                     </div>
                   )}
                 </div>
