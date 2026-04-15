@@ -104,7 +104,7 @@ export default function Home() {
   const OriginalSlider = ({ before, after, sliderId }) => {
     const [pos, setPos] = useState(50);
     return (
-      <div style={{ position: "relative", width: "100%", aspectRatio: "4/3", background: "#1a1a1a", borderRadius: "16px", overflow: "hidden" }}>
+      <div style={{ position: "relative", width: "100%", aspectRatio: "4/3", background: "#111827", borderRadius: "16px", overflow: "hidden", boxShadow: "0 8px 20px rgba(0,0,0,0.3)" }}>
         <img src={after} alt="After" style={{ width: "100%", height: "100%", objectFit: "cover", cursor: "pointer" }}
           onClick={() => openLightbox(after, "After", [], 0)} />
         <div style={{ position: "absolute", top: 0, left: 0, width: `${pos}%`, height: "100%", overflow: "hidden" }}>
@@ -161,7 +161,7 @@ export default function Home() {
   const BlurSlider = ({ before, after, sliderId }) => {
     const [pos, setPos] = useState(50);
     return (
-      <div style={{ position: "relative", width: "100%", aspectRatio: "4/3", background: "#0a0f1a", borderRadius: "16px", overflow: "hidden" }}>
+      <div style={{ position: "relative", width: "100%", aspectRatio: "4/3", background: "#111827", borderRadius: "16px", overflow: "hidden", boxShadow: "0 8px 20px rgba(0,0,0,0.3)" }}>
         <div
           style={{
             position: "absolute",
@@ -390,7 +390,11 @@ export default function Home() {
       { before: "images/fallcleanup3.jpg", after: "images/fallcleanup4.jpg" },
       { before: "images/fallcleanup5.jpg", after: "images/fallcleanup6.jpg" },
       { before: "images/fallcleanup7.jpg", after: "images/fallcleanup8.jpg" }
-    ], extraSingles: ["images/fall9.jpg", "images/fall10.jpg", "images/fall11.jpg", "images/fall12.jpg", "images/fall13.jpg", "images/fall14.jpg"] },
+    ], extraSingles: [
+      "images/fall9.jpg", "images/fall10.jpg", "images/fall11.jpg", "images/fall12.jpg",
+      "images/fall13.jpg", "images/fall14.jpg", "images/fall15.jpg", "images/fall16.jpg",
+      "images/fall17.jpg", "images/fall18.jpg", "images/fall19.jpg", "images/fall20.jpg"
+    ] },
     { id: 6, name: "Tree Removal", slug: "tree-removal", isTreeGallery: true, mainImage: "images/treer1.jpg", 
       extraImages: ["images/treer2.jpg"] },
     { id: 7, name: "Tree Planting", slug: "tree-planting", isPlantingGallery: true, mainImage: "images/treep1.jpg", 
@@ -421,7 +425,7 @@ export default function Home() {
           <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0, letterSpacing: "-0.3px" }}>{project.name}</h3>
           <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>{project.subtitle || "Gallery"}</p>
         </div>
-        <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px", border: "1px solid #334155", boxShadow: "0 8px 20px rgba(0,0,0,0.2)" }}>
+        <div style={{ background: "#111827", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px", border: "1px solid #334155", boxShadow: "0 8px 20px rgba(0,0,0,0.3)" }}>
           <img src={project.mainImage} alt="Main" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
         </div>
         <div>
@@ -663,10 +667,12 @@ export default function Home() {
         </button>
       )}
 
-      {/* Floating Navigation Pill */}
+      {/* Floating Navigation Pill (hover + click) */}
       <div style={{ position: "fixed", bottom: "30px", left: "30px", zIndex: 100 }}>
         <button
           onClick={() => setPillOpen(!pillOpen)}
+          onMouseEnter={() => setPillOpen(true)}
+          onMouseLeave={() => setPillOpen(false)}
           style={{
             background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
             border: "1px solid #334155",
@@ -683,28 +689,29 @@ export default function Home() {
             gap: "8px",
             backdropFilter: "blur(8px)",
           }}
-          onMouseEnter={(e) => e.currentTarget.style.background = "#4ade80"}
-          onMouseLeave={(e) => e.currentTarget.style.background = "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)"}
         >
           <span>📍</span>
           <span>{getCurrentSectionName()}</span>
           <span style={{ transform: pillOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s" }}>▼</span>
         </button>
         {pillOpen && (
-          <div style={{
-            position: "absolute",
-            bottom: "calc(100% + 10px)",
-            left: "0",
-            background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
-            border: "1px solid #334155",
-            borderRadius: "20px",
-            padding: "10px 0",
-            minWidth: "200px",
-            boxShadow: "0 8px 20px rgba(0,0,0,0.3)",
-            backdropFilter: "blur(8px)",
-            maxHeight: "400px",
-            overflowY: "auto",
-          }}>
+          <div
+            style={{
+              position: "absolute",
+              bottom: "calc(100% + 10px)",
+              left: "0",
+              background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
+              border: "1px solid #334155",
+              borderRadius: "20px",
+              padding: "10px 0",
+              minWidth: "200px",
+              boxShadow: "0 8px 20px rgba(0,0,0,0.3)",
+              backdropFilter: "blur(8px)",
+              maxHeight: "400px",
+              overflowY: "auto",
+            }}
+            onWheel={(e) => e.stopPropagation()}
+          >
             {navItems.map(item => (
               <button
                 key={item.slug}
