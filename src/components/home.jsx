@@ -14,7 +14,6 @@ export default function Home() {
   const [showMulchGallery, setShowMulchGallery] = useState(false);
   const [showTreeGallery, setShowTreeGallery] = useState(false);
   const [showPlantingGallery, setShowPlantingGallery] = useState(false);
-  const [showFallGallery, setShowFallGallery] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState("");
   const [currentImageTitle, setCurrentImageTitle] = useState("");
@@ -335,7 +334,7 @@ export default function Home() {
     );
   };
 
-  // ---------- PROJECTS (UPDATED COUNTS) ----------
+  // ---------- PROJECTS ----------
   const projects = [
     { id: 1, name: "Brick Pavers & Patios", slug: "brick-pavers", pairs: [
       { before: "images/paver1.jpg", after: "images/paver2.jpg" },
@@ -371,8 +370,13 @@ export default function Home() {
     ], extraSingles: ["images/bushtrim9.jpg", "images/bushtrim10.jpg", "images/bushtrim11.jpg"] },
     { id: 13, name: "Mulching", slug: "mulching", isMulchGallery: true, mainImage: "images/mulch1.jpg", 
       extraImages: ["images/mulch2.jpg", "images/mulch3.jpg", "images/mulch4.jpg", "images/mulch5.jpg"] },
-    { id: 5, name: "Fall Clean Ups", slug: "fall-clean-ups", isFallGallery: true, mainImage: "images/fall1.jpg", 
-      extraImages: ["images/fall2.jpg", "images/fall3.jpg", "images/fall4.jpg", "images/fall5.jpg", "images/fall6.jpg"] },
+    // Fall Clean Ups – restored to original slider (using fallcleanup1-8.jpg)
+    { id: 5, name: "Fall Clean Ups", slug: "fall-clean-ups", pairs: [
+      { before: "images/fallcleanup1.jpg", after: "images/fallcleanup2.jpg" },
+      { before: "images/fallcleanup3.jpg", after: "images/fallcleanup4.jpg" },
+      { before: "images/fallcleanup5.jpg", after: "images/fallcleanup6.jpg" },
+      { before: "images/fallcleanup7.jpg", after: "images/fallcleanup8.jpg" }
+    ], extraSingles: [] },
     { id: 6, name: "Tree Removal", slug: "tree-removal", isTreeGallery: true, mainImage: "images/treer1.jpg", 
       extraImages: ["images/treer2.jpg"] },
     { id: 7, name: "Tree Planting", slug: "tree-planting", isPlantingGallery: true, mainImage: "images/treep1.jpg", 
@@ -776,43 +780,6 @@ export default function Home() {
             );
           }
 
-          // Fall Clean Ups
-          if (project.isFallGallery) {
-            const allImages = [project.mainImage, ...project.extraImages];
-            const galleryItems = allImages.map((img, idx) => ({ src: img, title: `${project.name} - Photo ${idx + 1}` }));
-            return (
-              <div key={project.id} id={sectionId} style={{ marginBottom: "50px", scrollMarginTop: "80px" }}>
-                <div style={{ marginBottom: "20px", borderLeft: "5px solid #2E8B57", paddingLeft: "18px" }}>
-                  <h3 style={{ fontSize: "26px", fontWeight: "600", color: "white", margin: 0 }}>{project.name}</h3>
-                  <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "5px" }}>Seasonal cleanups</p>
-                </div>
-                <div style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer", marginBottom: "20px" }}>
-                  <img src={project.mainImage} alt="Main Fall Cleanup" style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(project.mainImage, `${project.name} - Featured`, galleryItems, 0)} />
-                </div>
-                <div>
-                  <button onClick={() => setShowFallGallery(!showFallGallery)} style={{ width: "100%", padding: "14px 20px", background: "#1e293b", border: "1px solid #334155", borderRadius: "14px", fontSize: "14px", fontWeight: "600", color: "#2E8B57", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <span>📸 More Fall Cleanup Photos ({project.extraImages.length})</span>
-                    <span style={{ transform: showFallGallery ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s", fontSize: "16px" }}>▼</span>
-                  </button>
-                  {showFallGallery && (
-                    <div style={{ marginTop: "20px" }}>
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "16px" }}>
-                        {project.extraImages.map((img, idx) => (
-                          <div key={idx} style={{ background: "#1e293b", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", cursor: "pointer" }}>
-                            <img src={img} alt={`Fall ${idx + 2}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} onClick={() => openLightbox(img, `${project.name} - Photo ${idx + 2}`, galleryItems, idx + 1)} />
-                          </div>
-                        ))}
-                      </div>
-                      <button onClick={() => setShowFallGallery(false)} style={{ marginTop: "20px", width: "100%", padding: "10px", background: "#1e293b", border: "1px solid #334155", borderRadius: "10px", color: "#94a3b8", cursor: "pointer", fontSize: "13px" }}>
-                        ▲ Collapse
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
-            );
-          }
-
           // Tree Removal
           if (project.isTreeGallery) {
             const allTreeImages = [project.mainImage, ...project.extraImages];
@@ -887,7 +854,7 @@ export default function Home() {
             );
           }
 
-          // Power Washing and other slider sections (Bed Clean Up, Bush & Hedge, Brick Pavers)
+          // Power Washing and other slider sections (Bed Clean Up, Bush & Hedge, Brick Pavers, Fall Clean Ups)
           if (project.pairs) {
             const mainPair = project.pairs[0];
             const extraPairs = project.pairs.slice(1);
